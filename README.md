@@ -1,5 +1,4 @@
-# shrub-wars
-
+# Shrub Wars
 Team Contract: https://docs.google.com/document/d/1w-doX1HxcvPOTQ3Oyf_Ej1lqGoFEvkpjev1aPetXwco/edit?usp=sharing
 
 Design Notes (Game Rules, PoC description, MVP description): https://docs.google.com/document/d/1LNXsmcDU0Pkg5zWT6IUomDGXZhFfMf6aEj5dX-pZgyU/edit?usp=sharing
