@@ -11,7 +11,7 @@ export default class TestScene extends Phaser.Scene {
   }
 
   create() {
-    this.rect = this.add.rectangle(1024 / 2, 768 / 2, 128, 128, 0xff0000);
+    this.rect = this.add.rectangle(512 / 2, 512 / 2, 32, 32, 0xff0000);
     this.physics.add.existing(this.rect);
 
     this.spaceBar = this.input.keyboard.addKey(
@@ -25,7 +25,9 @@ export default class TestScene extends Phaser.Scene {
     };
     let mappy = this.add.tilemap("mappy");
     let terrarian = mappy.addTilesetImage("Tilly", "grass");
-    let grassLayer = mappy.createStaticLayer("Tile Layer 1", [terrarian], 0, 0);
+    let grassLayer = mappy
+      .createStaticLayer("Tile Layer 1", [terrarian], 0, 0)
+      .setDepth(-1);
 
     this.controls = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -33,14 +35,16 @@ export default class TestScene extends Phaser.Scene {
       left: Phaser.Input.Keyboard.KeyCodes.A,
       right: Phaser.Input.Keyboard.KeyCodes.D,
     });
+
+    console.log(this.cameras.main.startFollow(this.rect));
   }
 
   update() {
     this.rect.rotation = Phaser.Math.Angle.Between(
       this.input.x,
       this.input.y,
-      1024 / 2,
-      768 / 2
+      512 / 2,
+      512 / 2
     );
 
     if (this.spaceBar.isDown) {
