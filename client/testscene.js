@@ -39,8 +39,19 @@ export default class TestScene extends Phaser.Scene {
     let mappy = this.add.tilemap("mappy");
     let terrarian = mappy.addTilesetImage("Tilly", "grass");
     let grassLayer = mappy
-      .createStaticLayer("Tile Layer 1", [terrarian], 0, 0)
+      .createStaticLayer("Grass", [terrarian], 0, 0)
       .setDepth(-1);
+
+    let top = mappy.createStaticLayer("Top", [terrarian], 0, 0);
+
+    this.physics.add.collider(this.rect, top);
+    top.setCollisionByProperty({ collides: true });
+    // const debugGraphics = this.add.graphics().setAlpha(0.75);
+    // top.renderDebug(debugGraphics, {
+    //   tileColor: null, // Color of non-colliding tiles
+    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
+    // });
 
     this.controls = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -49,7 +60,7 @@ export default class TestScene extends Phaser.Scene {
       right: Phaser.Input.Keyboard.KeyCodes.D,
     });
 
-    console.log(this.cameras.main.startFollow(this.rect));
+    this.cameras.main.startFollow(this.rect);
   }
 
   update() {
