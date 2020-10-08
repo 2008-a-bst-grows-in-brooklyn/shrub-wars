@@ -1,14 +1,14 @@
-import Phaser from "phaser"
-import  TestScene  from "./testscene";
+import Phaser from "phaser";
+import TestScene from "./testscene";
 
 const config = {
   type: Phaser.AUTO,
-  width: 1024,
-	height: 768,
-	pixelArt: true,
-	scale: {
-		mode: Phaser.Scale.FIT,
-		parent: 'game'
+  width: 512,
+  height: 512,
+  pixelArt: true,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    parent: "game",
   },
   physics: {
     default: "arcade",
