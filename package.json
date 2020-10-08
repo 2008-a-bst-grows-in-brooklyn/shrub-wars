@@ -1,0 +1,45 @@
+{
+  "name": "shrub-wars",
+  "version": "1.0.0",
+  "description": "Team Contract: https://docs.google.com/document/d/1w-doX1HxcvPOTQ3Oyf_Ej1lqGoFEvkpjev1aPetXwco/edit?usp=sharing",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "phaser": "^3.24.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.10.0",
+    "eslint-config-prettier": "^6.12.0",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
+  },
+  "scripts": {
+    "build": "webpack",
+    "build-client": "webpack",
+    "build-client-watch": "webpack -w",
+    "deploy": "script/deploy",
+    "heroku-token": "script/encrypt-heroku-auth-token.js",
+    "lint": "eslint ./ --ignore-path .gitignore",
+    "lint-fix": "npm run lint -- --fix",
+    "prepare": "if [ -d .git ]; then npm-merge-driver install; fi",
+    "prettify": "prettier --write \"**/*.{js,jsx,json,css,scss,md}\"",
+    "postinstall": "touch secrets.js",
+    "seed": "node script/seed.js",
+    "start": "node server",
+    "start-dev": "NODE_ENV='development' npm run build-client-watch & NODE_ENV='development' npm run start-server",
+    "start-server": "nodemon server -e html,js,scss --ignore public --ignore client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2008-a-bst-grows-in-brooklyn/shrub-wars.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2008-a-bst-grows-in-brooklyn/shrub-wars/issues"
+  },
+  "homepage": "https://github.com/2008-a-bst-grows-in-brooklyn/shrub-wars#readme"
+}
