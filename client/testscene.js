@@ -26,6 +26,13 @@ export default class TestScene extends Phaser.Scene {
     let mappy = this.add.tilemap("mappy");
     let terrarian = mappy.addTilesetImage("Tilly", "grass");
     let grassLayer = mappy.createStaticLayer("Tile Layer 1", [terrarian], 0, 0);
+
+    this.controls = this.input.keyboard.addKeys({
+      up: Phaser.Input.Keyboard.KeyCodes.W,
+      down: Phaser.Input.Keyboard.KeyCodes.S,
+      left: Phaser.Input.Keyboard.KeyCodes.A,
+      right: Phaser.Input.Keyboard.KeyCodes.D,
+    });
   }
 
   update() {
@@ -38,6 +45,21 @@ export default class TestScene extends Phaser.Scene {
 
     if (this.spaceBar.isDown) {
       this.gen();
+    }
+
+    if (this.controls.up.isDown) {
+      this.rect.body.setVelocityY(-100);
+    } else if (this.controls.down.isDown) {
+      this.rect.body.setVelocityY(100);
+    } else {
+      this.rect.body.setVelocityY(0);
+    }
+    if (this.controls.right.isDown) {
+      this.rect.body.setVelocityX(100);
+    } else if (this.controls.left.isDown) {
+      this.rect.body.setVelocityX(-100);
+    } else {
+      this.rect.body.setVelocityX(0);
     }
   }
 }
