@@ -18,11 +18,17 @@ export default class TestScene extends Phaser.Scene {
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
     this.leftMouse = this.input.on("pointerdown", () => {
-      this.projectile = this.add.rectangle(1024 / 2, 768 / 2, 10, 10, 0xff0000);
+      const vec = this.physics.velocityFromRotation(this.rect.rotation, 60);
+      this.projectile = this.add.rectangle(
+        this.rect.x,
+        this.rect.y,
+        16,
+        16,
+        0xff0000
+      );
       this.projectile.rotation = this.rect.rotation;
       this.physics.add.existing(this.projectile);
-      this.projectile.body.setVelocity(50, -50);
-      console.log(this.projectile.rotation);
+      this.projectile.body.setVelocity(-vec.x, -vec.y);
     });
 
     this.gen = () => {
