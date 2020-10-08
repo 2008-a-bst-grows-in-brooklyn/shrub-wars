@@ -76,5 +76,6 @@ export default class TestScene extends Phaser.Scene {
     } else {
       this.rect.body.setVelocityX(0);
     }
+    this.rect.body.velocity.normalize().scale(200);
   }
 }
