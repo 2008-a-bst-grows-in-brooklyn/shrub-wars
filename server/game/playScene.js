@@ -6,12 +6,6 @@ module.exports = class PlayScene extends Phaser.Scene {
   constructor() {
     super();
     this.playerList = {};
-    this.moveState = {
-      up: false,
-      down: false,
-      left: false,
-      right: false,
-    };
   }
 
   preload() {
@@ -52,7 +46,6 @@ module.exports = class PlayScene extends Phaser.Scene {
     grassLayer.setDepth(-1);
     let top = mappy.createStaticLayer("Top", [terrarian], 0, 0);
 
-    this.physics.add.collider(this.rect, top);
     this.physics.add.collider(this.players, top);
     this.physics.add.collider(this.bullets, top, (bullet) => {
       bullet.destroy();
@@ -64,7 +57,7 @@ module.exports = class PlayScene extends Phaser.Scene {
       /* Create new player object */
       let newPlayer = this.add.rectangle(512 / 2, 512 / 2, 32, 32);
       newPlayer.id = socket.id;
-      newPlayer.socket = socket;
+      newPlayer.socket = socket; //this doesn't do anything
       this.playerList[socket.id] = newPlayer;
       this.physics.add.existing(newPlayer);
       this.players.add(this.playerList[socket.id]);
@@ -90,7 +83,7 @@ module.exports = class PlayScene extends Phaser.Scene {
       });
 
       socket.on("PLAYER_MOVED", (moveState) => {
-        //ignore commands from players
+        //ignore commands from non-registered players
         if (this.playerList[socket.id]) {
           const player = this.playerList[socket.id];
 
@@ -108,6 +101,8 @@ module.exports = class PlayScene extends Phaser.Scene {
           } else {
             player.body.setVelocityX(0);
           }
+
+          player.body.velocity.normalize().scale(200);
         }
       });
     });
