@@ -14,8 +14,8 @@ export default class TestScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("grass", "POCMap.png");
-    this.load.tilemapTiledJSON("mappy", "POCmappy.json");
+    this.load.image("grass", "Base.png");
+    this.load.tilemapTiledJSON("mappy", "POC2.json");
   }
 
   create() {
@@ -39,7 +39,7 @@ export default class TestScene extends Phaser.Scene {
     }); */
 
     let mappy = this.add.tilemap("mappy");
-    let terrarian = mappy.addTilesetImage("Tilly", "grass");
+    let terrarian = mappy.addTilesetImage("Base", "grass");
     let grassLayer = mappy.createStaticLayer("Grass", [terrarian], 0, 0);
     grassLayer.setDepth(-1);
     let top = mappy.createStaticLayer("Top", [terrarian], 0, 0);

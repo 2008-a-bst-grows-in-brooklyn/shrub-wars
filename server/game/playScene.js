@@ -19,7 +19,7 @@ module.exports = class PlayScene extends Phaser.Scene {
 
     this.load.tilemapTiledJSON(
       "mappy",
-      path.join(__dirname, "..", "..", "public", "POCmappy.json")
+      path.join(__dirname, "..", "..", "public", "POC2.json")
     );
   }
 
@@ -44,7 +44,7 @@ module.exports = class PlayScene extends Phaser.Scene {
     }); */
 
     let mappy = this.add.tilemap("mappy");
-    let terrarian = mappy.addTilesetImage("Tilly", "");
+    let terrarian = mappy.addTilesetImage("Base", "");
     let grassLayer = mappy.createStaticLayer("Grass", [terrarian], 0, 0);
     grassLayer.setDepth(-1);
     let top = mappy.createStaticLayer("Top", [terrarian], 0, 0);
