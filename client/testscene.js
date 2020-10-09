@@ -1,8 +1,15 @@
 import Phaser from "phaser";
+import io from "socket.io-client";
+
+const socket = io();
+socket.on("connect", () => {
+  console.log("Connected!");
+});
 
 export default class TestScene extends Phaser.Scene {
   constructor() {
     super({ key: "TestScene" });
+    this.playerList = {};
   }
 
   preload() {
@@ -12,13 +19,10 @@ export default class TestScene extends Phaser.Scene {
 
   create() {
     this.bullets = this.add.group();
-    this.rect = this.add.rectangle(512 / 2, 512 / 2, 32, 32, 0xff0000);
-    this.physics.add.existing(this.rect);
+    //this.rect = this.add.rectangle(512 / 2, 512 / 2, 32, 32, 0xff0000);
+    /* this.physics.add.existing(this.rect); */
 
-    this.spaceBar = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.SPACE
-    );
-    this.leftMouse = this.input.on("pointerdown", () => {
+    /* this.leftMouse = this.input.on("pointerdown", () => {
       const vec = this.physics.velocityFromRotation(this.rect.rotation, 60);
       this.projectile = this.add.rectangle(
         this.rect.x,
@@ -31,18 +35,20 @@ export default class TestScene extends Phaser.Scene {
       this.projectile.rotation = this.rect.rotation;
       this.physics.add.existing(this.projectile);
       this.projectile.body.setVelocity(-vec.x, -vec.y);
-    });
+    }); */
+
     let mappy = this.add.tilemap("mappy");
     let terrarian = mappy.addTilesetImage("Tilly", "grass");
     let grassLayer = mappy.createStaticLayer("Grass", [terrarian], 0, 0);
     grassLayer.setDepth(-1);
     let top = mappy.createStaticLayer("Top", [terrarian], 0, 0);
 
-    this.physics.add.collider(this.rect, top);
+    /* this.physics.add.collider(this.rect, top);
     this.physics.add.collider(this.bullets, top, (bullet) => {
       bullet.destroy();
     });
-    top.setCollisionByProperty({ collides: true });
+    top.setCollisionByProperty({ collides: true }); */
+
     // const debugGraphics = this.add.graphics().setAlpha(0.75);
     // top.renderDebug(debugGraphics, {
     //   tileColor: null, // Color of non-colliding tiles
@@ -57,18 +63,70 @@ export default class TestScene extends Phaser.Scene {
       right: Phaser.Input.Keyboard.KeyCodes.D,
     });
 
-    this.cameras.main.startFollow(this.rect);
+    //First, declare the initialize game listener
+    socket.on("INITIALIZE_GAME", (data) => {
+      console.log("ready");
+      for (const id in data.playerList) {
+        let newPlayer = data.playerList[id];
+        let player = this.add.rectangle(
+          newPlayer.x,
+          newPlayer.y,
+          32,
+          32,
+          0xff0000
+        );
+        player.id = id;
+        this.playerList[id] = player;
+
+        if (id === data.id) {
+          this.cameras.main.startFollow(player);
+        }
+      }
+
+      //only start listening for gamestate updates after completing initialization
+      socket.on("update", (data) => {
+        for (const id in data.playerList) {
+          let player = data.playerList[id];
+          this.playerList[id].setPosition(player.x, player.y);
+        }
+      });
+
+      socket.on("PLAYER_JOINED", (newPlayer) => {
+        console.log(newPlayer, "joined");
+        let player = this.add.rectangle(
+          newPlayer.x,
+          newPlayer.y,
+          32,
+          32,
+          0xff0000
+        );
+        player.id = newPlayer.id;
+        this.playerList[newPlayer.id] = player;
+      });
+
+      socket.on("PLAYER_LEFT", (id) => {
+        this.playerList[id].destroy();
+        delete this.playerList[id];
+      });
+    });
+
+    //Finally, tell the server that the client is ready to receive the "INITIALIZE_GAME" signal
+    socket.emit("CLIENT_READY");
   }
 
   update() {
-    this.rect.rotation = Phaser.Math.Angle.Between(
+    /* this.rect.rotation = Phaser.Math.Angle.Between(
       this.input.x,
       this.input.y,
       512 / 2,
       512 / 2
-    );
+    ); */
+
+    /*
     if (this.controls.up.isDown) {
       this.rect.body.setVelocityY(-100);
+      socket.emit("test");
+      console.log("emitting test");
     } else if (this.controls.down.isDown) {
       this.rect.body.setVelocityY(100);
     } else {
@@ -80,7 +138,15 @@ export default class TestScene extends Phaser.Scene {
       this.rect.body.setVelocityX(-100);
     } else {
       this.rect.body.setVelocityX(0);
-    }
-    this.rect.body.velocity.normalize().scale(200);
+    } */
+
+    socket.emit("PLAYER_MOVED", {
+      up: this.controls.up.isDown,
+      down: this.controls.down.isDown,
+      left: this.controls.left.isDown,
+      right: this.controls.right.isDown,
+    });
+
+    /* this.rect.body.velocity.normalize().scale(200); */
   }
 }

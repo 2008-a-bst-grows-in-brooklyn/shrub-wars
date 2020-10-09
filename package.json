@@ -4,6 +4,7 @@
   "description": "Team Contract: https://docs.google.com/document/d/1w-doX1HxcvPOTQ3Oyf_Ej1lqGoFEvkpjev1aPetXwco/edit?usp=sharing",
   "main": "index.js",
   "dependencies": {
+    "@geckos.io/phaser-on-nodejs": "^1.2.3",
     "express": "^4.17.1",
     "phaser": "^3.24.1",
     "socket.io": "^2.3.0"
