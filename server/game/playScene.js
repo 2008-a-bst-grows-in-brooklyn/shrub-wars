@@ -6,8 +6,11 @@ module.exports = class PlayScene extends Phaser.Scene {
   constructor() {
     super();
     this.playerList = {};
+    this.bulletList = {};
+    this.bulletId = 0;
+    // this.bulletList = {};
   }
-
+  // playerList contains player objects; player.bulletList[id] = new bullet
   preload() {
     /* this.load.image(
       "grass",
@@ -48,6 +51,7 @@ module.exports = class PlayScene extends Phaser.Scene {
 
     this.physics.add.collider(this.players, top);
     this.physics.add.collider(this.bullets, top, (bullet) => {
+      this.bulletList[bullet.id] = null;
       bullet.destroy();
     });
     top.setCollisionByProperty({ collides: true });
@@ -81,7 +85,10 @@ module.exports = class PlayScene extends Phaser.Scene {
         delete this.playerList[socket.id];
         socket.broadcast.emit("PLAYER_LEFT", socket.id);
       });
-
+      socket.on("PLAYER_ROTATED", (angle) => {
+        const player = this.playerList[socket.id];
+        player.rotation = angle;
+      });
       socket.on("PLAYER_MOVED", (moveState) => {
         //ignore commands from non-registered players
         if (this.playerList[socket.id]) {
@@ -105,6 +112,29 @@ module.exports = class PlayScene extends Phaser.Scene {
           player.body.velocity.normalize().scale(200);
         }
       });
+      socket.on("PLAYER_ACTION", (actionState) => {
+        if (this.playerList[socket.id]) {
+          const player = this.playerList[socket.id];
+
+          if (actionState.pointer) {
+            const vec = this.physics.velocityFromRotation(player.rotation, 60);
+            const bullet = this.add.rectangle(
+              player.x,
+              player.y,
+              16,
+              16,
+              0xdddddd
+            );
+            bullet["id"] = this.bulletId++; // Global bullet ID
+            bullet["playerId"] = socket.id; // For collisions
+            this.bullets.add(bullet);
+            bullet.rotation = player.rotation;
+            this.physics.add.existing(bullet);
+            bullet.body.setVelocity(-vec.x, -vec.y);
+            this.bulletList[bullet.id] = bullet;
+          }
+        }
+      });
     });
   }
 
@@ -114,8 +144,30 @@ module.exports = class PlayScene extends Phaser.Scene {
       this.input.y,
       512 / 2,
       512 / 2
-		); */
-
-    io.emit("update", { playerList: this.playerList });
+    ); */
+    let modifiedBulletList = {};
+    for (const id in this.bulletList) {
+      let bullet = this.bulletList[id];
+      if (bullet === null) {
+        modifiedBulletList[id] = bullet;
+      } else {
+        modifiedBulletList[id] = {
+          playerId: bullet.playerId,
+          x: bullet.x,
+          y: bullet.y,
+          rotation: bullet.rotation,
+        };
+      }
+    }
+    io.emit("update", {
+      playerList: this.playerList,
+      bulletList: modifiedBulletList,
+    });
   }
+
+  // bulletLogger() {
+  //   for (const id in this.bulletList) {
+  //     let bullet = this.bulletList
+  //   }
+  // }
 };
