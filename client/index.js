@@ -5,7 +5,6 @@ const config = {
   type: Phaser.AUTO,
   width: 512,
   height: 512,
-  pixelArt: true,
   scale: {
     mode: Phaser.Scale.FIT,
     parent: "game",
