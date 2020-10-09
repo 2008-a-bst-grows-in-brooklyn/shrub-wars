@@ -10,6 +10,7 @@ export default class TestScene extends Phaser.Scene {
   constructor() {
     super({ key: "TestScene" });
     this.playerList = {};
+    this.bulletList = {};
   }
 
   preload() {
@@ -62,6 +63,11 @@ export default class TestScene extends Phaser.Scene {
       left: Phaser.Input.Keyboard.KeyCodes.A,
       right: Phaser.Input.Keyboard.KeyCodes.D,
     });
+    this.pointer = this.input.on("pointerdown", () => {
+      socket.emit("PLAYER_ACTION", {
+        pointer: true,
+      });
+    });
 
     //First, declare the initialize game listener
     socket.on("INITIALIZE_GAME", (data) => {
@@ -79,8 +85,22 @@ export default class TestScene extends Phaser.Scene {
         this.playerList[id] = player;
 
         if (id === data.id) {
+          this.id = id;
           this.cameras.main.startFollow(player);
         }
+      }
+
+      for (const id in data.bulletList) {
+        let newBullet = data.bulletList[id];
+        let bullet = this.add.rectangle(
+          newBullet.x,
+          newBullet.y,
+          16,
+          16,
+          0xdddddd
+        );
+        bullet.id = id;
+        this.bulletList[id] = bullet;
       }
 
       //only start listening for gamestate updates after completing initialization
@@ -88,6 +108,31 @@ export default class TestScene extends Phaser.Scene {
         for (const id in data.playerList) {
           let player = data.playerList[id];
           this.playerList[id].setPosition(player.x, player.y);
+          this.playerList[id].rotation = player.rotation;
+        }
+        for (const id in data.bulletList) {
+          let serverBullet = data.bulletList[id];
+          if (this.bulletList[id] || serverBullet === null) {
+            if (serverBullet === null) {
+              if (this.bulletList[id]) {
+                this.bulletList[id].destroy();
+                delete this.bulletList[id];
+              }
+            } else {
+              this.bulletList[id].setPosition(serverBullet.x, serverBullet.y);
+              this.bulletList[id].rotation = serverBullet.rotation;
+            }
+          } else {
+            let bullet = this.add.rectangle(
+              serverBullet.x,
+              serverBullet.y,
+              16,
+              16,
+              0xdddddd
+            );
+            bullet.id = id;
+            this.bulletList[id] = bullet;
+          }
         }
       });
 
@@ -103,14 +148,13 @@ export default class TestScene extends Phaser.Scene {
         player.id = newPlayer.id;
         this.playerList[newPlayer.id] = player;
       });
-
+      // Create bullet
       socket.on("PLAYER_LEFT", (id) => {
         console.log("Player Left");
         this.playerList[id].destroy();
         delete this.playerList[id];
       });
     });
-
     //Finally, tell the server that the client is ready to receive the "INITIALIZE_GAME" signal
     socket.emit("CLIENT_READY");
   }
@@ -122,24 +166,10 @@ export default class TestScene extends Phaser.Scene {
       512 / 2,
       512 / 2
     ); */
-
-    /*
-    if (this.controls.up.isDown) {
-      this.rect.body.setVelocityY(-100);
-      socket.emit("test");
-      console.log("emitting test");
-    } else if (this.controls.down.isDown) {
-      this.rect.body.setVelocityY(100);
-    } else {
-      this.rect.body.setVelocityY(0);
-    }
-    if (this.controls.right.isDown) {
-      this.rect.body.setVelocityX(100);
-    } else if (this.controls.left.isDown) {
-      this.rect.body.setVelocityX(-100);
-    } else {
-      this.rect.body.setVelocityX(0);
-    } */
+    socket.emit(
+      "PLAYER_ROTATED",
+      Phaser.Math.Angle.Between(this.input.x, this.input.y, 512 / 2, 512 / 2)
+    );
 
     socket.emit("PLAYER_MOVED", {
       up: this.controls.up.isDown,
