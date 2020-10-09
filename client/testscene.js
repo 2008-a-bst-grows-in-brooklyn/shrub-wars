@@ -105,6 +105,7 @@ export default class TestScene extends Phaser.Scene {
       });
 
       socket.on("PLAYER_LEFT", (id) => {
+        console.log("Player Left");
         this.playerList[id].destroy();
         delete this.playerList[id];
       });
