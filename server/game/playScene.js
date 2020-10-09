@@ -54,6 +54,18 @@ module.exports = class PlayScene extends Phaser.Scene {
       this.bulletList[bullet.id] = null;
       bullet.destroy();
     });
+    this.physics.add.collider(
+      this.players,
+      this.bullets,
+      (player, bullet) => {
+        this.bulletList[bullet.id] = null;
+        bullet.destroy();
+        player.setPosition(256, 256);
+      },
+      (player, bullet) => {
+        return player.id !== bullet.playerId;
+      }
+    );
     top.setCollisionByProperty({ collides: true });
 
     io.on("connect", (socket) => {
