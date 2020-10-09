@@ -79,7 +79,7 @@ module.exports = class PlayScene extends Phaser.Scene {
         console.log(socket.id, "disconnected");
         this.playerList[socket.id].destroy();
         delete this.playerList[socket.id];
-        socket.emit("PLAYER_LEFT", socket.id);
+        socket.broadcast.emit("PLAYER_LEFT", socket.id);
       });
 
       socket.on("PLAYER_MOVED", (moveState) => {
