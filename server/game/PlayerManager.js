@@ -10,7 +10,7 @@ module.exports = class PlayerManager {
   getPlayerState() {
     let outPlayerList = {};
     for (let id in this.playerList) {
-      let player = this.playerList[id].gameObject;
+      let player = this.playerList[id];
       outPlayerList[id] = {
         x: player.x,
         y: player.y,
@@ -27,7 +27,7 @@ module.exports = class PlayerManager {
   addNewPlayer(socket) {
     const newPlayer = new Player(this.scene, socket);
     this.playerList[socket.id] = newPlayer;
-    this.playersGroup.add(newPlayer.gameObject);
+    this.playersGroup.add(newPlayer);
     socket.broadcast.emit("PLAYER_JOINED", {
       id: newPlayer.id,
       x: newPlayer.x,
@@ -36,7 +36,7 @@ module.exports = class PlayerManager {
   }
 
   removePlayer(socket) {
-    this.playerList[socket.id].gameObject.destroy();
+    this.playerList[socket.id].destroy();
     delete this.playerList[socket.id];
     socket.broadcast.emit("PLAYER_LEFT", socket.id);
   }

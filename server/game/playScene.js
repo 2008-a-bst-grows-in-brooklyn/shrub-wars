@@ -81,8 +81,7 @@ module.exports = class PlayScene extends Phaser.Scene {
 
       socket.on("PLAYER_ACTION", (actionState) => {
         if (this.PlayerManager.playerList[socket.id]) {
-          console.log("SHOTS FIRED");
-          const player = this.PlayerManager.playerList[socket.id].gameObject;
+          const player = this.PlayerManager.playerList[socket.id];
 
           if (actionState.pointer) {
             const vec = this.physics.velocityFromRotation(player.rotation, 60);
