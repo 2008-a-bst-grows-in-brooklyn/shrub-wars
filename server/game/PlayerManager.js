@@ -2,15 +2,42 @@ const Player = require("./Player");
 
 module.exports = class PlayerManager {
   constructor(scene) {
+    this.scene = scene;
     this.playerList = {};
     this.playersGroup = scene.add.group();
-    this.scene = scene;
+  }
+
+  getPlayerState() {
+    let outPlayerList = {};
+    for (let id in this.playerList) {
+      let player = this.playerList[id].gameObject;
+      outPlayerList[id] = {
+        x: player.x,
+        y: player.y,
+        rotation: player.rotation,
+      };
+    }
+    return outPlayerList;
+  }
+
+  getPlayer(socket) {
+    return this.playerList[socket.id];
   }
 
   addNewPlayer(socket) {
-    this.playerList[socket.id] = new Player(this.scene, socket);
-    this.playersGroup.add(this.playerList[socket.id]);
+    const newPlayer = new Player(this.scene, socket);
+    this.playerList[socket.id] = newPlayer;
+    this.playersGroup.add(newPlayer.gameObject);
+    socket.broadcast.emit("PLAYER_JOINED", {
+      id: newPlayer.id,
+      x: newPlayer.x,
+      y: newPlayer.y,
+    });
   }
 
-  //getPlayer(socket) {}
+  removePlayer(socket) {
+    this.playerList[socket.id].gameObject.destroy();
+    delete this.playerList[socket.id];
+    socket.broadcast.emit("PLAYER_LEFT", socket.id);
+  }
 };
