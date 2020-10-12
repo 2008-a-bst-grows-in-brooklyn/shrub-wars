@@ -2,13 +2,16 @@ const path = require("path");
 const Phaser = require("phaser");
 const io = require("../socket").io(); //returns io object
 
+const PlayerManager = require("./PlayerManager");
+
 module.exports = class PlayScene extends Phaser.Scene {
   constructor() {
     super();
-    this.playerList = {};
+    //this.playerList = {};
     this.bulletList = {};
     this.bulletId = 0;
-    // this.bulletList = {};
+
+    this.PlayerManager = new PlayerManager(this);
   }
   // playerList contains player objects; player.bulletList[id] = new bullet
   preload() {
@@ -25,7 +28,7 @@ module.exports = class PlayScene extends Phaser.Scene {
 
   create() {
     this.bullets = this.add.group();
-    this.players = this.add.group();
+    this.players = this.add.group(); // this.PlayerManager.playersGroup
 
     /* TODO: Reimplement rotation and shooting */
     /* this.leftMouse = this.input.on("pointerdown", () => {
