@@ -19,7 +19,7 @@ module.exports = class PlayScene extends Phaser.Scene {
 
     this.load.tilemapTiledJSON(
       "mappy",
-      path.join(__dirname, "..", "..", "public", "POC2.json")
+      path.join(__dirname, "..", "..", "public", "Village.json")
     );
   }
 
@@ -47,9 +47,12 @@ module.exports = class PlayScene extends Phaser.Scene {
     let terrarian = mappy.addTilesetImage("Base", "");
     let grassLayer = mappy.createStaticLayer("Grass", [terrarian], 0, 0);
     grassLayer.setDepth(-1);
-    let top = mappy.createStaticLayer("Top", [terrarian], 0, 0);
+    let top = mappy.createStaticLayer("Collides", [terrarian], 0, 0);
+    let houseTop = mappy.createStaticLayer("HouseTop", [terrarian], 0, 0);
+    let trees = mappy.createStaticLayer("Trees", [terrarian], 0, 0);
 
     this.physics.add.collider(this.players, top);
+    this.physics.add.collider(this.players, trees);
     this.physics.add.collider(this.bullets, top, (bullet) => {
       this.bulletList[bullet.id] = null;
       bullet.destroy();
@@ -67,6 +70,7 @@ module.exports = class PlayScene extends Phaser.Scene {
       }
     );
     top.setCollisionByProperty({ collides: true });
+    trees.setCollisionByProperty({ collides: true });
 
     io.on("connect", (socket) => {
       console.log("Connected!", socket.id);

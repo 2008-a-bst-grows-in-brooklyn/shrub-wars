@@ -14,8 +14,9 @@ export default class TestScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("grass", "Base.png");
-    this.load.tilemapTiledJSON("mappy", "POC2.json");
+    // this.load.image("grass", "Base.png");
+    // this.load.tilemapTiledJSON("mappy", "POC2.json");
+    this.load.image("village", "Village.png");
   }
 
   create() {
@@ -38,12 +39,12 @@ export default class TestScene extends Phaser.Scene {
       this.projectile.body.setVelocity(-vec.x, -vec.y);
     }); */
 
-    let mappy = this.add.tilemap("mappy");
-    let terrarian = mappy.addTilesetImage("Base", "grass");
-    let grassLayer = mappy.createStaticLayer("Grass", [terrarian], 0, 0);
-    grassLayer.setDepth(-1);
-    let top = mappy.createStaticLayer("Top", [terrarian], 0, 0);
-
+    // let mappy = this.add.tilemap("mappy");
+    // let terrarian = mappy.addTilesetImage("Base", "grass");
+    // let grassLayer = mappy.createStaticLayer("Grass", [terrarian], 0, 0);
+    // grassLayer.setDepth(-1);
+    // let top = mappy.createStaticLayer("Top", [terrarian], 0, 0);
+    this.add.image(0, 0, "village").setOrigin(0);
     /* this.physics.add.collider(this.rect, top);
     this.physics.add.collider(this.bullets, top, (bullet) => {
       bullet.destroy();
