@@ -5,6 +5,7 @@ module.exports = class PlayerManager {
     this.scene = scene;
     this.playerList = {};
     this.playersGroup = scene.add.group();
+    this.currentTeam = true
   }
 
   getPlayerState() {
@@ -15,6 +16,7 @@ module.exports = class PlayerManager {
         x: player.x,
         y: player.y,
         rotation: player.rotation,
+        team: player.team,
       };
     }
     return outPlayerList;
@@ -25,13 +27,15 @@ module.exports = class PlayerManager {
   }
 
   addNewPlayer(socket) {
-    const newPlayer = new Player(this.scene, socket);
+    const newPlayer = new Player(this.scene, socket, undefined, undefined, this.currentTeam);
     this.playerList[socket.id] = newPlayer;
     this.playersGroup.add(newPlayer);
+    this.currentTeam = !this.currentTeam
     socket.broadcast.emit("PLAYER_JOINED", {
       id: newPlayer.id,
       x: newPlayer.x,
       y: newPlayer.y,
+      team: newPlayer.team
     });
   }
 
