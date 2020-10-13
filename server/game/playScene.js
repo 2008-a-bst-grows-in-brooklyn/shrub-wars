@@ -11,20 +11,23 @@ module.exports = class PlayScene extends Phaser.Scene {
     super();
   }
   preload() {
-    Map.loadMap();
+    this.load.tilemapTiledJSON(
+      "mappy",
+      path.join(__dirname, "..", "..", "public", "Village.json")
+    );
   }
 
   create() {
     this.PlayerManager = new PlayerManager(this);
     this.ProjectileManager = new ProjectileManager(this);
     this.Map = new Map(this);
-    Map.createMap();
-    
+    this.Map.createMap();
+
     this.physics.add.collider(
       this.PlayerManager.playersGroup,
       this.Map.collidesPlayer
     );
-    
+
     this.physics.add.collider(
       this.ProjectileManager.projectiles,
       this.Map.collidesBullets,
