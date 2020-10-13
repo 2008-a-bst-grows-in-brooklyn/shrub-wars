@@ -20,7 +20,7 @@ module.exports = class PlayerManager {
         x: player.x,
         y: player.y,
         rotation: player.rotation,
-        team: player.team.name,
+        teamName: player.team.name,
       };
     }
     return outPlayerList;
@@ -55,7 +55,7 @@ module.exports = class PlayerManager {
       id: newPlayer.id,
       x: newPlayer.x,
       y: newPlayer.y,
-      team: newPlayer.team.name,
+      teamName: newPlayer.team.name,
     });
   }
 

@@ -43,8 +43,8 @@ export default class TestScene extends Phaser.Scene {
       for (const id in data.playerList) {
         let newPlayer = data.playerList[id];
         console.log("newPlayer = ", newPlayer);
-        let color = "";
-        if (newPlayer.team === "red") {
+        let color;
+        if (newPlayer.teamName === "red") {
           color = 0xff0000;
         } else {
           color = 0x0000ff;
@@ -113,12 +113,18 @@ export default class TestScene extends Phaser.Scene {
 
       socket.on("PLAYER_JOINED", (newPlayer) => {
         console.log(newPlayer, "joined");
+        let color;
+        if (newPlayer.teamName === "red") {
+          color = 0xff0000;
+        } else {
+          color = 0x0000ff;
+        }
         let player = this.add.rectangle(
           newPlayer.x,
           newPlayer.y,
           32,
           32,
-          0xff0000
+          color
         );
         player.id = newPlayer.id;
         this.playerList[newPlayer.id] = player;
