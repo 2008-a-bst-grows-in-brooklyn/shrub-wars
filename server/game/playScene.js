@@ -42,7 +42,7 @@ module.exports = class PlayScene extends Phaser.Scene {
       (player, bullet) => {
         this.ProjectileManager.projectileList[bullet.id] = null;
         bullet.destroy();
-        player.setPosition(256, 256);
+        player.setPosition(player.team.x, player.team.y);
       },
       (player, bullet) => {
         return player.id !== bullet.owner;
@@ -81,6 +81,7 @@ module.exports = class PlayScene extends Phaser.Scene {
 
           if (actionState.pointer) {
             const vec = this.physics.velocityFromRotation(player.rotation, 300);
+            console.log(player.x, player.y, "playerposition");
             this.ProjectileManager.addNewProjectile(
               player.x,
               player.y,

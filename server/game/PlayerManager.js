@@ -5,7 +5,11 @@ module.exports = class PlayerManager {
     this.scene = scene;
     this.playerList = {};
     this.playersGroup = scene.add.group();
-    this.currentTeam = true
+    this.teamList = {
+      red: { name: "red", x: 180, y: 860 },
+      blue: { name: "blue", x: 1880, y: 860 },
+    };
+    this.currentTeam = this.teamList.red;
   }
 
   getPlayerState() {
@@ -16,7 +20,7 @@ module.exports = class PlayerManager {
         x: player.x,
         y: player.y,
         rotation: player.rotation,
-        team: player.team,
+        teamName: player.team.name,
       };
     }
     return outPlayerList;
@@ -26,16 +30,32 @@ module.exports = class PlayerManager {
     return this.playerList[socket.id];
   }
 
+  /* left: 180 x 860 y
+  right: 1880 x 860 y  */
+
   addNewPlayer(socket) {
-    const newPlayer = new Player(this.scene, socket, undefined, undefined, this.currentTeam);
+    const newPlayer = new Player(
+      this.scene,
+      socket,
+      this.currentTeam.x,
+      this.currentTeam.y,
+      this.currentTeam //team object, including name and spawn coords
+    );
     this.playerList[socket.id] = newPlayer;
     this.playersGroup.add(newPlayer);
-    this.currentTeam = !this.currentTeam
+
+    //temporary: alternate teams
+    if (this.currentTeam.name === "red") {
+      this.currentTeam = this.teamList.blue;
+    } else {
+      this.currentTeam = this.teamList.red;
+    }
+
     socket.broadcast.emit("PLAYER_JOINED", {
       id: newPlayer.id,
       x: newPlayer.x,
       y: newPlayer.y,
-      team: newPlayer.team
+      teamName: newPlayer.team.name,
     });
   }
 
