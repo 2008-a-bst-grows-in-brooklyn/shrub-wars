@@ -21,48 +21,16 @@ export default class TestScene extends Phaser.Scene {
 
   create() {
     this.bullets = this.add.group();
-    //this.rect = this.add.rectangle(512 / 2, 512 / 2, 32, 32, 0xff0000);
-    /* this.physics.add.existing(this.rect); */
-
-    /* this.leftMouse = this.input.on("pointerdown", () => {
-      const vec = this.physics.velocityFromRotation(this.rect.rotation, 60);
-      this.projectile = this.add.rectangle(
-        this.rect.x,
-        this.rect.y,
-        16,
-        16,
-        0xff0000
-      );
-      this.bullets.add(this.projectile);
-      this.projectile.rotation = this.rect.rotation;
-      this.physics.add.existing(this.projectile);
-      this.projectile.body.setVelocity(-vec.x, -vec.y);
-    }); */
-
-    // let mappy = this.add.tilemap("mappy");
-    // let terrarian = mappy.addTilesetImage("Base", "grass");
-    // let grassLayer = mappy.createStaticLayer("Grass", [terrarian], 0, 0);
-    // grassLayer.setDepth(-1);
-    // let top = mappy.createStaticLayer("Top", [terrarian], 0, 0);
     this.add.image(0, 0, "village").setOrigin(0);
-    /* this.physics.add.collider(this.rect, top);
-    this.physics.add.collider(this.bullets, top, (bullet) => {
-      bullet.destroy();
-    });
-    top.setCollisionByProperty({ collides: true }); */
-
-    // const debugGraphics = this.add.graphics().setAlpha(0.75);
-    // top.renderDebug(debugGraphics, {
-    //   tileColor: null, // Color of non-colliding tiles
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
-    // });
-
     this.controls = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
       down: Phaser.Input.Keyboard.KeyCodes.S,
       left: Phaser.Input.Keyboard.KeyCodes.A,
       right: Phaser.Input.Keyboard.KeyCodes.D,
+      up1: Phaser.Input.Keyboard.KeyCodes.I,
+      down1: Phaser.Input.Keyboard.KeyCodes.K,
+      left1: Phaser.Input.Keyboard.KeyCodes.J,
+      right1: Phaser.Input.Keyboard.KeyCodes.L,
     });
     this.pointer = this.input.on("pointerdown", () => {
       socket.emit("PLAYER_ACTION", {
@@ -72,15 +40,21 @@ export default class TestScene extends Phaser.Scene {
 
     //First, declare the initialize game listener
     socket.on("INITIALIZE_GAME", (data) => {
-      console.log("ready");
       for (const id in data.playerList) {
         let newPlayer = data.playerList[id];
+        console.log("newPlayer = ", newPlayer)
+        let color = ''
+          if (newPlayer.team == true) {
+            color = 0xff0000
+          } else {
+            color = 0x0000ff
+          }
         let player = this.add.rectangle(
           newPlayer.x,
           newPlayer.y,
           32,
           32,
-          0xff0000
+          color
         );
         player.id = id;
         this.playerList[id] = player;
@@ -161,24 +135,17 @@ export default class TestScene extends Phaser.Scene {
   }
 
   update() {
-    /* this.rect.rotation = Phaser.Math.Angle.Between(
-      this.input.x,
-      this.input.y,
-      512 / 2,
-      512 / 2
-    ); */
     socket.emit(
       "PLAYER_ROTATED",
       Phaser.Math.Angle.Between(this.input.x, this.input.y, 512 / 2, 512 / 2)
     );
 
     socket.emit("PLAYER_MOVED", {
-      up: this.controls.up.isDown,
-      down: this.controls.down.isDown,
-      left: this.controls.left.isDown,
-      right: this.controls.right.isDown,
+      up: this.controls.up.isDown || this.controls.up1.isDown,
+      down: this.controls.down.isDown || this.controls.down1.isDown,
+      left: this.controls.left.isDown || this.controls.left1.isDown,
+      right: this.controls.right.isDown || this.controls.right1.isDown,
+      
     });
-
-    /* this.rect.body.velocity.normalize().scale(200); */
   }
 }
