@@ -18,6 +18,10 @@ module.exports = class PlayScene extends Phaser.Scene {
   }
 
   create() {
+    this.PlayerManager = new PlayerManager(this);
+    this.bullets = this.add.group();
+    this.Map = new Map(this);
+
     Map.createMap();
 
     this.physics.add.collider(
