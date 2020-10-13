@@ -4,35 +4,30 @@ const io = require("../socket").io(); //returns io object
 
 const PlayerManager = require("./PlayerManager");
 const ProjectileManager = require("./ProjectileManager");
+const Map = require("./Maps");
 
 module.exports = class PlayScene extends Phaser.Scene {
   constructor() {
     super();
   }
   preload() {
-    this.load.tilemapTiledJSON(
-      "mappy",
-      path.join(__dirname, "..", "..", "public", "Village.json")
-    );
+    Map.loadMap();
   }
 
   create() {
     this.PlayerManager = new PlayerManager(this);
     this.ProjectileManager = new ProjectileManager(this);
-
-    let mappy = this.add.tilemap("mappy");
-    let terrarian = mappy.addTilesetImage("Base", "");
-    let grassLayer = mappy.createStaticLayer("Grass", [terrarian], 0, 0);
-    grassLayer.setDepth(-1);
-    let top = mappy.createStaticLayer("Collides", [terrarian], 0, 0);
-    let houseTop = mappy.createStaticLayer("HouseTop", [terrarian], 0, 0);
-    let trees = mappy.createStaticLayer("Trees", [terrarian], 0, 0);
-
-    this.physics.add.collider(this.PlayerManager.playersGroup, top);
-    this.physics.add.collider(this.PlayerManager.playersGroup, trees);
+    this.Map = new Map(this);
+    Map.createMap();
+    
+    this.physics.add.collider(
+      this.PlayerManager.playersGroup,
+      this.Map.collidesPlayer
+    );
+    
     this.physics.add.collider(
       this.ProjectileManager.projectiles,
-      top,
+      this.Map.collidesBullets,
       (bullet) => {
         this.ProjectileManager.projectileList[bullet.id] = null;
         bullet.destroy();
@@ -50,9 +45,6 @@ module.exports = class PlayScene extends Phaser.Scene {
         return player.id !== bullet.owner;
       }
     );
-
-    top.setCollisionByProperty({ collides: true });
-    trees.setCollisionByProperty({ collides: true });
 
     io.on("connect", (socket) => {
       console.log("Connected!", socket.id);
