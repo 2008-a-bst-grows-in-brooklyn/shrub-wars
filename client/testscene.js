@@ -22,6 +22,8 @@ export default class TestScene extends Phaser.Scene {
   create() {
     this.bullets = this.add.group();
     this.add.image(0, 0, "village").setOrigin(0);
+    this.flag = this.add.rectangle(1024, 928, 32, 32, 0xffffff);
+    this.flag = this.add.rectangle(1024, 928, 32, 32, 0xffffff);
     this.controls = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
       down: Phaser.Input.Keyboard.KeyCodes.S,
@@ -31,7 +33,9 @@ export default class TestScene extends Phaser.Scene {
       down1: Phaser.Input.Keyboard.KeyCodes.K,
       left1: Phaser.Input.Keyboard.KeyCodes.J,
       right1: Phaser.Input.Keyboard.KeyCodes.L,
+      space: Phaser.Input.Keyboard.KeyCodes.SPACE,
     });
+
     this.pointer = this.input.on("pointerdown", () => {
       socket.emit("PLAYER_ACTION", {
         pointer: true,
@@ -42,13 +46,13 @@ export default class TestScene extends Phaser.Scene {
     socket.on("INITIALIZE_GAME", (data) => {
       for (const id in data.playerList) {
         let newPlayer = data.playerList[id];
-        console.log("newPlayer = ", newPlayer)
-        let color = ''
-          if (newPlayer.team == true) {
-            color = 0xff0000
-          } else {
-            color = 0x0000ff
-          }
+        console.log("newPlayer = ", newPlayer);
+        let color = "";
+        if (newPlayer.team == true) {
+          color = 0xff0000;
+        } else {
+          color = 0x0000ff;
+        }
         let player = this.add.rectangle(
           newPlayer.x,
           newPlayer.y,
@@ -109,6 +113,7 @@ export default class TestScene extends Phaser.Scene {
             this.bulletList[id] = bullet;
           }
         }
+        this.flag.setPosition(data.flag.x, data.flag.y);
       });
 
       socket.on("PLAYER_JOINED", (newPlayer) => {
@@ -139,13 +144,14 @@ export default class TestScene extends Phaser.Scene {
       "PLAYER_ROTATED",
       Phaser.Math.Angle.Between(this.input.x, this.input.y, 512 / 2, 512 / 2)
     );
-
+    socket.emit("PLAYER_ACTION", {
+      space: this.controls.space.isDown,
+    });
     socket.emit("PLAYER_MOVED", {
       up: this.controls.up.isDown || this.controls.up1.isDown,
       down: this.controls.down.isDown || this.controls.down1.isDown,
       left: this.controls.left.isDown || this.controls.left1.isDown,
       right: this.controls.right.isDown || this.controls.right1.isDown,
-      
     });
   }
 }

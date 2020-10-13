@@ -22,6 +22,7 @@ module.exports = class PlayScene extends Phaser.Scene {
     this.ProjectileManager = new ProjectileManager(this);
     this.Map = new Map(this);
     this.Map.createMap();
+    this.flag = this.add.rectangle(1024, 1024, 32, 32, 0xffffff);
 
     this.physics.add.collider(
       this.PlayerManager.playersGroup,
@@ -88,6 +89,12 @@ module.exports = class PlayScene extends Phaser.Scene {
               player.id,
               player.rotation
             );
+          } else if (actionState.space) {
+            this.physics.add.overlap(player, this.flag, () => {
+              console.log("victory ");
+              this.flag.x = player.x;
+              this.flag.y = player.y;
+            });
           }
         }
       });
@@ -98,6 +105,7 @@ module.exports = class PlayScene extends Phaser.Scene {
     io.emit("update", {
       playerList: this.PlayerManager.getPlayerState(),
       bulletList: this.ProjectileManager.getProjectiles(),
+      flag: { x: this.flag.x, y: this.flag.y },
     });
   }
 };
