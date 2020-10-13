@@ -3,50 +3,46 @@ const Phaser = require("phaser");
 const io = require("../socket").io(); //returns io object
 
 const PlayerManager = require("./PlayerManager");
+const ProjectileManager = require("./ProjectileManager");
 const Map = require("./Maps");
 
 module.exports = class PlayScene extends Phaser.Scene {
   constructor() {
     super();
-    //this.PlayerManager.playerList = {};
-    this.bulletList = {};
-    this.bulletId = 0;
   }
-  // playerList contains player objects; player.bulletList[id] = new bullet
   preload() {
     Map.loadMap();
   }
 
   create() {
     this.PlayerManager = new PlayerManager(this);
-    this.bullets = this.add.group();
+    this.ProjectileManager = new ProjectileManager(this);
     this.Map = new Map(this);
-
     Map.createMap();
-
+    
     this.physics.add.collider(
       this.PlayerManager.playersGroup,
       this.Map.collidesPlayer
     );
+    
     this.physics.add.collider(
-      this.bullets,
+      this.ProjectileManager.projectiles,
       this.Map.collidesBullets,
       (bullet) => {
-        this.bulletList[bullet.id] = null;
+        this.ProjectileManager.projectileList[bullet.id] = null;
         bullet.destroy();
       }
     );
-
     this.physics.add.collider(
       this.PlayerManager.playersGroup,
-      this.bullets,
+      this.ProjectileManager.projectiles,
       (player, bullet) => {
-        this.bulletList[bullet.id] = null;
+        this.ProjectileManager.projectileList[bullet.id] = null;
         bullet.destroy();
         player.setPosition(256, 256);
       },
       (player, bullet) => {
-        return player.id !== bullet.playerId;
+        return player.id !== bullet.owner;
       }
     );
 
@@ -82,20 +78,13 @@ module.exports = class PlayScene extends Phaser.Scene {
 
           if (actionState.pointer) {
             const vec = this.physics.velocityFromRotation(player.rotation, 60);
-            const bullet = this.add.rectangle(
+            this.ProjectileManager.addNewProjectile(
               player.x,
               player.y,
-              16,
-              16,
-              0xdddddd
+              vec,
+              player.id,
+              player.rotation
             );
-            bullet["id"] = this.bulletId++; // Global bullet ID
-            bullet["playerId"] = socket.id; // For collisions
-            this.bullets.add(bullet);
-            bullet.rotation = player.rotation;
-            this.physics.add.existing(bullet);
-            bullet.body.setVelocity(-vec.x, -vec.y);
-            this.bulletList[bullet.id] = bullet;
           }
         }
       });
@@ -103,24 +92,9 @@ module.exports = class PlayScene extends Phaser.Scene {
   }
 
   update() {
-    let modifiedBulletList = {};
-    for (const id in this.bulletList) {
-      let bullet = this.bulletList[id];
-      if (bullet === null) {
-        modifiedBulletList[id] = bullet;
-      } else {
-        modifiedBulletList[id] = {
-          playerId: bullet.playerId,
-          x: bullet.x,
-          y: bullet.y,
-          rotation: bullet.rotation,
-        };
-      }
-    }
-
     io.emit("update", {
       playerList: this.PlayerManager.getPlayerState(),
-      bulletList: modifiedBulletList,
+      bulletList: this.ProjectileManager.getProjectiles(),
     });
   }
 };
