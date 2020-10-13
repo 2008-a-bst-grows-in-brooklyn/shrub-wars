@@ -80,7 +80,7 @@ module.exports = class PlayScene extends Phaser.Scene {
           const player = this.PlayerManager.playerList[socket.id];
 
           if (actionState.pointer) {
-            const vec = this.physics.velocityFromRotation(player.rotation, 60);
+            const vec = this.physics.velocityFromRotation(player.rotation, 300);
             this.ProjectileManager.addNewProjectile(
               player.x,
               player.y,
