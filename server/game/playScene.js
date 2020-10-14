@@ -94,9 +94,8 @@ module.exports = class PlayScene extends Phaser.Scene {
       });
 
       socket.on("PLAYER_ACTION", (actionState) => {
-        if (this.PlayerManager.playerList[socket.id]) {
-          const player = this.PlayerManager.playerList[socket.id];
-
+        const player = this.PlayerManager.getPlayer(socket);
+        if (player && player.alive) {
           if (actionState.pointer) {
             const vec = this.physics.velocityFromRotation(player.rotation, 300);
             console.log(player.x, player.y, "playerposition");
