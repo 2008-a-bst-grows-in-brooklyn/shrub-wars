@@ -81,10 +81,29 @@ export default class TestScene extends Phaser.Scene {
       //only start listening for gamestate updates after completing initialization
       socket.on("update", (data) => {
         for (const id in data.playerList) {
-          let player = data.playerList[id];
-          this.playerList[id].setPosition(player.x, player.y);
-          this.playerList[id].rotation = player.rotation;
+          let serverPlayer = data.playerList[id];
+          let clientPlayer = this.playerList[id];
+
+          //update rendered location and rotation
+          clientPlayer.setPosition(serverPlayer.x, serverPlayer.y);
+          clientPlayer.rotation = serverPlayer.rotation;
+
+          //isRespawning is a float from 1 to 0 representing respawn progress
+          if (!serverPlayer.isRespawning) {
+            clientPlayer.setAlpha(1);
+            if (serverPlayer.teamName === "red") {
+              clientPlayer.setFillStyle(0xff0000);
+            } else {
+              clientPlayer.setFillStyle(0x0000ff);
+            }
+          } else {
+            clientPlayer.setFillStyle(0x000000, serverPlayer.isRespawning);
+          }
+
+          clientPlayer.isRespawning = serverPlayer.isRespawning;
         }
+
+        //updates bullets -- TODO: rework how bullets are saved.
         for (const id in data.bulletList) {
           let serverBullet = data.bulletList[id];
           if (this.bulletList[id] || serverBullet === null) {
