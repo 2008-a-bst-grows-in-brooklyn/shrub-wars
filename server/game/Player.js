@@ -5,19 +5,19 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
     this.scene = scene;
     this.id = socket.id;
     this.team = team;
-    this.alive = true;
+    this.respawnTimer;
 
     scene.physics.add.existing(this);
   }
 
   setRotation(angle) {
-    if (this.alive) {
+    if (!this.isRespawning) {
       this.rotation = angle;
     }
   }
 
   setVelocity(moveState) {
-    if (this.alive) {
+    if (!this.isRespawning) {
       if (moveState.up) {
         this.body.setVelocityY(-100);
       } else if (moveState.down) {
@@ -42,14 +42,23 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
   }
 
   die() {
-    this.alive = false;
-    this.scene.time.delayedCall(5000, () => {
-      this.respawn();
-    });
+    if (!this.isRespawning) {
+      this.respawnTimer = this.scene.time.delayedCall(5000, () => {
+        this.respawn();
+      });
+    }
   }
 
   respawn() {
-    this.alive = true;
+    this.respawnTimer = undefined;
     this.setPosition(this.team.x, this.team.y);
+  }
+
+  get isRespawning() {
+    if (this.respawnTimer) {
+      return 1 - this.respawnTimer.getProgress(); // goes from 1 to 0
+    } else {
+      return 0;
+    }
   }
 };

@@ -21,7 +21,7 @@ module.exports = class PlayerManager {
         y: player.y,
         rotation: player.rotation,
         teamName: player.team.name,
-        isAlive: player.alive
+        isRespawning: player.isRespawning,
       };
     }
     return outPlayerList;
