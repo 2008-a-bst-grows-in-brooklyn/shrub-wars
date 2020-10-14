@@ -69,37 +69,38 @@ module.exports = class PlayScene extends Phaser.Scene {
         return player.id !== bullet.owner;
       }
     );
-    this.physics.add.collider(
-      this.Map.blueTeam,
-      this.PlayerManager.playersGroup,
-      () => {
-        if (this.flag.playerId) {
-          this.score.red++;
-          let player = this.PlayerManager.playerList[this.flag.playerId];
-          player.holdingFlag = false;
-          this.flag.x = 1024;
-          this.flag.y = 928;
-          // player.overFlag = false;
-          this.flag.playerId = null;
-        }
-      }
-      // (map, player) => {
-      //   return player.holdingFlag;
-      // }
-    );
-    this.physics.add.collider(this.Map.blueTeam, this.flag, () => {
-      this.score.blue++;
-      console.log("SCORE blue", this.score.blue);
-      this.flag.setPosition(1024, 928);
-    });
+    // this.physics.add.overlap(
+    //   this.Map.blueTeam,
+    //   this.PlayerManager.playersGroup,
+    //   () => {
+    //     if (this.flag.playerId) {
+    //       this.score.red++;
+    //       let player = this.PlayerManager.playerList[this.flag.playerId];
+    //       this.flagCollider.destroy();
+    //       this.flag.x = 1024;
+    //       this.flag.y = 928;
+    //       player.holdingFlag = false;
+    //       player.overFlag = false;
+    //       this.flag.playerId = null;
+    //     }
+    //   }
+    //   // (map, player) => {
+    //   //   return player.holdingFlag;
+    //   // }
+    // );
+    // this.physics.add.collider(this.Map.blueTeam, this.flag, () => {
+    //   this.score.blue++;
+    //   console.log("SCORE blue", this.score.blue);
+    //   this.flag.setPosition(1024, 928);
+    // });
 
-    this.physics.add.overlap(
-      this.PlayerManager.playersGroup,
-      this.flag,
-      (player, flag) => {
-        player.selected = this.flag;
-      }
-    );
+    // this.physics.add.overlap(
+    //   this.PlayerManager.playersGroup,
+    //   this.flag,
+    //   (player, flag) => {
+    //     player.selected = this.flag;
+    //   }
+    // );
 
     io.on("connect", (socket) => {
       console.log("Connected!", socket.id);
@@ -142,6 +143,20 @@ module.exports = class PlayScene extends Phaser.Scene {
             );
           } else if (actionState.space) {
             console.log("spacePressed once");
+            // this.flagCollider = this.physics.add.overlap(
+            //   player,
+            //   this.flag,
+            //   (player, flag) => {
+            //     flag.playerId = socketId;
+            //     if (!player.overFlag) {
+            //       player.holdingFlag = true;
+            //       player.overFlag = true;
+            //     } else if (player.holdingFlag) {
+            //       flag.x = player.x;
+            //       flag.y = player.y;
+            //     }
+            //   }
+            // );
           }
         }
       });

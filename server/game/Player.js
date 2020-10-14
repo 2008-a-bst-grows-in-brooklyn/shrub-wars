@@ -5,12 +5,9 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
     this.scene = scene;
     this.id = socket.id;
     this.team = team;
-<<<<<<< HEAD
     this.overFlag = false;
     this.holdingFlag = false;
-=======
     this.respawnTimer;
->>>>>>> 97b1637f5e43aa01b50ad706f6e448455e22bdca
 
     scene.physics.add.existing(this);
   }
