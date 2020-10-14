@@ -4,32 +4,52 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
 
     this.scene = scene;
     this.id = socket.id;
-    this.team = team
+    this.team = team;
+    this.alive = true;
 
     scene.physics.add.existing(this);
   }
 
   setRotation(angle) {
-    this.rotation = angle;
+    if (this.alive) {
+      this.rotation = angle;
+    }
   }
 
   setVelocity(moveState) {
-    if (moveState.up) {
-      this.body.setVelocityY(-100);
-    } else if (moveState.down) {
-      this.body.setVelocityY(100);
-    } else {
-      this.body.setVelocityY(0);
-    }
+    if (this.alive) {
+      if (moveState.up) {
+        this.body.setVelocityY(-100);
+      } else if (moveState.down) {
+        this.body.setVelocityY(100);
+      } else {
+        this.body.setVelocityY(0);
+      }
 
-    if (moveState.right) {
-      this.body.setVelocityX(100);
-    } else if (moveState.left) {
-      this.body.setVelocityX(-100);
+      if (moveState.right) {
+        this.body.setVelocityX(100);
+      } else if (moveState.left) {
+        this.body.setVelocityX(-100);
+      } else {
+        this.body.setVelocityX(0);
+      }
+
+      this.body.velocity.normalize().scale(200);
     } else {
       this.body.setVelocityX(0);
+      this.body.setVelocityY(0);
     }
+  }
 
-    this.body.velocity.normalize().scale(200);
+  die() {
+    this.alive = false;
+    this.scene.time.delayedCall(5000, () => {
+      this.respawn();
+    });
+  }
+
+  respawn() {
+    this.alive = true;
+    this.setPosition(this.team.x, this.team.y);
   }
 };

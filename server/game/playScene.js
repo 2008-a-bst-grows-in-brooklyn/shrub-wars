@@ -6,6 +6,22 @@ const PlayerManager = require("./PlayerManager");
 const ProjectileManager = require("./ProjectileManager");
 const Map = require("./Maps");
 
+/*
+OnPlayer Collides with Projectile:
+  Set a property on the player to "dead === true"
+  Methods on player instances to "die" and "respawn"
+
+Have input-processors on the server-side ignore inputs when the player is dead
+
+Communicate to all clients the current dead/alive state of each player
+
+Player "respawns" after a certain period of time
+
+Clientside:
+  Player sees a special notification if they're dead
+  All players see a visual difference on a dead player (opacity)
+*/
+
 module.exports = class PlayScene extends Phaser.Scene {
   constructor() {
     super();
@@ -36,13 +52,15 @@ module.exports = class PlayScene extends Phaser.Scene {
         bullet.destroy();
       }
     );
+
+    //Player collides with a projectile
     this.physics.add.collider(
       this.PlayerManager.playersGroup,
       this.ProjectileManager.projectiles,
       (player, bullet) => {
         this.ProjectileManager.projectileList[bullet.id] = null;
         bullet.destroy();
-        player.setPosition(player.team.x, player.team.y);
+        player.die();
       },
       (player, bullet) => {
         return player.id !== bullet.owner;
