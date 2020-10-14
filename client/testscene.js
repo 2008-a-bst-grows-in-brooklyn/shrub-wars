@@ -84,6 +84,17 @@ export default class TestScene extends Phaser.Scene {
           let player = data.playerList[id];
           this.playerList[id].setPosition(player.x, player.y);
           this.playerList[id].rotation = player.rotation;
+          this.playerList[id].isAlive = player.isAlive
+            if (player.isAlive) {
+              this.playerList[id].setAlpha(1)
+            } else {
+              this.tweens.add({
+                targets     : this.playerList[id],
+                alpha       : 0,
+                ease        : 'Linear',
+                duration    : 5000,
+              });
+            }
         }
         for (const id in data.bulletList) {
           let serverBullet = data.bulletList[id];
