@@ -71,7 +71,7 @@ module.exports = class PlayScene extends Phaser.Scene {
       }
     );
     this.physics.add.collider(
-      this.Map.blueTeam,
+      this.Map.redTeam,
       this.PlayerManager.playersGroup,
       () => {
         if (this.flag.playerId) {
