@@ -41,6 +41,7 @@ module.exports = class PlayScene extends Phaser.Scene {
     this.Map.createMap();
     this.flag = this.add.rectangle(1024, 928, 32, 32, 0xffffff);
     this.physics.add.existing(this.flag);
+    this.flagCollider;
 
     this.physics.add.collider(
       this.PlayerManager.playersGroup,
@@ -69,30 +70,32 @@ module.exports = class PlayScene extends Phaser.Scene {
         return player.id !== bullet.owner;
       }
     );
-    // this.physics.add.overlap(
-    //   this.Map.blueTeam,
-    //   this.PlayerManager.playersGroup,
-    //   () => {
-    //     if (this.flag.playerId) {
-    //       this.score.red++;
-    //       let player = this.PlayerManager.playerList[this.flag.playerId];
-    //       this.flagCollider.destroy();
-    //       this.flag.x = 1024;
-    //       this.flag.y = 928;
-    //       player.holdingFlag = false;
-    //       player.overFlag = false;
-    //       this.flag.playerId = null;
-    //     }
-    //   }
-    //   // (map, player) => {
-    //   //   return player.holdingFlag;
-    //   // }
-    // );
-    // this.physics.add.collider(this.Map.blueTeam, this.flag, () => {
-    //   this.score.blue++;
-    //   console.log("SCORE blue", this.score.blue);
-    //   this.flag.setPosition(1024, 928);
-    // });
+    this.physics.add.collider(
+      this.Map.redTeam,
+      this.PlayerManager.playersGroup,
+      () => {
+        if (this.flag.playerId) {
+          console.log("score", this.score.red);
+          this.score.red++;
+          console.log("score", this.score.red);
+          let player = this.PlayerManager.playerList[this.flag.playerId];
+          player.holdingFlag = false;
+
+          this.flag.playerId = null;
+        }
+      },
+      () => {
+        if (this.flag.playerId) {
+          const player = this.PlayerManager.playerList[this.flag.playerId];
+          return player.holdingFlag;
+        } else return false;
+      }
+    );
+    this.physics.add.collider(this.Map.blueTeam, this.flag, () => {
+      this.score.blue++;
+      console.log("SCORE blue", this.score.blue);
+      this.flag.setPosition(1024, 928);
+    });
 
     // this.physics.add.overlap(
     //   this.PlayerManager.playersGroup,
@@ -133,7 +136,6 @@ module.exports = class PlayScene extends Phaser.Scene {
         if (player && !player.isRespawning) {
           if (actionState.pointer) {
             const vec = this.physics.velocityFromRotation(player.rotation, 300);
-            console.log(player.x, player.y, "playerposition");
             this.ProjectileManager.addNewProjectile(
               player.x,
               player.y,
@@ -142,21 +144,28 @@ module.exports = class PlayScene extends Phaser.Scene {
               player.rotation
             );
           } else if (actionState.space) {
-            console.log("spacePressed once");
-            // this.flagCollider = this.physics.add.overlap(
-            //   player,
-            //   this.flag,
-            //   (player, flag) => {
-            //     flag.playerId = socketId;
-            //     if (!player.overFlag) {
-            //       player.holdingFlag = true;
-            //       player.overFlag = true;
-            //     } else if (player.holdingFlag) {
-            //       flag.x = player.x;
-            //       flag.y = player.y;
-            //     }
-            //   }
-            // );
+            const flagCollider = this.physics.add.overlap(
+              player,
+              this.flag,
+              (player, flag) => {
+                flag.playerId = socket.id;
+                if (!player.overFlag) {
+                  player.holdingFlag = true;
+                  player.overFlag = true;
+                } else if (player.holdingFlag) {
+                  flag.x = player.x;
+                  flag.y = player.y;
+                }
+                if (!player.holdingFlag && player.overFlag) {
+                  // this.physics.world.removeCollider(this.flagCollider)
+                  flag.x = 1024;
+                  flag.y = 928;
+                  flagCollider.destroy();
+
+                  player.overFlag = false;
+                }
+              }
+            );
           }
         }
       });
