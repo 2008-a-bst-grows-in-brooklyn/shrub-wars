@@ -5,9 +5,13 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
     this.scene = scene;
     this.id = socket.id;
     this.team = team;
+    this.ammo = 6;
     this.overFlag = false;
     this.holdingFlag = false;
+
     this.respawnTimer;
+    this.shotDelayTimer;
+    this.reloadingTimer;
 
     scene.physics.add.existing(this);
   }
@@ -43,6 +47,7 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
     }
   }
 
+  //Respawning
   die() {
     if (!this.isRespawning) {
       this.respawnTimer = this.scene.time.delayedCall(5000, () => {
@@ -54,13 +59,62 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
   respawn() {
     this.respawnTimer = undefined;
     this.setPosition(this.team.x, this.team.y);
+    this.ammo = 6;
   }
 
   get isRespawning() {
     if (this.respawnTimer) {
       return 1 - this.respawnTimer.getProgress(); // goes from 1 to 0
-    } else {
+    } /*else {
       return 0;
+    }*/
+  }
+
+  //Shooting
+  shotFired() {
+    if (!this.chambering) {
+      this.shotDelayTimer = this.scene.time.delayedCall(750, () => {
+        this.isChambered();
+      });
+      this.ammo--;
+      if (this.ammo === 0) {
+        this.emptyMagazine();
+      }
     }
+  }
+
+  isChambered() {
+    this.shotDelayTimer = undefined;
+  }
+
+  get chambering() {
+    if (this.shotDelayTimer) {
+      return this.shotDelayTimer.getProgress();
+    } /*else {
+      return 0;
+    }*/
+  }
+
+  //Reloading
+  emptyMagazine() {
+    if (!this.reloading) {
+      this.reloadingTimer = this.scene.time.delayedCall(3500, () => {
+        console.log("calling on fullMagazine");
+        this.fullMagazine();
+      });
+    }
+  }
+
+  fullMagazine() {
+    this.reloadingTimer = undefined;
+    this.ammo = 6;
+  }
+
+  get reloading() {
+    if (this.reloadingTimer) {
+      return this.reloadingTimer.getProgress();
+    } /*else {
+      return 0;
+    }*/
   }
 };
