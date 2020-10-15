@@ -12,6 +12,7 @@ export default class TestScene extends Phaser.Scene {
     this.playerList = {};
     this.bulletList = {};
     this.playerId;
+    this.score = { red: 0, blue: 0 };
   }
 
   preload() {
@@ -118,6 +119,8 @@ export default class TestScene extends Phaser.Scene {
 
           clientPlayer.isRespawning = serverPlayer.isRespawning;
         }
+        //score
+        this.score = data.score;
 
         //updates bullets -- TODO: rework how bullets are saved.
         for (const id in data.bulletList) {

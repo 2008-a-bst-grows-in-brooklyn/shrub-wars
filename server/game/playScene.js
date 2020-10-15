@@ -21,12 +21,18 @@ Clientside:
   Player sees a special notification if they're dead
   All players see a visual difference on a dead player (opacity)
 */
+function scoreBuffer(buffer) {
+  setTimeout;
+}
 
 module.exports = class PlayScene extends Phaser.Scene {
   constructor() {
     super();
     this.score = { red: 0, blue: 0 };
+    this.redScore = false;
+    this.canScore = true;
   }
+
   preload() {
     this.load.tilemapTiledJSON(
       "mappy",
@@ -40,6 +46,7 @@ module.exports = class PlayScene extends Phaser.Scene {
     this.Map = new Map(this);
     this.Map.createMap();
     this.flag = this.add.rectangle(1024, 928, 32, 32, 0xffffff);
+    this.flag.score = 0;
     this.physics.add.existing(this.flag);
     this.flagCollider;
 
@@ -75,13 +82,17 @@ module.exports = class PlayScene extends Phaser.Scene {
       this.PlayerManager.playersGroup,
       () => {
         if (this.flag.playerId) {
-          console.log("score", this.score.red);
-          this.score.red++;
-          console.log("score", this.score.red);
+          this.flag.score = 1;
           let player = this.PlayerManager.playerList[this.flag.playerId];
           player.holdingFlag = false;
+          if (this.canScore) {
+            this.score.red++;
 
-          this.flag.playerId = null;
+            this.canScore = false;
+            this.time.delayedCall(2000, () => {
+              this.canScore = true;
+            });
+          }
         }
       },
       () => {
@@ -91,19 +102,31 @@ module.exports = class PlayScene extends Phaser.Scene {
         } else return false;
       }
     );
-    this.physics.add.collider(this.Map.blueTeam, this.flag, () => {
-      this.score.blue++;
-      console.log("SCORE blue", this.score.blue);
-      this.flag.setPosition(1024, 928);
-    });
+    this.physics.add.collider(
+      this.Map.blueTeam,
+      this.PlayerManager.playersGroup,
+      () => {
+        if (this.flag.playerId) {
+          this.flag.score = 1;
+          let player = this.PlayerManager.playerList[this.flag.playerId];
+          player.holdingFlag = false;
+          if (this.canScore) {
+            this.score.blue++;
 
-    // this.physics.add.overlap(
-    //   this.PlayerManager.playersGroup,
-    //   this.flag,
-    //   (player, flag) => {
-    //     player.selected = this.flag;
-    //   }
-    // );
+            this.canScore = false;
+            this.time.delayedCall(2000, () => {
+              this.canScore = true;
+            });
+          }
+        }
+      },
+      () => {
+        if (this.flag.playerId) {
+          const player = this.PlayerManager.playerList[this.flag.playerId];
+          return player.holdingFlag;
+        } else return false;
+      }
+    );
 
     io.on("connect", (socket) => {
       console.log("Connected!", socket.id);
@@ -160,9 +183,8 @@ module.exports = class PlayScene extends Phaser.Scene {
                   // this.physics.world.removeCollider(this.flagCollider)
                   flag.x = 1024;
                   flag.y = 928;
-                  flagCollider.destroy();
-
                   player.overFlag = false;
+                  flagCollider.destroy();
                 }
               }
             );
@@ -177,6 +199,7 @@ module.exports = class PlayScene extends Phaser.Scene {
       playerList: this.PlayerManager.getPlayerState(),
       bulletList: this.ProjectileManager.getProjectiles(),
       flag: { x: this.flag.x, y: this.flag.y },
+      score: this.score,
     });
   }
 };
