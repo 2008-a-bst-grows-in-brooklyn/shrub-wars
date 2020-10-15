@@ -22,6 +22,13 @@ export default class TestScene extends Phaser.Scene {
   }
 
   create() {
+    this.ammoText = this.add
+      .text(256, 480, 0)
+      .setScrollFactor(0, 0)
+      .setDepth(1)
+      .setOrigin(0.5, 0.5)
+      .setStyle({ color: "#000000" });
+
     this.bullets = this.add.group();
     this.add.image(0, 0, "village").setOrigin(0);
     this.flag = this.add.rectangle(1024, 928, 32, 32, 0xffffff);
@@ -107,6 +114,9 @@ export default class TestScene extends Phaser.Scene {
 
           //functions specific to the controlling player
           if (id === this.playerId) {
+            this.ammoText.setText(serverPlayer.ammo);
+            console.log(serverPlayer.ammo);
+
             if (serverPlayer.isRespawning && !clientPlayer.isRespawning) {
               this.scene.wake("RespawnPopup");
             } else if (
