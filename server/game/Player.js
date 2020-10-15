@@ -56,6 +56,7 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
   respawn() {
     this.respawnTimer = undefined;
     this.setPosition(this.team.x, this.team.y);
+    this.ammo = 6;
   }
 
   get isRespawning() {
