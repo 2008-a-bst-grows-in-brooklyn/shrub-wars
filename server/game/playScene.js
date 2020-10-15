@@ -165,16 +165,20 @@ module.exports = class PlayScene extends Phaser.Scene {
           !player.reloading
         ) {
           if (actionState.pointer) {
-            const vec = this.physics.velocityFromRotation(player.rotation, 300);
-            this.ProjectileManager.addNewProjectile(
-              player.x,
-              player.y,
-              vec,
-              player.id,
-              player.rotation
-            );
-
-            player.shotFired();
+            if (!player.holdingFlag) {
+              const vec = this.physics.velocityFromRotation(
+                player.rotation,
+                300
+              );
+              this.ProjectileManager.addNewProjectile(
+                player.x,
+                player.y,
+                vec,
+                player.id,
+                player.rotation
+              );
+              player.shotFired();
+            }
           } else if (actionState.space) {
             const flagCollider = this.physics.add.overlap(
               player,
@@ -188,10 +192,14 @@ module.exports = class PlayScene extends Phaser.Scene {
                   flag.x = player.x;
                   flag.y = player.y;
                 }
-                if (!player.holdingFlag && player.overFlag) {
+                if (
+                  (!player.holdingFlag && player.overFlag) ||
+                  (player.respawnTimer && player.holdingFlag)
+                ) {
                   // this.physics.world.removeCollider(this.flagCollider)
                   flag.x = 1024;
                   flag.y = 928;
+                  player.holdingFlag = false; // Setting it to false if player dies
                   player.overFlag = false;
                   flagCollider.destroy();
                 }
