@@ -158,7 +158,12 @@ module.exports = class PlayScene extends Phaser.Scene {
 
       socket.on("PLAYER_ACTION", (actionState) => {
         const player = this.PlayerManager.getPlayer(socket);
-        if (player && !player.isRespawning) {
+        if (
+          player &&
+          !player.isRespawning &&
+          !player.chambering &&
+          !player.reloading
+        ) {
           if (actionState.pointer) {
             if (!player.holdingFlag) {
               const vec = this.physics.velocityFromRotation(
@@ -172,6 +177,7 @@ module.exports = class PlayScene extends Phaser.Scene {
                 player.id,
                 player.rotation
               );
+              player.shotFired();
             }
           } else if (actionState.space) {
             const flagCollider = this.physics.add.overlap(
