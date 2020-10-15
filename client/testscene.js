@@ -27,7 +27,10 @@ export default class TestScene extends Phaser.Scene {
       .setScrollFactor(0, 0)
       .setDepth(1)
       .setOrigin(0.5, 0.5)
-      .setStyle({ color: "#000000" });
+      .setStyle({
+        color: "#000000",
+        fontFamily: 'Comic Sans MS'
+    });
 
     this.bullets = this.add.group();
     this.add.image(0, 0, "village").setOrigin(0);
@@ -114,8 +117,10 @@ export default class TestScene extends Phaser.Scene {
 
           //functions specific to the controlling player
           if (id === this.playerId) {
-            this.ammoText.setText(serverPlayer.ammo);
-            console.log(serverPlayer.ammo);
+            this.ammoText.setText(serverPlayer.ammo + ' shots remaining');
+            if (serverPlayer.ammo === 0) {
+              this.ammoText.setText('Reloading...')
+            }
 
             if (serverPlayer.isRespawning && !clientPlayer.isRespawning) {
               this.scene.wake("RespawnPopup");
