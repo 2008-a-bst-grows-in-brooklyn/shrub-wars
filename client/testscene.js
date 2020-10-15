@@ -11,6 +11,7 @@ export default class TestScene extends Phaser.Scene {
     super({ key: "TestScene" });
     this.playerList = {};
     this.bulletList = {};
+    this.playerId;
   }
 
   preload() {
@@ -45,7 +46,6 @@ export default class TestScene extends Phaser.Scene {
     socket.on("INITIALIZE_GAME", (data) => {
       for (const id in data.playerList) {
         let newPlayer = data.playerList[id];
-        console.log("newPlayer = ", newPlayer);
         let color;
         if (newPlayer.teamName === "red") {
           color = 0xff0000;
@@ -63,7 +63,7 @@ export default class TestScene extends Phaser.Scene {
         this.playerList[id] = player;
 
         if (id === data.id) {
-          this.id = id;
+          this.playerId = id;
           this.cameras.main.startFollow(player);
         }
       }
@@ -99,8 +99,21 @@ export default class TestScene extends Phaser.Scene {
             } else {
               clientPlayer.setFillStyle(0x0000ff);
             }
+            //what happens when a player dies
           } else {
             clientPlayer.setFillStyle(0x000000, serverPlayer.isRespawning);
+          }
+
+          //functions specific to the controlling player
+          if (id === this.playerId) {
+            if (serverPlayer.isRespawning && !clientPlayer.isRespawning) {
+              this.scene.wake("RespawnPopup");
+            } else if (
+              !serverPlayer.isRespawning &&
+              clientPlayer.isRespawning
+            ) {
+              this.scene.sleep("RespawnPopup");
+            }
           }
 
           clientPlayer.isRespawning = serverPlayer.isRespawning;
@@ -135,7 +148,6 @@ export default class TestScene extends Phaser.Scene {
       });
 
       socket.on("PLAYER_JOINED", (newPlayer) => {
-        console.log(newPlayer, "joined");
         let color;
         if (newPlayer.teamName === "red") {
           color = 0xff0000;
@@ -154,13 +166,15 @@ export default class TestScene extends Phaser.Scene {
       });
       // Create bullet
       socket.on("PLAYER_LEFT", (id) => {
-        console.log("Player Left");
         this.playerList[id].destroy();
         delete this.playerList[id];
       });
     });
     //Finally, tell the server that the client is ready to receive the "INITIALIZE_GAME" signal
     socket.emit("CLIENT_READY");
+
+    this.scene.launch("RespawnPopup");
+    this.scene.sleep("RespawnPopup");
   }
 
   update() {

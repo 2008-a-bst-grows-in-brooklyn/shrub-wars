@@ -164,9 +164,6 @@ module.exports = class PlayScene extends Phaser.Scene {
   }
 
   update() {
-    for (const player in this.PlayerManager.playersGroup) {
-      player.selected = false;
-    }
     io.emit("update", {
       playerList: this.PlayerManager.getPlayerState(),
       bulletList: this.ProjectileManager.getProjectiles(),
