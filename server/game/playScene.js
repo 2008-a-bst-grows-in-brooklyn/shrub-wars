@@ -93,11 +93,12 @@ module.exports = class PlayScene extends Phaser.Scene {
               this.canScore = true;
             });
           }
+          this.flag.playerId = null;
         }
       },
       () => {
-        if (this.flag.playerId) {
-          const player = this.PlayerManager.playerList[this.flag.playerId];
+        const player = this.PlayerManager.playerList[this.flag.playerId];
+        if (this.flag.playerId && player) {
           return player.holdingFlag;
         } else return false;
       }
@@ -118,11 +119,12 @@ module.exports = class PlayScene extends Phaser.Scene {
               this.canScore = true;
             });
           }
+          this.flag.plauerId = null;
         }
       },
       () => {
-        if (this.flag.playerId) {
-          const player = this.PlayerManager.playerList[this.flag.playerId];
+        const player = this.PlayerManager.playerList[this.flag.playerId];
+        if (this.flag.playerId && player) {
           return player.holdingFlag;
         } else return false;
       }
