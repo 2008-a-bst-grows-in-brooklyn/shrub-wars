@@ -20,23 +20,43 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
 
   setVelocity(moveState) {
     if (!this.isRespawning) {
-      if (moveState.up) {
-        this.body.setVelocityY(-100);
-      } else if (moveState.down) {
-        this.body.setVelocityY(100);
-      } else {
-        this.body.setVelocityY(0);
-      }
+      if (this.holdingFlag) {
+        if (moveState.up) {
+          this.body.setVelocityY(-50);
+        } else if (moveState.down) {
+          this.body.setVelocityY(50);
+        } else {
+          this.body.setVelocityY(0);
+        }
 
-      if (moveState.right) {
-        this.body.setVelocityX(100);
-      } else if (moveState.left) {
-        this.body.setVelocityX(-100);
-      } else {
-        this.body.setVelocityX(0);
-      }
+        if (moveState.right) {
+          this.body.setVelocityX(50);
+        } else if (moveState.left) {
+          this.body.setVelocityX(-50);
+        } else {
+          this.body.setVelocityX(0);
+        }
 
-      this.body.velocity.normalize().scale(200);
+        this.body.velocity.normalize().scale(100);
+      } else {
+        if (moveState.up) {
+          this.body.setVelocityY(-100);
+        } else if (moveState.down) {
+          this.body.setVelocityY(100);
+        } else {
+          this.body.setVelocityY(0);
+        }
+
+        if (moveState.right) {
+          this.body.setVelocityX(100);
+        } else if (moveState.left) {
+          this.body.setVelocityX(-100);
+        } else {
+          this.body.setVelocityX(0);
+        }
+
+        this.body.velocity.normalize().scale(200);
+      }
     } else {
       this.body.setVelocityX(0);
       this.body.setVelocityY(0);
@@ -45,6 +65,7 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
 
   die() {
     if (!this.isRespawning) {
+      this.holdingFlag = false;
       this.respawnTimer = this.scene.time.delayedCall(5000, () => {
         this.respawn();
       });
