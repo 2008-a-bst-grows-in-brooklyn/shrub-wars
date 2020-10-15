@@ -66,6 +66,9 @@ export default class TestScene extends Phaser.Scene {
         if (id === data.id) {
           this.playerId = id;
           this.cameras.main.startFollow(player);
+          this.scoreboard = this.add
+            .text(180, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
+            .setScrollFactor(0, 0);
         }
       }
 
@@ -121,6 +124,9 @@ export default class TestScene extends Phaser.Scene {
         }
         //score
         this.score = data.score;
+        this.scoreboard.setText(
+          `RED: ${this.score.red} | BLUE: ${this.score.blue}`
+        );
 
         //updates bullets -- TODO: rework how bullets are saved.
         for (const id in data.bulletList) {
