@@ -95,10 +95,9 @@ module.exports = class PlayScene extends Phaser.Scene {
 
       socket.on("PLAYER_ACTION", (actionState) => {
         const player = this.PlayerManager.getPlayer(socket);
-        if (player && !player.isRespawning) {
+        if (player && !player.isRespawning && !player.chambering && !player.reloading) {
           if (actionState.pointer) {
             const vec = this.physics.velocityFromRotation(player.rotation, 300);
-            console.log(player.x, player.y, "playerposition");
             this.ProjectileManager.addNewProjectile(
               player.x,
               player.y,
@@ -106,6 +105,7 @@ module.exports = class PlayScene extends Phaser.Scene {
               player.id,
               player.rotation
             );
+          player.shotFired()
           }
         }
       });
