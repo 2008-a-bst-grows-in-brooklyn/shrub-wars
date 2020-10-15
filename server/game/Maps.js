@@ -3,6 +3,8 @@ module.exports = class Map {
     this.scene = scene;
     this.collidesPlayer = scene.add.group();
     this.collidesBullets = scene.add.group();
+    this.redTeam = scene.add.group();
+    this.blueTeam = scene.add.group();
   }
   loadMap() {
     this.scene.load.tilemapTiledJSON(
@@ -14,6 +16,9 @@ module.exports = class Map {
   createMap() {
     const mappy = this.scene.add.tilemap("mappy");
     const terrarian = mappy.addTilesetImage("Base", "");
+    const redTeam = mappy.createStaticLayer("Red", [terrarian], 0, 0);
+    const blueTeam = mappy.createStaticLayer("Blue", [terrarian], 0, 0);
+
     const grassLayer = mappy.createStaticLayer("Grass", [terrarian], 0, 0);
     grassLayer.setDepth(-1);
     const top = mappy.createStaticLayer("Collides", [terrarian], 0, 0);
@@ -23,8 +28,12 @@ module.exports = class Map {
     this.collidesPlayer.add(trees);
     this.collidesBullets.add(top);
     this.collidesBullets.add(trees);
+    this.redTeam.add(redTeam);
+    this.blueTeam.add(blueTeam);
 
     top.setCollisionByProperty({ collides: true });
     trees.setCollisionByProperty({ collides: true });
+    redTeam.setCollisionByProperty({ collides: true });
+    blueTeam.setCollisionByProperty({ collides: true });
   }
 };

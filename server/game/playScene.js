@@ -21,11 +21,18 @@ Clientside:
   Player sees a special notification if they're dead
   All players see a visual difference on a dead player (opacity)
 */
+function scoreBuffer(buffer) {
+  setTimeout;
+}
 
 module.exports = class PlayScene extends Phaser.Scene {
   constructor() {
     super();
+    this.score = { red: 0, blue: 0 };
+    this.redScore = false;
+    this.canScore = true;
   }
+
   preload() {
     this.load.tilemapTiledJSON(
       "mappy",
@@ -38,6 +45,10 @@ module.exports = class PlayScene extends Phaser.Scene {
     this.ProjectileManager = new ProjectileManager(this);
     this.Map = new Map(this);
     this.Map.createMap();
+    this.flag = this.add.rectangle(1024, 928, 32, 32, 0xffffff);
+    this.flag.score = 0;
+    this.physics.add.existing(this.flag);
+    this.flagCollider;
 
     this.physics.add.collider(
       this.PlayerManager.playersGroup,
@@ -64,6 +75,58 @@ module.exports = class PlayScene extends Phaser.Scene {
       },
       (player, bullet) => {
         return player.id !== bullet.owner;
+      }
+    );
+    this.physics.add.collider(
+      this.Map.redTeam,
+      this.PlayerManager.playersGroup,
+      () => {
+        if (this.flag.playerId) {
+          this.flag.score = 1;
+          let player = this.PlayerManager.playerList[this.flag.playerId];
+          player.holdingFlag = false;
+          if (this.canScore) {
+            this.score.red++;
+
+            this.canScore = false;
+            this.time.delayedCall(2000, () => {
+              this.canScore = true;
+            });
+          }
+          this.flag.playerId = null;
+        }
+      },
+      () => {
+        const player = this.PlayerManager.playerList[this.flag.playerId];
+        if (this.flag.playerId && player) {
+          return player.holdingFlag;
+        } else return false;
+      }
+    );
+    this.physics.add.collider(
+      this.Map.blueTeam,
+      this.PlayerManager.playersGroup,
+      () => {
+        if (this.flag.playerId) {
+          this.flag.score = 1;
+          let player = this.PlayerManager.playerList[this.flag.playerId];
+          player.holdingFlag = false;
+          if (this.canScore) {
+            this.score.blue++;
+
+            this.canScore = false;
+            this.time.delayedCall(2000, () => {
+              this.canScore = true;
+            });
+          }
+          this.flag.plauerId = null;
+        }
+      },
+      () => {
+        const player = this.PlayerManager.playerList[this.flag.playerId];
+        if (this.flag.playerId && player) {
+          return player.holdingFlag;
+        } else return false;
       }
     );
 
@@ -98,13 +161,34 @@ module.exports = class PlayScene extends Phaser.Scene {
         if (player && !player.isRespawning) {
           if (actionState.pointer) {
             const vec = this.physics.velocityFromRotation(player.rotation, 300);
-            console.log(player.x, player.y, "playerposition");
             this.ProjectileManager.addNewProjectile(
               player.x,
               player.y,
               vec,
               player.id,
               player.rotation
+            );
+          } else if (actionState.space) {
+            const flagCollider = this.physics.add.overlap(
+              player,
+              this.flag,
+              (player, flag) => {
+                flag.playerId = socket.id;
+                if (!player.overFlag) {
+                  player.holdingFlag = true;
+                  player.overFlag = true;
+                } else if (player.holdingFlag) {
+                  flag.x = player.x;
+                  flag.y = player.y;
+                }
+                if (!player.holdingFlag && player.overFlag) {
+                  // this.physics.world.removeCollider(this.flagCollider)
+                  flag.x = 1024;
+                  flag.y = 928;
+                  player.overFlag = false;
+                  flagCollider.destroy();
+                }
+              }
             );
           }
         }
@@ -116,6 +200,8 @@ module.exports = class PlayScene extends Phaser.Scene {
     io.emit("update", {
       playerList: this.PlayerManager.getPlayerState(),
       bulletList: this.ProjectileManager.getProjectiles(),
+      flag: { x: this.flag.x, y: this.flag.y },
+      score: this.score,
     });
   }
 };
