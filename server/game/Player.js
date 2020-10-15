@@ -6,6 +6,9 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
     this.id = socket.id;
     this.team = team;
     this.ammo = 6;
+    this.overFlag = false;
+    this.holdingFlag = false;
+
     this.respawnTimer;
     this.shotDelayTimer;
     this.reloadingTimer;
@@ -44,7 +47,7 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
     }
   }
 
- //Respawning
+  //Respawning
   die() {
     if (!this.isRespawning) {
       this.respawnTimer = this.scene.time.delayedCall(5000, () => {
@@ -69,11 +72,11 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
 
   //Shooting
   shotFired() {
-    if(!this.chambering) {
+    if (!this.chambering) {
       this.shotDelayTimer = this.scene.time.delayedCall(750, () => {
         this.isChambered();
-      })
-      this.ammo--
+      });
+      this.ammo--;
       if (this.ammo === 0) {
         this.emptyMagazine();
       }
@@ -94,11 +97,11 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
 
   //Reloading
   emptyMagazine() {
-    if(!this.reloading) {
+    if (!this.reloading) {
       this.reloadingTimer = this.scene.time.delayedCall(3500, () => {
-        console.log('calling on fullMagazine')
+        console.log("calling on fullMagazine");
         this.fullMagazine();
-      })
+      });
     }
   }
 
@@ -114,4 +117,4 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
       return 0;
     }*/
   }
-}
+};
