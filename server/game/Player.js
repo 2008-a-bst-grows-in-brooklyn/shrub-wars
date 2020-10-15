@@ -6,7 +6,6 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
     this.id = socket.id;
     this.team = team;
     this.ammo = 6;
-    this.overFlag = false;
     this.holdingFlag = false;
 
     this.respawnTimer;
@@ -70,7 +69,9 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
   //Respawning
   die() {
     if (!this.isRespawning) {
-      this.holdingFlag = false;
+      if (this.holdingFlag) {
+        this.scene.flag.reset();
+      }
       this.respawnTimer = this.scene.time.delayedCall(5000, () => {
         this.respawn();
       });
