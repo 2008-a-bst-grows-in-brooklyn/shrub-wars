@@ -19,6 +19,7 @@ export default class TestScene extends Phaser.Scene {
     // this.load.image("grass", "Base.png");
     // this.load.tilemapTiledJSON("mappy", "POC2.json");
     this.load.image("village", "Village.png");
+    this.load.image("shrub", "bush.png");
   }
 
   create() {
@@ -29,12 +30,12 @@ export default class TestScene extends Phaser.Scene {
       .setOrigin(0.5, 0.5)
       .setStyle({
         color: "#000000",
-        fontFamily: 'Comic Sans MS'
-    });
+        fontFamily: "Comic Sans MS",
+      });
 
     this.bullets = this.add.group();
     this.add.image(0, 0, "village").setOrigin(0);
-    this.flag = this.add.rectangle(1024, 928, 32, 32, 0xffffff);
+    this.flag = this.add.image(1024, 928, "shrub").setDepth(1);
     this.controls = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
       down: Phaser.Input.Keyboard.KeyCodes.S,
@@ -78,7 +79,8 @@ export default class TestScene extends Phaser.Scene {
           this.cameras.main.startFollow(player);
           this.scoreboard = this.add
             .text(180, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
-            .setScrollFactor(0, 0);
+            .setScrollFactor(0, 0)
+            .setStyle({ color: "#000000", fontFamily: "Comic Sans MS" });
         }
       }
 
@@ -120,9 +122,9 @@ export default class TestScene extends Phaser.Scene {
 
           //functions specific to the controlling player
           if (id === this.playerId) {
-            this.ammoText.setText(serverPlayer.ammo + ' shots remaining');
+            this.ammoText.setText(serverPlayer.ammo + " shots remaining");
             if (serverPlayer.ammo === 0) {
-              this.ammoText.setText('Reloading...')
+              this.ammoText.setText("Reloading...");
             }
 
             if (serverPlayer.isRespawning && !clientPlayer.isRespawning) {
