@@ -94,7 +94,7 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
   //Shooting
   shotFired() {
     if (!this.chambering) {
-      this.shotDelayTimer = this.scene.time.delayedCall(750, () => {
+      this.shotDelayTimer = this.scene.time.delayedCall(650, () => {
         this.isChambered();
       });
       this.ammo--;
