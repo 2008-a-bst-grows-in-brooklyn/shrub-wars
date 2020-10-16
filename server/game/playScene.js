@@ -4,6 +4,8 @@ const io = require("../socket").io(); //returns io object
 
 const PlayerManager = require("./PlayerManager");
 const ProjectileManager = require("./ProjectileManager");
+const Flag = require("./Flag");
+
 const Map = require("./Maps");
 
 /*
@@ -21,15 +23,12 @@ Clientside:
   Player sees a special notification if they're dead
   All players see a visual difference on a dead player (opacity)
 */
-function scoreBuffer(buffer) {
-  setTimeout;
-}
 
 module.exports = class PlayScene extends Phaser.Scene {
   constructor() {
     super();
     this.score = { red: 0, blue: 0 };
-    this.redScore = false;
+    //this.redScore = false;
     this.canScore = true;
   }
 
@@ -45,10 +44,9 @@ module.exports = class PlayScene extends Phaser.Scene {
     this.ProjectileManager = new ProjectileManager(this);
     this.Map = new Map(this);
     this.Map.createMap();
-    this.flag = this.add.rectangle(1024, 928, 32, 32, 0xffffff);
-    this.flag.score = 0;
-    this.physics.add.existing(this.flag);
-    this.flagCollider;
+    this.flag = new Flag(this);
+    //this.flag.score = 0;
+    //this.physics.add.existing(this.flag);
 
     this.physics.add.collider(
       this.PlayerManager.playersGroup,
@@ -77,57 +75,24 @@ module.exports = class PlayScene extends Phaser.Scene {
         return player.id !== bullet.owner;
       }
     );
+
     this.physics.add.collider(
       this.Map.redTeam,
       this.PlayerManager.playersGroup,
       () => {
-        if (this.flag.playerId) {
-          this.flag.score = 1;
-          let player = this.PlayerManager.playerList[this.flag.playerId];
-          player.holdingFlag = false;
-          if (this.canScore) {
-            this.score.red++;
-
-            this.canScore = false;
-            this.time.delayedCall(2000, () => {
-              this.canScore = true;
-            });
-          }
-          this.flag.playerId = null;
-        }
+        this.flag.reset();
+        this.score.red++;
       },
-      () => {
-        const player = this.PlayerManager.playerList[this.flag.playerId];
-        if (this.flag.playerId && player) {
-          return player.holdingFlag;
-        } else return false;
-      }
+      (player, goal) => player.holdingFlag
     );
     this.physics.add.collider(
       this.Map.blueTeam,
       this.PlayerManager.playersGroup,
       () => {
-        if (this.flag.playerId) {
-          this.flag.score = 1;
-          let player = this.PlayerManager.playerList[this.flag.playerId];
-          player.holdingFlag = false;
-          if (this.canScore) {
-            this.score.blue++;
-
-            this.canScore = false;
-            this.time.delayedCall(2000, () => {
-              this.canScore = true;
-            });
-          }
-          this.flag.plauerId = null;
-        }
+        this.flag.reset();
+        this.score.blue++;
       },
-      () => {
-        const player = this.PlayerManager.playerList[this.flag.playerId];
-        if (this.flag.playerId && player) {
-          return player.holdingFlag;
-        } else return false;
-      }
+      (player, goal) => player.holdingFlag
     );
 
     io.on("connect", (socket) => {
@@ -162,49 +127,23 @@ module.exports = class PlayScene extends Phaser.Scene {
           player &&
           !player.isRespawning &&
           !player.chambering &&
-          !player.reloading
+          !player.reloading &&
+          !player.holdingFlag
         ) {
           if (actionState.pointer) {
-            if (!player.holdingFlag) {
-              const vec = this.physics.velocityFromRotation(
-                player.rotation,
-                300
-              );
-              this.ProjectileManager.addNewProjectile(
-                player.x,
-                player.y,
-                vec,
-                player.id,
-                player.rotation
-              );
-              player.shotFired();
-            }
-          } else if (actionState.space) {
-            const flagCollider = this.physics.add.overlap(
-              player,
-              this.flag,
-              (player, flag) => {
-                flag.playerId = socket.id;
-                if (!player.overFlag) {
-                  player.holdingFlag = true;
-                  player.overFlag = true;
-                } else if (player.holdingFlag) {
-                  flag.x = player.x;
-                  flag.y = player.y;
-                }
-                if (
-                  (!player.holdingFlag && player.overFlag) ||
-                  (player.respawnTimer && player.holdingFlag)
-                ) {
-                  // this.physics.world.removeCollider(this.flagCollider)
-                  flag.x = 1024;
-                  flag.y = 928;
-                  player.holdingFlag = false; // Setting it to false if player dies
-                  player.overFlag = false;
-                  flagCollider.destroy();
-                }
-              }
+            const vec = this.physics.velocityFromRotation(player.rotation, 300);
+            this.ProjectileManager.addNewProjectile(
+              player.x,
+              player.y,
+              vec,
+              player.id,
+              player.rotation
             );
+            player.shotFired();
+          } else if (actionState.space) {
+            this.physics.overlap(player, this.flag, (player, flag) => {
+              flag.setPlayer(player);
+            });
           }
         }
       });
@@ -212,6 +151,8 @@ module.exports = class PlayScene extends Phaser.Scene {
   }
 
   update() {
+    this.flag.updatePosition();
+
     io.emit("update", {
       playerList: this.PlayerManager.getPlayerState(),
       bulletList: this.ProjectileManager.getProjectiles(),

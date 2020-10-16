@@ -62,6 +62,13 @@ module.exports = class PlayerManager {
   }
 
   removePlayer(socket) {
+    const player = this.getPlayer(socket);
+
+    //handle flag behavior when the holding player disconnects
+    if (player.holdingFlag) {
+      this.scene.flag.reset();
+    }
+
     this.playerList[socket.id].destroy();
     delete this.playerList[socket.id];
     socket.broadcast.emit("PLAYER_LEFT", socket.id);
