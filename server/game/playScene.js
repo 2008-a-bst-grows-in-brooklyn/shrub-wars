@@ -8,28 +8,10 @@ const Flag = require("./Flag");
 
 const Map = require("./Maps");
 
-/*
-OnPlayer Collides with Projectile:
-  Set a property on the player to "dead === true"
-  Methods on player instances to "die" and "respawn"
-
-Have input-processors on the server-side ignore inputs when the player is dead
-
-Communicate to all clients the current dead/alive state of each player
-
-Player "respawns" after a certain period of time
-
-Clientside:
-  Player sees a special notification if they're dead
-  All players see a visual difference on a dead player (opacity)
-*/
-
 module.exports = class PlayScene extends Phaser.Scene {
   constructor() {
     super();
     this.score = { red: 0, blue: 0 };
-    //this.redScore = false;
-    this.canScore = true;
   }
 
   preload() {
@@ -45,8 +27,6 @@ module.exports = class PlayScene extends Phaser.Scene {
     this.Map = new Map(this);
     this.Map.createMap();
     this.flag = new Flag(this);
-    //this.flag.score = 0;
-    //this.physics.add.existing(this.flag);
 
     this.physics.add.collider(
       this.PlayerManager.playersGroup,
@@ -72,7 +52,7 @@ module.exports = class PlayScene extends Phaser.Scene {
         player.die();
       },
       (player, bullet) => {
-        return player.id !== bullet.owner;
+        return player.team.name !== bullet.teamName;
       }
     );
 
@@ -136,7 +116,7 @@ module.exports = class PlayScene extends Phaser.Scene {
               player.x,
               player.y,
               vec,
-              player.id,
+              player.team.name,
               player.rotation
             );
             player.shotFired();

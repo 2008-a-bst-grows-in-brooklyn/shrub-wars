@@ -6,14 +6,14 @@ module.exports = class ProjectileManager {
     this.projectileList = {};
     this.projectileId = 0;
   }
-  addNewProjectile(x, y, vec, playerId, rotation) {
+  addNewProjectile(x, y, vec, teamName, rotation) {
     const newProjectile = new Projectile(
       this.scene,
       this.projectileId,
       x,
       y,
       vec,
-      playerId
+      teamName
     );
     newProjectile.rotation = rotation;
     this.projectiles.add(newProjectile);

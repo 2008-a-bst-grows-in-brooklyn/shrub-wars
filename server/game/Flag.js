@@ -9,8 +9,10 @@ module.exports = class Flag extends Phaser.GameObjects.Sprite {
   }
 
   setPlayer(player) {
-    this.player = player;
-    this.player.holdingFlag = true;
+    if (!this.player) {
+      this.player = player;
+      this.player.holdingFlag = true;
+    }
   }
 
   reset() {
