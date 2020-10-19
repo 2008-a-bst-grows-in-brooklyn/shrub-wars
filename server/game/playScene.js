@@ -1,6 +1,5 @@
 const path = require("path");
 const Phaser = require("phaser");
-const io = require("../socket").io(); //returns io object
 
 const PlayerManager = require("./PlayerManager");
 const ProjectileManager = require("./ProjectileManager");
@@ -23,6 +22,7 @@ module.exports = class PlayScene extends Phaser.Scene {
   }
 
   create() {
+    console.log("Game Created with Room ID: ", this.game.roomId);
     this.PlayerManager = new PlayerManager(this);
     this.ProjectileManager = new ProjectileManager(this);
     this.Map = new Map(this);
@@ -81,66 +81,67 @@ module.exports = class PlayScene extends Phaser.Scene {
       },
       (player, goal) => player.holdingFlag
     );
+  }
 
-    io.on("connect", (socket) => {
-      console.log("Connected!", socket.id);
-      /* Create new player object */
+  //custom method to handle players joining
+  clientJoin(socket) {
+    console.log("Client", socket.id, "joined room", this.game.roomId);
 
-      this.PlayerManager.addNewPlayer(socket);
+    /* Create new player object */
+    this.PlayerManager.addNewPlayer(socket);
 
-      socket.on("CLIENT_READY", () => {
-        socket.emit("INITIALIZE_GAME", {
-          id: socket.id,
-          playerList: this.PlayerManager.getPlayerState(),
-        });
-      });
+    socket.on("disconnect", () => {
+      console.log(socket.id, "disconnected");
+      this.PlayerManager.removePlayer(socket);
+    });
 
-      socket.on("disconnect", () => {
-        console.log(socket.id, "disconnected");
-        this.PlayerManager.removePlayer(socket);
-      });
+    socket.on("PLAYER_ROTATED", (angle) => {
+      this.PlayerManager.getPlayer(socket).setRotation(angle);
+    });
 
-      socket.on("PLAYER_ROTATED", (angle) => {
-        this.PlayerManager.getPlayer(socket).setRotation(angle);
-      });
+    socket.on("PLAYER_MOVED", (moveState) => {
+      this.PlayerManager.getPlayer(socket).setVelocity(moveState);
+    });
 
-      socket.on("PLAYER_MOVED", (moveState) => {
-        this.PlayerManager.getPlayer(socket).setVelocity(moveState);
-      });
-
-      socket.on("PLAYER_ACTION", (actionState) => {
-        const player = this.PlayerManager.getPlayer(socket);
-        if (
-          player &&
-          !player.isRespawning &&
-          !player.chambering &&
-          !player.reloading &&
-          !player.holdingFlag
-        ) {
-          if (actionState.pointer) {
-            const vec = this.physics.velocityFromRotation(player.rotation, 300);
-            this.ProjectileManager.addNewProjectile(
-              player.x,
-              player.y,
-              vec,
-              player.team.name,
-              player.rotation
-            );
-            player.shotFired();
-          } else if (actionState.space) {
-            this.physics.overlap(player, this.flag, (player, flag) => {
-              flag.setPlayer(player);
-            });
-          }
+    socket.on("PLAYER_ACTION", (actionState) => {
+      const player = this.PlayerManager.getPlayer(socket);
+      if (
+        player &&
+        !player.isRespawning &&
+        !player.chambering &&
+        !player.reloading &&
+        !player.holdingFlag
+      ) {
+        if (actionState.pointer) {
+          const vec = this.physics.velocityFromRotation(player.rotation, 300);
+          this.ProjectileManager.addNewProjectile(
+            player.x,
+            player.y,
+            vec,
+            player.team.name,
+            player.rotation
+          );
+          player.shotFired();
+        } else if (actionState.space) {
+          this.physics.overlap(player, this.flag, (player, flag) => {
+            flag.setPlayer(player);
+          });
         }
-      });
+      }
+    });
+
+    socket.emit("INITIALIZE_GAME", {
+      id: socket.id,
+      playerList: this.PlayerManager.getPlayerState(),
     });
   }
 
   update() {
+    //console.log(this.game.io, "game");
     this.flag.updatePosition();
 
-    io.emit("update", {
+    //this should emit only to the socket-room
+    this.game.io.in(this.game.roomId).emit("update", {
       playerList: this.PlayerManager.getPlayerState(),
       bulletList: this.ProjectileManager.getProjectiles(),
       flag: { x: this.flag.x, y: this.flag.y },

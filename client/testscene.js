@@ -1,10 +1,6 @@
 import Phaser from "phaser";
-import io from "socket.io-client";
 
-const socket = io();
-socket.on("connect", () => {
-  console.log("Connected!");
-});
+import socket from "./socket";
 
 export default class TestScene extends Phaser.Scene {
   constructor() {
@@ -17,13 +13,11 @@ export default class TestScene extends Phaser.Scene {
   }
 
   preload() {
-    // this.load.image("grass", "Base.png");
-    // this.load.tilemapTiledJSON("mappy", "POC2.json");
     this.load.image("village", "Village.png");
     this.load.image("shrub", "bush.png");
   }
 
-  create() {
+  create(roomData) {
     this.ammoText = this.add
       .text(256, 480, 0)
       .setScrollFactor(0, 0)
@@ -204,8 +198,9 @@ export default class TestScene extends Phaser.Scene {
         delete this.playerList[id];
       });
     });
-    //Finally, tell the server that the client is ready to receive the "INITIALIZE_GAME" signal
-    socket.emit("CLIENT_READY");
+
+    //Finally, tell the server which room to join. Server will respond with "initialize room"
+    socket.emit("JOIN_ROOM", roomData.roomId);
 
     this.scene.launch("RespawnPopup");
     this.scene.sleep("RespawnPopup");
