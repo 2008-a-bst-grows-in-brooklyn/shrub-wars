@@ -13,6 +13,7 @@ export default class TestScene extends Phaser.Scene {
     this.bulletList = {};
     this.playerId;
     this.score = { red: 0, blue: 0 };
+    this.gameOver = false;
   }
 
   preload() {
@@ -144,7 +145,9 @@ export default class TestScene extends Phaser.Scene {
         this.scoreboard.setText(
           `RED: ${this.score.red} | BLUE: ${this.score.blue}`
         );
-
+        console.log(this.gameOver);
+        this.gameOver = data.gameOver;
+        console.log(this.gameOver);
         //updates bullets -- TODO: rework how bullets are saved.
         for (const id in data.bulletList) {
           let serverBullet = data.bulletList[id];
