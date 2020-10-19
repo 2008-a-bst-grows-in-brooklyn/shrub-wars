@@ -87,9 +87,7 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
   get isRespawning() {
     if (this.respawnTimer) {
       return 1 - this.respawnTimer.getProgress(); // goes from 1 to 0
-    } /*else {
-      return 0;
-    }*/
+    }
   }
 
   //Shooting
@@ -112,9 +110,7 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
   get chambering() {
     if (this.shotDelayTimer) {
       return this.shotDelayTimer.getProgress();
-    } /*else {
-      return 0;
-    }*/
+    }
   }
 
   //Reloading
@@ -139,4 +135,23 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
       return 0;
     }*/
   }
+
+//Game Resetting
+  /*gameOver() {
+    if (!this.gameResetTimer) {
+      this.gameResetTimer = this.scene.time.delayedCall(10000, () => {
+        this.gameReset();
+      });
+    }
+  }
+
+  gameReset() {
+    this.gameResetTimer = undefined;
+  }
+
+  get isResetting() {
+    if (this.gameResetTimer) {
+      return 1 - this.gameResetTimer.getProgress(); // goes from 1 to 0
+    }
+  }*/
 };

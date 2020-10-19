@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import TestScene from "./testscene";
 import RespawnPopup from "./RespawnPopup";
+import GameOverPopup from "./GameOverPopup";
 
 const config = {
   type: Phaser.AUTO,
@@ -17,7 +18,7 @@ const config = {
       debug: true,
     },
   },
-  scene: [TestScene, RespawnPopup],
+  scene: [TestScene, RespawnPopup, GameOverPopup],
 };
 
 new Phaser.Game(config);

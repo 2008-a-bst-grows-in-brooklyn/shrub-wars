@@ -63,10 +63,8 @@ module.exports = class PlayScene extends Phaser.Scene {
       () => {
         this.flag.reset();
         this.score.red++;
-        console.log(this.gameOver);
         if (this.score.red === 1) {
           this.gameOver = !this.gameOver;
-          console.log(this.gameOver);
         }
       },
       (player, goal) => player.holdingFlag
