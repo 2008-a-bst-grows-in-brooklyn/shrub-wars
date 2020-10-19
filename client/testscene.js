@@ -9,6 +9,7 @@ export default class TestScene extends Phaser.Scene {
     this.bulletList = {};
     this.playerId;
     this.score = { red: 0, blue: 0 };
+    this.gameOver = false;
   }
 
   preload() {
@@ -138,7 +139,13 @@ export default class TestScene extends Phaser.Scene {
         this.scoreboard.setText(
           `RED: ${this.score.red} | BLUE: ${this.score.blue}`
         );
-
+        this.gameOver = data.gameOver;
+        if (this.gameOver) {
+          this.scene.wake("GameOverPopup")
+        } else {
+          this.scene.sleep("GameOverPopup");
+        }
+        
         //updates bullets -- TODO: rework how bullets are saved.
         for (const id in data.bulletList) {
           let serverBullet = data.bulletList[id];
@@ -196,6 +203,8 @@ export default class TestScene extends Phaser.Scene {
 
     this.scene.launch("RespawnPopup");
     this.scene.sleep("RespawnPopup");
+    this.scene.launch("GameOverPopup");
+    this.scene.sleep("GameOverPopup");
   }
 
   update() {
