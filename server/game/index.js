@@ -8,7 +8,7 @@ const config = {
   height: 512,
   banner: false,
   audio: false,
-  scene: [PlayScene],
+  scene: PlayScene,
   physics: {
     default: "arcade",
     arcade: {
@@ -18,6 +18,14 @@ const config = {
 };
 
 // start the game
-const newGame = new Phaser.Game(config);
+//const newGame = new Phaser.Game(config);
 
-module.exports = newGame;
+//module.exports = newGame;
+
+class Game extends Phaser.Game {
+  constructor() {
+    super(config);
+  }
+}
+
+module.exports = Game;

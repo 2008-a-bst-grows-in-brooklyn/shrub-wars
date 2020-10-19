@@ -3,6 +3,8 @@ const Player = require("./Player");
 module.exports = class PlayerManager {
   constructor(scene) {
     this.scene = scene;
+    this.roomId = scene.game.roomId;
+
     this.playerList = {};
     this.playersGroup = scene.add.group();
     this.teamList = {
@@ -53,7 +55,7 @@ module.exports = class PlayerManager {
       this.currentTeam = this.teamList.red;
     }
 
-    socket.broadcast.emit("PLAYER_JOINED", {
+    socket.to(this.roomId).emit("PLAYER_JOINED", {
       id: newPlayer.id,
       x: newPlayer.x,
       y: newPlayer.y,
@@ -71,6 +73,6 @@ module.exports = class PlayerManager {
 
     this.playerList[socket.id].destroy();
     delete this.playerList[socket.id];
-    socket.broadcast.emit("PLAYER_LEFT", socket.id);
+    socket.to(this.roomId).emit("PLAYER_LEFT", socket.id);
   }
 };
