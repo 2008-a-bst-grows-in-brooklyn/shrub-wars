@@ -4,6 +4,7 @@ const Phaser = require("phaser");
 const PlayerManager = require("./PlayerManager");
 const ProjectileManager = require("./ProjectileManager");
 const Flag = require("./Flag");
+const GameOver = require("./GameOver")
 
 const Map = require("./Maps");
 
@@ -11,7 +12,6 @@ module.exports = class PlayScene extends Phaser.Scene {
   constructor() {
     super();
     this.score = { red: 0, blue: 0 };
-    this.gameOver = false;
   }
 
   preload() {
@@ -28,6 +28,7 @@ module.exports = class PlayScene extends Phaser.Scene {
     this.Map = new Map(this);
     this.Map.createMap();
     this.flag = new Flag(this);
+    this.GameOver = new GameOver(this);
 
     this.physics.add.collider(
       this.PlayerManager.playersGroup,
@@ -64,7 +65,7 @@ module.exports = class PlayScene extends Phaser.Scene {
         this.flag.reset();
         this.score.red++;
         if (this.score.red === 1) {
-          this.gameOver = !this.gameOver;
+          this.GameOver.gameOver()
         }
       },
       (player, goal) => player.holdingFlag
@@ -76,7 +77,7 @@ module.exports = class PlayScene extends Phaser.Scene {
         this.flag.reset();
         this.score.blue++;
         if (this.score.blue === 1) {
-          this.won = !this.won;
+          this.GameOver.gameOver()
         }
       },
       (player, goal) => player.holdingFlag
@@ -146,7 +147,7 @@ module.exports = class PlayScene extends Phaser.Scene {
       bulletList: this.ProjectileManager.getProjectiles(),
       flag: { x: this.flag.x, y: this.flag.y },
       score: this.score,
-      gameOver: this.gameOver,
+      gameOver: this.GameOver.isResetting
     });
   }
 };

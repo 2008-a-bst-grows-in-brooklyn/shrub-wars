@@ -131,27 +131,7 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
   get reloading() {
     if (this.reloadingTimer) {
       return this.reloadingTimer.getProgress();
-    } /*else {
-      return 0;
-    }*/
-  }
-
-//Game Resetting
-  /*gameOver() {
-    if (!this.gameResetTimer) {
-      this.gameResetTimer = this.scene.time.delayedCall(10000, () => {
-        this.gameReset();
-      });
     }
   }
 
-  gameReset() {
-    this.gameResetTimer = undefined;
-  }
-
-  get isResetting() {
-    if (this.gameResetTimer) {
-      return 1 - this.gameResetTimer.getProgress(); // goes from 1 to 0
-    }
-  }*/
 };

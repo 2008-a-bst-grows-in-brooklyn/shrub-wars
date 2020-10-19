@@ -140,8 +140,7 @@ export default class TestScene extends Phaser.Scene {
           `RED: ${this.score.red} | BLUE: ${this.score.blue}`
         );
         this.gameOver = data.gameOver;
-        if (this.gameOver === true) {
-          console.log('We are in')
+        if (this.gameOver) {
           this.scene.wake("GameOverPopup")
         } else {
           this.scene.sleep("GameOverPopup");
