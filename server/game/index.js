@@ -1,5 +1,5 @@
 const Phaser = require("phaser");
-const PlayScene = require("./playScene");
+const ServerScene = require("./ServerScene");
 
 // prepare the config for Phaser
 const config = {
@@ -8,7 +8,7 @@ const config = {
   height: 512,
   banner: false,
   audio: false,
-  scene: PlayScene,
+  scene: ServerScene,
   physics: {
     default: "arcade",
     arcade: {

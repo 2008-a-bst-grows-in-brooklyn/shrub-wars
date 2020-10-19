@@ -2,9 +2,9 @@ import Phaser from "phaser";
 
 import socket from "./socket";
 
-export default class TestScene extends Phaser.Scene {
+export default class ClientScene extends Phaser.Scene {
   constructor() {
-    super({ key: "TestScene" });
+    super({ key: "ClientScene" });
     this.playerList = {};
     this.bulletList = {};
     this.playerId;
@@ -141,11 +141,11 @@ export default class TestScene extends Phaser.Scene {
         );
         this.gameOver = data.gameOver;
         if (this.gameOver) {
-          this.scene.wake("GameOverPopup")
+          this.scene.wake("GameOverPopup");
         } else {
           this.scene.sleep("GameOverPopup");
         }
-        
+
         //updates bullets -- TODO: rework how bullets are saved.
         for (const id in data.bulletList) {
           let serverBullet = data.bulletList[id];

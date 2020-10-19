@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import TestScene from "./testscene";
+import ClientScene from "./ClientScene";
 import RespawnPopup from "./RespawnPopup";
 import GameOverPopup from "./GameOverPopup";
 import StartMenu from "./StartMenu";
@@ -20,7 +20,7 @@ const config = {
       debug: true,
     },
   },
-  scene: [StartMenu, TestScene, RespawnPopup, GameOverPopup],
+  scene: [StartMenu, ClientScene, RespawnPopup, GameOverPopup],
 };
 
 new Phaser.Game(config);
