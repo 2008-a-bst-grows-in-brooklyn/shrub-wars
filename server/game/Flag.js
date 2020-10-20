@@ -1,6 +1,6 @@
 module.exports = class Flag extends Phaser.GameObjects.Sprite {
   constructor(scene) {
-    super(scene, 1024, 928, "");
+    super(scene, 1280, 928, "");
     this.player = undefined;
 
     scene.add.existing(this);
@@ -17,10 +17,10 @@ module.exports = class Flag extends Phaser.GameObjects.Sprite {
 
   reset() {
     if (this.player) {
-    this.player.holdingFlag = false;
-    this.player = undefined;
+      this.player.holdingFlag = false;
+      this.player = undefined;
     }
-    this.setPosition(1024, 928);
+    this.setPosition(1280, 928);
   }
 
   updatePosition() {

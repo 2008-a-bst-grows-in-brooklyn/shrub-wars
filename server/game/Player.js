@@ -22,47 +22,33 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
   }
 
   setVelocity(moveState) {
-    if (!this.isRespawning) {
-      if (this.holdingFlag) {
-        if (moveState.up) {
-          this.body.setVelocityY(-50);
-        } else if (moveState.down) {
-          this.body.setVelocityY(50);
-        } else {
-          this.body.setVelocityY(0);
-        }
-
-        if (moveState.right) {
-          this.body.setVelocityX(50);
-        } else if (moveState.left) {
-          this.body.setVelocityX(-50);
-        } else {
-          this.body.setVelocityX(0);
-        }
-
-        this.body.velocity.normalize().scale(100);
-      } else {
-        if (moveState.up) {
-          this.body.setVelocityY(-100);
-        } else if (moveState.down) {
-          this.body.setVelocityY(100);
-        } else {
-          this.body.setVelocityY(0);
-        }
-
-        if (moveState.right) {
-          this.body.setVelocityX(100);
-        } else if (moveState.left) {
-          this.body.setVelocityX(-100);
-        } else {
-          this.body.setVelocityX(0);
-        }
-
-        this.body.velocity.normalize().scale(200);
-      }
-    } else {
+    if (this.isRespawning) {
       this.body.setVelocityX(0);
       this.body.setVelocityY(0);
+    }
+
+    if (!this.isRespawning) {
+      if (moveState.up) {
+        this.body.setVelocityY(-100);
+      } else if (moveState.down) {
+        this.body.setVelocityY(100);
+      } else {
+        this.body.setVelocityY(0);
+      }
+
+      if (moveState.right) {
+        this.body.setVelocityX(100);
+      } else if (moveState.left) {
+        this.body.setVelocityX(-100);
+      } else {
+        this.body.setVelocityX(0);
+      }
+
+      if (this.holdingFlag) {
+        this.body.velocity.normalize().scale(100);
+      } else {
+        this.body.velocity.normalize().scale(200);
+      }
     }
   }
 
@@ -133,5 +119,4 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
       return this.reloadingTimer.getProgress();
     }
   }
-
 };

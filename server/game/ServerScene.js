@@ -92,7 +92,7 @@ module.exports = class ServerScene extends Phaser.Scene {
     this.PlayerManager.addNewPlayer(socket);
 
     socket.on("disconnect", () => {
-      console.log(socket.id, "disconnected");
+      console.log(socket.id, "disconnected from game");
       this.PlayerManager.removePlayer(socket);
     });
 

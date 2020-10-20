@@ -8,8 +8,8 @@ module.exports = class PlayerManager {
     this.playerList = {};
     this.playersGroup = scene.add.group();
     this.teamList = {
-      red: { name: "red", x: 180, y: 860 },
-      blue: { name: "blue", x: 1880, y: 860 },
+      red: { name: "red", x: 436, y: 860 },
+      blue: { name: "blue", x: 2146, y: 860 },
     };
     this.currentTeam = this.teamList.red;
   }
