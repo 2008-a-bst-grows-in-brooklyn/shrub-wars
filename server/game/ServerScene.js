@@ -64,11 +64,11 @@ module.exports = class ServerScene extends Phaser.Scene {
       () => {
         this.flag.reset();
         this.score.red++;
-        if (this.score.red === 1) {
+        if (this.score.red === 10) {
           this.GameOver.gameOver();
         }
       },
-      (player, goal) => player.holdingFlag
+      (player) => player.holdingFlag
     );
     this.physics.add.collider(
       this.Map.blueTeam,
@@ -76,11 +76,11 @@ module.exports = class ServerScene extends Phaser.Scene {
       () => {
         this.flag.reset();
         this.score.blue++;
-        if (this.score.blue === 1) {
+        if (this.score.blue === 10) {
           this.GameOver.gameOver();
         }
       },
-      (player, goal) => player.holdingFlag
+      (player) => player.holdingFlag
     );
   }
 
