@@ -45,7 +45,8 @@ export default class ClientScene extends Phaser.Scene {
     this.scoreboard = this.add
       .text(180, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
       .setScrollFactor(0, 0)
-      .setStyle({ color: "#000000", fontFamily: "Comic Sans MS" });
+      .setStyle({ color: "#000000", fontFamily: "Comic Sans MS" })
+      .setDepth(1);
 
     this.bullets = this.add.group();
     this.add.image(0, 0, "village").setOrigin(0);
