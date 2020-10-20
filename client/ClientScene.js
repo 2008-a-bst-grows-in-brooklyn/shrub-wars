@@ -15,6 +15,8 @@ export default class ClientScene extends Phaser.Scene {
   preload() {
     this.load.image("village", "Village.png");
     this.load.image("shrub", "bush.png");
+    this.load.image("blue", "blue.png");
+    this.load.image("red", "red.png");
     this.load.spritesheet("team1", "team1.png", { frameWidth: 32 });
     this.load.spritesheet("team2", "team2.png", { frameWidth: 32 });
   }
@@ -92,12 +94,10 @@ export default class ClientScene extends Phaser.Scene {
 
       for (const id in data.bulletList) {
         let newBullet = data.bulletList[id];
-        let bullet = this.add.rectangle(
+        let bullet = this.add.image(
           newBullet.x,
           newBullet.y,
-          16,
-          16,
-          0xdddddd
+          newBullet.teamName
         );
         bullet.id = id;
         this.bulletList[id] = bullet;
@@ -190,12 +190,11 @@ export default class ClientScene extends Phaser.Scene {
               this.bulletList[id].rotation = serverBullet.rotation;
             }
           } else {
-            let bullet = this.add.rectangle(
+            console.log(serverBullet.teamName);
+            let bullet = this.add.image(
               serverBullet.x,
               serverBullet.y,
-              16,
-              16,
-              0xdddddd
+              serverBullet.teamName
             );
             bullet.id = id;
             this.bulletList[id] = bullet;
