@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 const phaserControls = Phaser.Input.Keyboard.KeyCodes;
-
 import socket from "./socket";
+import createAnimations from "./createAnimations";
 
 export default class ClientScene extends Phaser.Scene {
   constructor() {
@@ -16,9 +16,16 @@ export default class ClientScene extends Phaser.Scene {
   preload() {
     this.load.image("village", "Village.png");
     this.load.image("shrub", "bush.png");
+    this.load.image("blue", "blue.png");
+    this.load.image("red", "red.png");
+    this.load.spritesheet("team1", "team1.png", { frameWidth: 32 });
+    this.load.spritesheet("team2", "team2.png", { frameWidth: 32 });
   }
 
   create(roomData) {
+    createAnimations(this);
+
+    //initialize texts
     this.ammoText = this.add
       .text(256, 480, 0)
       .setScrollFactor(0, 0)
@@ -36,10 +43,15 @@ export default class ClientScene extends Phaser.Scene {
         color: "#000000",
         fontFamily: "Comic Sans MS",
       });
+    this.scoreboard = this.add
+      .text(180, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
+      .setScrollFactor(0, 0)
+      .setStyle({ color: "#000000", fontFamily: "Comic Sans MS" })
+      .setDepth(1);
 
     this.bullets = this.add.group();
     this.add.image(0, 0, "village").setOrigin(0);
-    this.flag = this.add.image(1024, 928, "shrub").setDepth(1);
+    this.flag = this.add.image(1280, 928, "shrub").setDepth(1);
     this.controls = this.input.keyboard.addKeys({
       up: phaserControls.W,
       down: phaserControls.S,
@@ -62,40 +74,32 @@ export default class ClientScene extends Phaser.Scene {
     socket.on("INITIALIZE_GAME", (data) => {
       for (const id in data.playerList) {
         let newPlayer = data.playerList[id];
-        let color;
+
+        let team;
         if (newPlayer.teamName === "red") {
-          color = 0xff0000;
+          team = "team1";
         } else {
-          color = 0x0000ff;
+          team = "team2";
         }
-        let player = this.add.rectangle(
-          newPlayer.x,
-          newPlayer.y,
-          32,
-          32,
-          color
-        );
+        console.log(team);
+        let player = this.add.sprite(newPlayer.x, newPlayer.y, team);
+
         player.id = id;
         this.playerList[id] = player;
 
+        //initialize player
         if (id === data.id) {
           this.playerId = id;
           this.cameras.main.startFollow(player);
-          this.scoreboard = this.add
-            .text(180, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
-            .setScrollFactor(0, 0)
-            .setStyle({ color: "#000000", fontFamily: "Comic Sans MS" });
         }
       }
 
       for (const id in data.bulletList) {
         let newBullet = data.bulletList[id];
-        let bullet = this.add.rectangle(
+        let bullet = this.add.image(
           newBullet.x,
           newBullet.y,
-          16,
-          16,
-          0xdddddd
+          newBullet.teamName
         );
         bullet.id = id;
         this.bulletList[id] = bullet;
@@ -109,19 +113,37 @@ export default class ClientScene extends Phaser.Scene {
 
           //update rendered location and rotation
           clientPlayer.setPosition(serverPlayer.x, serverPlayer.y);
-          clientPlayer.rotation = serverPlayer.rotation;
+
+          let team;
+
+          if (serverPlayer.teamName === "red") {
+            team = 1;
+          } else {
+            team = 2;
+          }
+
+          const rot = serverPlayer.rotation;
+          if (
+            (rot < Math.PI / 4 && rot > 0) ||
+            (rot > -Math.PI / 4 && rot < 0)
+          ) {
+            clientPlayer.anims.play(`left${team}`, true);
+          } else if (rot >= Math.PI / 4 && rot < (Math.PI * 3) / 4) {
+            clientPlayer.anims.play(`back${team}`, true);
+          } else if (rot > (Math.PI * 3) / 4 || rot < (-Math.PI * 3) / 4) {
+            clientPlayer.anims.play(`right${team}`, true);
+          } else {
+            clientPlayer.anims.play(`forward${team}`, true);
+          }
 
           //isRespawning is a float from 1 to 0 representing respawn progress
           if (!serverPlayer.isRespawning) {
+            clientPlayer.clearTint();
             clientPlayer.setAlpha(1);
-            if (serverPlayer.teamName === "red") {
-              clientPlayer.setFillStyle(0xff0000);
-            } else {
-              clientPlayer.setFillStyle(0x0000ff);
-            }
             //what happens when a player dies
           } else {
-            clientPlayer.setFillStyle(0x000000, serverPlayer.isRespawning);
+            clientPlayer.setTint(0x000000);
+            clientPlayer.setAlpha(serverPlayer.isRespawning);
           }
 
           //functions specific to the controlling player
@@ -170,12 +192,11 @@ export default class ClientScene extends Phaser.Scene {
               this.bulletList[id].rotation = serverBullet.rotation;
             }
           } else {
-            let bullet = this.add.rectangle(
+            console.log(serverBullet.teamName);
+            let bullet = this.add.image(
               serverBullet.x,
               serverBullet.y,
-              16,
-              16,
-              0xdddddd
+              serverBullet.teamName
             );
             bullet.id = id;
             this.bulletList[id] = bullet;
@@ -185,21 +206,16 @@ export default class ClientScene extends Phaser.Scene {
       });
 
       socket.on("PLAYER_JOINED", (newPlayer) => {
-        let color;
+        let team;
         if (newPlayer.teamName === "red") {
-          color = 0xff0000;
+          team = "team1";
         } else {
-          color = 0x0000ff;
+          team = "team2";
         }
-        let player = this.add.rectangle(
-          newPlayer.x,
-          newPlayer.y,
-          32,
-          32,
-          color
-        );
+        let player = this.add.sprite(newPlayer.x, newPlayer.y, team);
         player.id = newPlayer.id;
         this.playerList[newPlayer.id] = player;
+        console.log(player);
       });
       // Create bullet
       socket.on("PLAYER_LEFT", (id) => {

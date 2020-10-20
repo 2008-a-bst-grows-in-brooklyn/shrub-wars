@@ -30,6 +30,7 @@ module.exports = class ProjectileManager {
       } else {
         modifiedBulletList[id] = {
           playerId: bullet.owner,
+          teamName: bullet.teamName,
           x: bullet.x,
           y: bullet.y,
           rotation: bullet.rotation,
