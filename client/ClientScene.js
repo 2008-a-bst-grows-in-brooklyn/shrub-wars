@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+const phaserControls = Phaser.Input.Keyboard.KeyCodes;
 
 import socket from "./socket";
 
@@ -40,15 +41,15 @@ export default class ClientScene extends Phaser.Scene {
     this.add.image(0, 0, "village").setOrigin(0);
     this.flag = this.add.image(1024, 928, "shrub").setDepth(1);
     this.controls = this.input.keyboard.addKeys({
-      up: Phaser.Input.Keyboard.KeyCodes.W,
-      down: Phaser.Input.Keyboard.KeyCodes.S,
-      left: Phaser.Input.Keyboard.KeyCodes.A,
-      right: Phaser.Input.Keyboard.KeyCodes.D,
-      up1: Phaser.Input.Keyboard.KeyCodes.I,
-      down1: Phaser.Input.Keyboard.KeyCodes.K,
-      left1: Phaser.Input.Keyboard.KeyCodes.J,
-      right1: Phaser.Input.Keyboard.KeyCodes.L,
-      space: Phaser.Input.Keyboard.KeyCodes.SPACE,
+      up: phaserControls.W,
+      down: phaserControls.S,
+      left: phaserControls.A,
+      right: phaserControls.D,
+      up1: phaserControls.I,
+      down1: phaserControls.K,
+      left1: phaserControls.J,
+      right1: phaserControls.L,
+      space: phaserControls.SPACE,
     });
 
     this.pointer = this.input.on("pointerdown", () => {
