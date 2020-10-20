@@ -7,6 +7,49 @@
     <script src="bundle.js"></script>
   </head>
   <body>
-    <div id="game"></div>
+    <div id= "left">Left div</div>
+    <div id="game"></div> 
+    <div id="right">Right div</div>
+  <style>
+    body {
+      margin:0;
+      background-image: url(WoodenTable.jpeg);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+      #left { 
+        float:left; 
+        width:25%; 
+        height:100vh;
+        margin: 0;
+        background-image: url(PumpkinOne.png), url(CandleTwo.png), url(ScrollOne.png);
+        background-position: left top, left bottom, center;
+        background-repeat: no-repeat, no-repeat, no-repeat;
+        background-size: 50%, 35%, contain;
+        
+      } 
+      #game {  
+        float:left;
+        width:50%; 
+        height:512px;
+        position: absolute;
+	      top:0;
+	      bottom: 0;
+	      left: 0;
+	      right: 0;	
+	      margin: auto;
+      } 
+      #right { 
+        float:right; 
+        width:25%; 
+        height:100vh; 
+        margin: 0;
+        background-image: url(PumpkinTwo.png), url(CandleOne.png), url(ScrollTwo.png);
+        background-position: right bottom, right top, center;
+        background-repeat: no-repeat, no-repeat, no-repeat;
+        background-size: 50%, 35%, contain;
+      } 
+  </style>
   </body>
 </html>

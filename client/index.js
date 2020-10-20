@@ -3,14 +3,14 @@ import ClientScene from "./ClientScene";
 import RespawnPopup from "./RespawnPopup";
 import GameOverPopup from "./GameOverPopup";
 import StartMenu from "./StartMenu";
-import socket from "./socket";
 
 const config = {
   type: Phaser.AUTO,
   width: 512,
   height: 512,
   scale: {
-    mode: Phaser.Scale.FIT,
+    mode: Phaser.Scale.ENVELOP,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
     parent: "game",
   },
   pixelArt: true,
