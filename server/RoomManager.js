@@ -7,13 +7,14 @@ class RoomManager {
     this.roomList = {};
   }
 
-  createGame(io) {
+  createGame() {
     const id = this.generateId();
     const game = new Game();
 
     this.roomList[id] = game;
     game.roomId = id;
-    game.io = io;
+    game.io = this.io;
+    return id;
   }
 
   getGame(roomId) {
@@ -21,11 +22,22 @@ class RoomManager {
   }
 
   getGameScene(roomId) {
-    return this.getGame(roomId).scene.scenes[0];
+    if (this.getGame(roomId) === undefined) {
+      return false; // If room with specified roomId does not exist return false
+    }
+    return this.getGame(roomId).scene.scenes[0]; // If room exists, return the correct scene
   }
 
   generateId() {
-    return this.roomId++;
+    /* Creates a random room code for the room when invoked */
+    let resultId = "";
+    let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+    for (let i = 0; i < 6; i++) {
+      resultId += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return resultId;
   }
 }
 

@@ -27,6 +27,14 @@ export default class ClientScene extends Phaser.Scene {
         color: "#000000",
         fontFamily: "Comic Sans MS",
       });
+    this.roomText = this.add
+      .text(345, 5, `Room Code: ${roomData.roomId}`)
+      .setScrollFactor(0, 0)
+      .setDepth(1)
+      .setStyle({
+        color: "#000000",
+        fontFamily: "Comic Sans MS",
+      });
 
     this.bullets = this.add.group();
     this.add.image(0, 0, "village").setOrigin(0);
@@ -139,6 +147,7 @@ export default class ClientScene extends Phaser.Scene {
         this.scoreboard.setText(
           `RED: ${this.score.red} | BLUE: ${this.score.blue}`
         );
+
         this.gameOver = data.gameOver;
         if (this.gameOver) {
           this.scene.wake("GameOverPopup");
