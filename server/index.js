@@ -15,10 +15,7 @@ const server = app.listen(PORT, () => {
 
 require("./socket").init(server);
 const io = require("./socket").io();
-
-//Temporary
-RoomManager.createGame(io);
-RoomManager.createGame(io);
+RoomManager.io = io;
 
 io.on("connect", (socket) => {
   console.log("Client", socket.id, "has connected");

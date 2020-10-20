@@ -20,6 +20,9 @@ const config = {
       debug: true,
     },
   },
+  dom: {
+    createContainer: true, // Allows the creation of DOM elements within the Phaser Canvas
+  },
   scene: [StartMenu, ClientScene, RespawnPopup, GameOverPopup],
 };
 
