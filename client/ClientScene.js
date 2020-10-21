@@ -24,32 +24,7 @@ export default class ClientScene extends Phaser.Scene {
 
   create(roomData) {
     createAnimations(this);
-
     //initialize texts
-    // HUD tests
-    this.getDirection = () => {
-      let angle = Phaser.Math.Angle.Between(
-        this.cameras.main.scrollX,
-        this.cameras.main.scrollY,
-        300,
-        300
-      );
-      let vec = { x: Math.cos(angle), y: Math.sin(angle) };
-      this.testArrow.setPosition(vec.x, vec.y);
-    };
-    this.line1 = new Phaser.Line(
-      this.cameras.main.x,
-      this.cameras.main.y,
-      300,
-      300
-    );
-    this.testArrow = this.add
-      .rectangle(512, 0, 10, 10, 0xff0000)
-      .setScrollFactor(0, 0)
-      .setDepth(3);
-    this.testObject = this.add
-      .rectangle(300, 300, 32, 32, 0xff0000)
-      .setDepth(1);
     this.ammoText = this.add
       .text(256, 480, 0)
       .setScrollFactor(0, 0)
@@ -258,7 +233,6 @@ export default class ClientScene extends Phaser.Scene {
   }
 
   update() {
-    this.getDirection();
     socket.emit(
       "PLAYER_ROTATED",
       Phaser.Math.Angle.Between(this.input.x, this.input.y, 512 / 2, 512 / 2)
