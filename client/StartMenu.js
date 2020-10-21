@@ -87,6 +87,11 @@ export default class StartMenu extends Phaser.Scene {
         color: "#000000",
         backgroundColor: "#FFB233",
       })
-      .setOrigin(0.5);
+      .setOrigin(0.5)
+      .setInteractive()
+      .on("pointerdown", () => {
+        console.log("pointer downed");
+        this.scene.start("Credits");
+      });
   }
 }
