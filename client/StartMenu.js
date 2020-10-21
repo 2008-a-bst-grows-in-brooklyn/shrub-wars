@@ -7,10 +7,21 @@ export default class StartMenu extends Phaser.Scene {
   }
   preload() {
     this.load.html("joinRoom", "./joinRoom.html");
+    this.load.image("village", "Village.png");
   }
   create() {
+    this.add.image(0, 0, "village");
+    this.add.text(175, 100, "Boo Bash", {
+      fontFamily: "Luminari, fantasy",
+      fontSize: 32,
+      color: "#FF9A00",
+    });
     this.add
-      .rectangle(0, 256, 320, 180, 0x444444, 0.8)
+      .text(190, 290, "< Create Game >", {
+        fontFamily: "Luminari, fantasy",
+        color: "#000000",
+        backgroundColor: "#FFB233",
+      })
       .setInteractive()
       .on("pointerdown", () => {
         console.log("pointer downed");
@@ -19,9 +30,15 @@ export default class StartMenu extends Phaser.Scene {
           this.scene.start("ClientScene", { roomId: id });
         });
       });
-    this.add.text(10, 128, "Create Game");
+    // this.add.text(10, 128, "< Create Game >", {
+    //   fontFamily: "Luminari, fantasy",
+    // });
     this.add
-      .rectangle(512, 256, 320, 180, 0xff4444, 0.8)
+      .text(200, 360, "< Join Game >", {
+        fontFamily: "Luminari, fantasy",
+        color: "#000000",
+        backgroundColor: "#FFB233",
+      })
       .setInteractive()
       .on("pointerdown", () => {
         console.log("pointer downed");
@@ -43,12 +60,15 @@ export default class StartMenu extends Phaser.Scene {
           }
         });
       });
-    this.add.text(412, 128, "Join Game");
-
-    this.add
-      .text(256, 256, `Choose an option!`, {
-        fontFamily: "Luminari, fantasy",
-      })
-      .setOrigin(0.5);
+    this.add.text(185, 325, "< Browse Games >", {
+      fontFamily: "Luminari, fantasy",
+      color: "#000000",
+      backgroundColor: "#FFB233",
+    });
+    this.add.text(210, 395, "< Credits >", {
+      fontFamily: "Luminari, fantasy",
+      color: "#000000",
+      backgroundColor: "#FFB233",
+    });
   }
 }
