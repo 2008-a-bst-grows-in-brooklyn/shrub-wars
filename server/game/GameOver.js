@@ -12,7 +12,7 @@ module.exports = class gameOver {
             this.scene.PlayerManager.playerList[player].gameOver = true
         }
         if (!this.gameResetTimer) {
-            this.gameResetTimer = this.scene.time.delayedCall(10000, () => {
+            this.gameResetTimer = this.scene.time.delayedCall(15000, () => {
             this.gameReset()
             });
         }

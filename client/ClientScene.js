@@ -148,9 +148,9 @@ export default class ClientScene extends Phaser.Scene {
 
           //functions specific to the controlling player
           if (id === this.playerId) {
-            this.ammoText.setText(serverPlayer.ammo + " blasts remaining");
+            this.ammoText.setText(serverPlayer.ammo + " Fire Balls Left!");
             if (serverPlayer.ammo === 0) {
-              this.ammoText.setText("Recharging...");
+              this.ammoText.setText("Recharging Fire Balls...");
             }
 
             if (serverPlayer.isRespawning && !clientPlayer.isRespawning) {
