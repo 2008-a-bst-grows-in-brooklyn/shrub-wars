@@ -11,11 +11,13 @@ export default class StartMenu extends Phaser.Scene {
   }
   create() {
     this.add.image(0, 0, "village");
+    // title
     this.add.text(175, 100, "Boo Bash", {
       fontFamily: "Luminari, fantasy",
       fontSize: 32,
       color: "#FF9A00",
     });
+    //Create Game button
     this.add
       .text(190, 290, "< Create Game >", {
         fontFamily: "Luminari, fantasy",
@@ -30,9 +32,8 @@ export default class StartMenu extends Phaser.Scene {
           this.scene.start("ClientScene", { roomId: id });
         });
       });
-    // this.add.text(10, 128, "< Create Game >", {
-    //   fontFamily: "Luminari, fantasy",
-    // });
+
+    //Join game Button
     this.add
       .text(200, 360, "< Join Game >", {
         fontFamily: "Luminari, fantasy",
@@ -60,11 +61,15 @@ export default class StartMenu extends Phaser.Scene {
           }
         });
       });
+
+    // Browse Game button
     this.add.text(185, 325, "< Browse Games >", {
       fontFamily: "Luminari, fantasy",
       color: "#000000",
       backgroundColor: "#FFB233",
     });
+
+    // Credit Button
     this.add.text(210, 395, "< Credits >", {
       fontFamily: "Luminari, fantasy",
       color: "#000000",
