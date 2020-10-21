@@ -33,7 +33,7 @@ export default class ClientScene extends Phaser.Scene {
       .setOrigin(0.5, 0.5)
       .setStyle({
         color: "#000000",
-        fontFamily: "Comic Sans MS",
+        fontFamily: "Luminari, fantasy",
       });
     this.roomText = this.add
       .text(345, 5, `Room Code: ${roomData.roomId}`)
@@ -41,12 +41,12 @@ export default class ClientScene extends Phaser.Scene {
       .setDepth(1)
       .setStyle({
         color: "#000000",
-        fontFamily: "Comic Sans MS",
+        fontFamily: "Luminari, fantasy",
       });
     this.scoreboard = this.add
       .text(180, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
       .setScrollFactor(0, 0)
-      .setStyle({ color: "#000000", fontFamily: "Comic Sans MS" })
+      .setStyle({ color: "#000000", fontFamily: "Luminari, fantasy" })
       .setDepth(1);
 
     this.bullets = this.add.group();
@@ -148,9 +148,9 @@ export default class ClientScene extends Phaser.Scene {
 
           //functions specific to the controlling player
           if (id === this.playerId) {
-            this.ammoText.setText(serverPlayer.ammo + " shots remaining");
+            this.ammoText.setText(serverPlayer.ammo + " blasts remaining");
             if (serverPlayer.ammo === 0) {
-              this.ammoText.setText("Reloading...");
+              this.ammoText.setText("Recharging...");
             }
 
             if (serverPlayer.isRespawning && !clientPlayer.isRespawning) {

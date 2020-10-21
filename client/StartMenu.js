@@ -47,7 +47,7 @@ export default class StartMenu extends Phaser.Scene {
 
     this.add
       .text(256, 256, `Choose an option!`, {
-        fontFamily: "Comic Sans MS",
+        fontFamily: "Luminari, fantasy",
       })
       .setOrigin(0.5);
   }
