@@ -1,11 +1,14 @@
 import Phaser from "phaser";
 export default class HudDirectionManager {
-  constructor(scene, team, player, friends, flag) {
+  constructor(scene, friends, flag) {
     this.scene = scene;
-    this.team = team;
-    this.me = player; // Client position
+    this.me = {
+      x: this.scene.cameras.main.scrollX + 256,
+      y: this.scene.cameras.main.scrollY + 256,
+    }; // Client position
+    console.log(this.me.x);
     this.friendPosList = friends; // list of friendly player positions
-    this.friends; // friendly player
+    this.friends = []; // friendly player gameObjects
     this.flag = flag; // flag position
     this.cameraViewBox = {
       left: new Phaser.Geom.Line(
@@ -35,6 +38,7 @@ export default class HudDirectionManager {
     };
   }
   setup() {
+    // Set up initial lines
     // Creates the player and flag lines needed for intersection tests
     for (let i = 0; i < this.friendPosList.length; i++) {
       this.friendPosList[i].line = new Phaser.Geom.Line(
@@ -43,10 +47,11 @@ export default class HudDirectionManager {
         this.friendPosList[i].x,
         this.friendPosList[i].y
       );
-      this.friends[i] = this.scene.add
-        .rectangle(0, 0, 16, 16, 0x00ff00)
-        .setDepth(1);
+      this.friends.push(
+        this.scene.add.rectangle(0, 0, 16, 16, 0x00ff00).setDepth(1)
+      );
     }
+    console.log(this.cameraViewBox);
     this.flag.line = new Phaser.Geom.Line(
       this.me.x,
       this.me.y,
@@ -58,6 +63,7 @@ export default class HudDirectionManager {
       .setDepth(1);
   }
   getIntersections() {
+    // Find where lines intersect
     // Placeholder points for intersections
     let intersectPointLeft = new Phaser.Geom.Point();
     let intersectPointTop = new Phaser.Geom.Point();
@@ -67,6 +73,7 @@ export default class HudDirectionManager {
     let intersectLeft, intersectTop, intersectRight, intersectBottom;
     // Goes through every friend line and checks for intersections
     for (let i = 0; i < this.friendPosList.length; i++) {
+      this.friends[i].visible = false;
       intersectLeft = Phaser.Geom.Intersects.LineToLine(
         this.friendPosList[i].line,
         this.cameraViewBox.left,
@@ -88,6 +95,9 @@ export default class HudDirectionManager {
         intersectPointBottom
       );
       // Set direction box of current friend to the new location
+      if (intersectLeft || intersectTop || intersectRight || intersectBottom) {
+        this.friends[i].visible = true;
+      }
       if (intersectLeft) {
         this.friends[i].setPosition(intersectPointLeft.x, intersectPointLeft.y);
       } else if (intersectTop) {
@@ -105,6 +115,7 @@ export default class HudDirectionManager {
       }
     }
     // Checks flag line intersection
+    this.flag.point.visible = false;
     intersectLeft = Phaser.Geom.Intersects.LineToLine(
       this.flag.line,
       this.cameraViewBox.left,
@@ -125,6 +136,9 @@ export default class HudDirectionManager {
       this.cameraViewBox.bottom,
       intersectPointBottom
     );
+    if (intersectLeft || intersectTop || intersectRight || intersectBottom) {
+      this.flag.point.visible = true;
+    }
     if (intersectLeft) {
       this.flag.point.setPosition(intersectPointLeft.x, intersectPointLeft.y);
     } else if (intersectTop) {
@@ -139,6 +153,9 @@ export default class HudDirectionManager {
     }
   }
   updatePos(newPos) {
+    // update the positions stored
+    this.me.x = this.scene.cameras.main.scrollX + 256;
+    this.me.y = this.scene.cameras.main.scrollY + 256;
     for (let i = 0; i < newPos.friendPos.length; i++) {
       if (this.friendPosList[i] !== undefined) {
         this.addFriend(newPos.friendPos[i]);
@@ -153,9 +170,11 @@ export default class HudDirectionManager {
     this.updateLine(this.flag);
   }
   updateLine(Obj) {
+    // Update lines to newest positions
     Obj.line.setTo(this.me.x, this.me.y, Obj.x, Obj.y);
   }
   addFriend(newFriend) {
+    // If a new friend joins in
     newFriend.line = new Phaser.Geom.Line(
       this.me.x,
       this.me.y,
@@ -168,6 +187,7 @@ export default class HudDirectionManager {
     this.friendPosList.push(newFriend);
   }
   updateCameraBox() {
+    // Updates current camera view box lines
     this.cameraViewBox.left.setTo(
       this.scene.cameras.main.scrollX,
       this.scene.cameras.main.scrollY,
@@ -197,5 +217,18 @@ export default class HudDirectionManager {
     this.updateCameraBox();
     this.updatePos(newPositions);
     this.getIntersections();
+  }
+  removePlayer(playerList) {
+    for (let i = 0; i < this.friendPosList.length; i++) {
+      if (!playerList.includes(this.friendPosList[i])) {
+        this.friends[i].destroy();
+        this.friends = this.friends.filter(
+          (friend) => friend !== this.friends[i]
+        );
+        this.friendPosList = this.friendPosList.filter(
+          (friend) => friend !== this.friendPosList[i]
+        );
+      }
+    }
   }
 }
