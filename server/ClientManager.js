@@ -37,15 +37,19 @@ class ClientManager {
 
       if (didConnect) {
         this.clientList[socket.id].room = roomId;
+
+        //declare leave_room listener
+        socket.once("LEAVE_ROOM", () => {
+          const roomId = this.clientList[socket.id].Id;
+          removePlayerFromRoom(socket, roomId);
+          this.clientList[socket.id].room = undefined;
+        });
+
+        //otherwise, inform the client that something went wrong
+        //TODO: do something with this information
       } else {
         socket.emit("JOIN_ERROR", `Failed to join Room ${roomId}`);
       }
-    });
-
-    socket.on("LEAVE_ROOM", () => {
-      const roomId = this.clientList[socket.id].Id;
-      removePlayerFromRoom(roomId);
-      this.clientList[socket.id].room = undefined;
     });
 
     socket.on("FETCH_ROOMS", () => {

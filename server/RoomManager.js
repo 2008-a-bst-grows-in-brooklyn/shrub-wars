@@ -53,7 +53,7 @@ class RoomManager {
     }
   }
 
-  removePlayerFromRoom(socket) {
+  removePlayerFromRoom(socket, roomId) {
     socket.leave(roomId);
   }
 
