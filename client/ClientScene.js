@@ -2,6 +2,7 @@ import Phaser from "phaser";
 const phaserControls = Phaser.Input.Keyboard.KeyCodes;
 import socket from "./socket";
 import createAnimations from "./createAnimations";
+import HudDirectionManager from "./hudDirectionManager";
 
 export default class ClientScene extends Phaser.Scene {
   constructor() {
@@ -24,7 +25,6 @@ export default class ClientScene extends Phaser.Scene {
 
   create(roomData) {
     createAnimations(this);
-
     //initialize texts
 
     this.ammoText = this.add
@@ -106,6 +106,18 @@ export default class ClientScene extends Phaser.Scene {
         bullet.id = id;
         this.bulletList[id] = bullet;
       }
+      // Setup HUD
+      let friends = Object.values(this.playerList);
+      friends = friends.filter(
+        (player) => player.texture === this.playerList[this.playerId].texture
+      );
+      this.hudDirections = new HudDirectionManager(
+        this, // Scene
+        friends, // Friends
+        this.flag
+      );
+      this.hudDirections.setup();
+      this.hudDirections.getIntersections();
 
       //only start listening for gamestate updates after completing initialization
       const updateCallback = (data) => {
@@ -205,6 +217,13 @@ export default class ClientScene extends Phaser.Scene {
           }
         }
         this.flag.setPosition(data.flag.x, data.flag.y);
+
+        //Update the HUD vectors
+        let friends = Object.values(this.playerList);
+        friends = friends.filter(
+          (player) => player.texture === this.playerList[this.playerId].texture
+        );
+        this.hudDirections.updater({ friendPos: friends, flag: this.flag });
       };
 
       const joinCallback = (newPlayer) => {
@@ -223,6 +242,12 @@ export default class ClientScene extends Phaser.Scene {
       const leaveCallback = (id) => {
         this.playerList[id].destroy();
         delete this.playerList[id];
+        let friends = Object.values(this.playerList); // Grab new list of players available
+        friends = friends.filter(
+          // Filter updated list of players
+          (player) => player.texture === this.playerList[this.playerId].texture
+        );
+        this.hudDirections.removePlayer(friends);
       };
 
       socket.on("update", updateCallback);
