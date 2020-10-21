@@ -64,6 +64,7 @@ module.exports = class PlayerManager {
   }
 
   removePlayer(socket) {
+    console.log(socket.id, "disconnected from game");
     const player = this.getPlayer(socket);
 
     //handle flag behavior when the holding player disconnects

@@ -91,20 +91,35 @@ module.exports = class ServerScene extends Phaser.Scene {
     /* Create new player object */
     this.PlayerManager.addNewPlayer(socket);
 
-    socket.on("disconnect", () => {
-      console.log(socket.id, "disconnected from game");
+    const dcCallback = () => {
       this.PlayerManager.removePlayer(socket);
+    };
+
+    socket.on("disconnect", dcCallback);
+
+    socket.once("LEAVE_ROOM", () => {
+      this.PlayerManager.removePlayer(socket);
+
+      //hackish work-around to turn off game listeners
+      /* const listeners = ["PLAYER_ROTATED", "PLAYER_MOVED", "PLAYER_ACTION"];
+      listeners.forEach((listener) => {
+        socket.off(listener);
+      }); */
+
+      socket.off("disconnect", dcCallback);
+      socket.off("PLAYER_ROTATED", rotateCallback);
+      socket.off("PLAYER_MOVED", moveCallback);
+      socket.off("PLAYER_ACTION", actionCallback);
     });
 
-    socket.on("PLAYER_ROTATED", (angle) => {
+    const rotateCallback = (angle) => {
       this.PlayerManager.getPlayer(socket).setRotation(angle);
-    });
-
-    socket.on("PLAYER_MOVED", (moveState) => {
+    };
+    const moveCallback = (moveState) => {
       this.PlayerManager.getPlayer(socket).setVelocity(moveState);
-    });
+    };
 
-    socket.on("PLAYER_ACTION", (actionState) => {
+    const actionCallback = (actionState) => {
       const player = this.PlayerManager.getPlayer(socket);
       if (
         player &&
@@ -129,7 +144,11 @@ module.exports = class ServerScene extends Phaser.Scene {
           });
         }
       }
-    });
+    };
+
+    socket.on("PLAYER_ROTATED", rotateCallback);
+    socket.on("PLAYER_MOVED", moveCallback);
+    socket.on("PLAYER_ACTION", actionCallback);
 
     socket.emit("INITIALIZE_GAME", {
       id: socket.id,

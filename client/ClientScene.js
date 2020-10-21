@@ -25,6 +25,7 @@ export default class ClientScene extends Phaser.Scene {
   create(roomData) {
     createAnimations(this);
     //initialize texts
+
     this.ammoText = this.add
       .text(256, 480, 0)
       .setScrollFactor(0, 0)
@@ -70,7 +71,8 @@ export default class ClientScene extends Phaser.Scene {
     });
 
     //First, declare the initialize game listener
-    socket.on("INITIALIZE_GAME", (data) => {
+    socket.once("INITIALIZE_GAME", (data) => {
+      console.log(data);
       for (const id in data.playerList) {
         let newPlayer = data.playerList[id];
 
@@ -105,7 +107,7 @@ export default class ClientScene extends Phaser.Scene {
       }
 
       //only start listening for gamestate updates after completing initialization
-      socket.on("update", (data) => {
+      const updateCallback = (data) => {
         for (const id in data.playerList) {
           let serverPlayer = data.playerList[id];
           let clientPlayer = this.playerList[id];
@@ -202,9 +204,9 @@ export default class ClientScene extends Phaser.Scene {
           }
         }
         this.flag.setPosition(data.flag.x, data.flag.y);
-      });
+      };
 
-      socket.on("PLAYER_JOINED", (newPlayer) => {
+      const joinCallback = (newPlayer) => {
         let team;
         if (newPlayer.teamName === "red") {
           team = "team1";
@@ -215,12 +217,43 @@ export default class ClientScene extends Phaser.Scene {
         player.id = newPlayer.id;
         this.playerList[newPlayer.id] = player;
         console.log(player);
-      });
-      // Create bullet
-      socket.on("PLAYER_LEFT", (id) => {
+      };
+
+      const leaveCallback = (id) => {
         this.playerList[id].destroy();
         delete this.playerList[id];
-      });
+      };
+
+      socket.on("update", updateCallback);
+      socket.on("PLAYER_JOINED", joinCallback);
+      socket.on("PLAYER_LEFT", leaveCallback);
+
+      this.add
+        .text(8, 0, "↩", {
+          fontSize: 32,
+          color: "#000000",
+        })
+        .setScrollFactor(0, 0)
+        .setDepth(2)
+        .setOrigin(0, 0);
+      this.add
+        .circle(2, 0, 16, 0xff6a00)
+        .setDepth(1)
+        .setScrollFactor(0, 0)
+        .setOrigin(0, 0)
+        .setInteractive()
+        .on("pointerdown", () => {
+          //HANDLE LEAVING ROOM
+          console.log("leaving room!");
+
+          socket.off("update", updateCallback);
+          socket.off("PLAYER_JOINED", joinCallback);
+          socket.off("PLAYER_LEFT", leaveCallback);
+
+          socket.emit("LEAVE_ROOM");
+          this.scene.stop("ClientScene");
+          this.scene.start("StartMenu");
+        });
     });
 
     //Finally, tell the server which room to join. Server will respond with "initialize room"
