@@ -58,15 +58,15 @@ class RoomManager {
   }
 
   get publicRooms() {
-    const publicRooms = [];
+    const publicList = [];
 
     for (const code in this.roomList) {
-      if (this.roomList[code].public === "true") {
-        publicRooms.push(code);
+      if (this.roomList[code].public === true) {
+        publicList.push(code);
       }
     }
 
-    return publicRooms;
+    return publicList;
   }
 }
 
