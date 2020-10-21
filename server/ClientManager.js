@@ -53,6 +53,7 @@ class ClientManager {
     });
 
     socket.on("FETCH_ROOMS", () => {
+      console.log("rooms fetched", RoomManager.publicRooms);
       socket.emit("ROOMS_FETCHED", RoomManager.publicRooms);
     });
   }
@@ -60,8 +61,6 @@ class ClientManager {
   getClient(socket) {
     return this.clientList[socket.id];
   }
-
-  getRoom;
 }
 
 const clientManager = new ClientManager();

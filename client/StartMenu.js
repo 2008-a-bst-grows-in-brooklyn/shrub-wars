@@ -36,6 +36,7 @@ export default class StartMenu extends Phaser.Scene {
     this.add.image(148, 275, "BlueUp")
     this.add.image(190, 465, "GhostOne")
     this.add.image(450, 20, "GhostTwoLeft")
+
     // title
     this.add
       .text(256, 95, "     Boo Bash     ", {
@@ -45,6 +46,7 @@ export default class StartMenu extends Phaser.Scene {
         backgroundColor: "#000000"
       })
       .setOrigin(0.5);
+
     //Create Game button
     this.add
       .text(256, 315, "< Create Game >", {
@@ -62,6 +64,7 @@ export default class StartMenu extends Phaser.Scene {
           this.scene.start("ClientScene", { roomId: id });
         });
       });
+      
     // Browse Game button
     this.add
       .text(256, 350, "< Browse Games >", {
@@ -70,8 +73,12 @@ export default class StartMenu extends Phaser.Scene {
       color: "#000000",
       backgroundColor: "#FFB233",
     })
-    .setOrigin(0.5);
-
+    .setOrigin(0.5)
+    .setInteractive()
+    .on("pointerdown", () => {
+      console.log("browse rooms");
+      this.scene.start("BrowseRooms");
+    });
 
     //Join game Button
     this.add
@@ -112,6 +119,11 @@ export default class StartMenu extends Phaser.Scene {
         color: "#000000",
         backgroundColor: "#FFB233",
       })
-      .setOrigin(0.5);
+      .setOrigin(0.5)
+      .setInteractive()
+      .on("pointerdown", () => {
+        console.log("pointer downed");
+        this.scene.start("Credits");
+      });
   }
 }
