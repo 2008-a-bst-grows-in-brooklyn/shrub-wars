@@ -3,6 +3,7 @@ import ClientScene from "./ClientScene";
 import RespawnPopup from "./RespawnPopup";
 import GameOverPopup from "./GameOverPopup";
 import StartMenu from "./StartMenu";
+import BrowseRooms from "./BrowseRooms";
 import Credits from "./Credits";
 
 const config = {
@@ -24,7 +25,15 @@ const config = {
   dom: {
     createContainer: true, // Allows the creation of DOM elements within the Phaser Canvas
   },
-  scene: [StartMenu, ClientScene, RespawnPopup, GameOverPopup, Credits],
+
+  scene: [
+    StartMenu,
+    ClientScene,
+    RespawnPopup,
+    GameOverPopup,
+    BrowseRooms,
+    Credits,
+  ],
 };
 
 new Phaser.Game(config);
