@@ -45,10 +45,10 @@ export default class ClientScene extends Phaser.Scene {
         fontFamily: "Luminari, fantasy",
       });
     this.scoreboard = this.add
-      .text(180, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
+      .text(198, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
       .setScrollFactor(0, 0)
       .setStyle({ color: "#000000", fontFamily: "Luminari, fantasy" })
-      .setDepth(1);
+      .setDepth(1)
 
     this.bullets = this.add.group();
     this.add.image(0, 0, "village").setOrigin(0);
@@ -230,16 +230,18 @@ export default class ClientScene extends Phaser.Scene {
       socket.on("PLAYER_LEFT", leaveCallback);
 
       this.add
-        .text(8, 0, "↩", {
+        .text(0, 5, "↩", {
           fontSize: 32,
           color: "#000000",
         })
         .setScrollFactor(0, 0)
         .setDepth(2)
+        .setAlpha(0.7)
         .setOrigin(0, 0);
       this.add
-        .circle(2, 0, 16, 0xff6a00)
+        .circle(0, 0, 16, 0xff6a00)
         .setDepth(1)
+        .setAlpha(0.7)
         .setScrollFactor(0, 0)
         .setOrigin(0, 0)
         .setInteractive()
