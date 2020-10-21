@@ -12,18 +12,21 @@ export default class StartMenu extends Phaser.Scene {
   create() {
     this.add.image(0, 0, "village");
     // title
-    this.add.text(175, 100, "Boo Bash", {
-      fontFamily: "Luminari, fantasy",
-      fontSize: 32,
-      color: "#FF9A00",
-    });
+    this.add
+      .text(256, 100, "Boo Bash", {
+        fontFamily: "Luminari, fantasy",
+        fontSize: 32,
+        color: "#FF9A00",
+      })
+      .setOrigin(0.5);
     //Create Game button
     this.add
-      .text(190, 290, "< Create Game >", {
+      .text(256, 290, "< Create Game >", {
         fontFamily: "Luminari, fantasy",
         color: "#000000",
         backgroundColor: "#FFB233",
       })
+      .setOrigin(0.5)
       .setInteractive()
       .on("pointerdown", () => {
         console.log("pointer downed");
@@ -35,11 +38,12 @@ export default class StartMenu extends Phaser.Scene {
 
     //Join game Button
     this.add
-      .text(200, 360, "< Join Game >", {
+      .text(256, 360, "< Join Game >", {
         fontFamily: "Luminari, fantasy",
         color: "#000000",
         backgroundColor: "#FFB233",
       })
+      .setOrigin(0.5)
       .setInteractive()
       .on("pointerdown", () => {
         console.log("pointer downed");
@@ -63,17 +67,21 @@ export default class StartMenu extends Phaser.Scene {
       });
 
     // Browse Game button
-    this.add.text(185, 325, "< Browse Games >", {
-      fontFamily: "Luminari, fantasy",
-      color: "#000000",
-      backgroundColor: "#FFB233",
-    });
+    this.add
+      .text(256, 325, "< Browse Games >", {
+        fontFamily: "Luminari, fantasy",
+        color: "#000000",
+        backgroundColor: "#FFB233",
+      })
+      .setOrigin(0.5);
 
     // Credit Button
-    this.add.text(210, 395, "< Credits >", {
-      fontFamily: "Luminari, fantasy",
-      color: "#000000",
-      backgroundColor: "#FFB233",
-    });
+    this.add
+      .text(256, 395, "< Credits >", {
+        fontFamily: "Luminari, fantasy",
+        color: "#000000",
+        backgroundColor: "#FFB233",
+      })
+      .setOrigin(0.5);
   }
 }
