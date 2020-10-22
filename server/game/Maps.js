@@ -5,6 +5,7 @@ module.exports = class Map {
     this.collidesBullets = scene.add.group();
     this.redTeam = scene.add.group();
     this.blueTeam = scene.add.group();
+    this.base = scene.add.group();
   }
   loadMap() {
     this.scene.load.tilemapTiledJSON(
@@ -30,6 +31,8 @@ module.exports = class Map {
     this.collidesBullets.add(trees);
     this.redTeam.add(redTeam);
     this.blueTeam.add(blueTeam);
+    this.base.add(redTeam);
+    this.base.add(blueTeam);
 
     top.setCollisionByProperty({ collides: true });
     trees.setCollisionByProperty({ collides: true });

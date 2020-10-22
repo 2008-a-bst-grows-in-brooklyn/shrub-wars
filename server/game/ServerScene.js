@@ -43,6 +43,14 @@ module.exports = class ServerScene extends Phaser.Scene {
         bullet.destroy();
       }
     );
+    this.physics.add.collider(
+      this.ProjectileManager.projectiles,
+      this.Map.base,
+      (bullet) => {
+        this.ProjectileManager.projectileList[bullet.id] = null;
+        bullet.destroy;
+      }
+    );
 
     //Player collides with a projectile
     this.physics.add.collider(
