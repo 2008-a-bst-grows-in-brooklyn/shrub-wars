@@ -21,9 +21,14 @@ export default class ClientScene extends Phaser.Scene {
     this.load.image("red", "red.png");
     this.load.spritesheet("team1", "team1.png", { frameWidth: 32 });
     this.load.spritesheet("team2", "team2.png", { frameWidth: 32 });
+    this.load.audio("BGMusic", 'audio/Underclocked.mp3')
+    this.load.audio("Fireball", 'audio/fireball.mp3')
   }
 
   create(roomData) {
+    this.bgMusic = this.sound.add("BGMusic", {volume: 0.02, loop: true})
+    this.fireball = this.sound.add("Fireball",{volume: 0.02})
+    this.bgMusic.play()
     createAnimations(this);
     //initialize texts
 
@@ -244,6 +249,7 @@ export default class ClientScene extends Phaser.Scene {
             );
             bullet.id = id;
             this.bulletList[id] = bullet;
+            this.fireball.play()
           }
         }
         this.flag.setPosition(data.flag.x, data.flag.y);
@@ -300,6 +306,8 @@ export default class ClientScene extends Phaser.Scene {
         .setOrigin(0, 0)
         .setInteractive()
         .on("pointerdown", () => {
+          this.bgMusic.stop()
+          roomData.music.play()
           //HANDLE LEAVING ROOM
           socket.off("update", updateCallback);
           socket.off("PLAYER_JOINED", joinCallback);

@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import ClientScene from "./ClientScene";
 import RespawnPopup from "./RespawnPopup";
 import GameOverPopup from "./GameOverPopup";
+import LogoSplashScreen from "./LogoSplashScreen";
 import StartMenu from "./StartMenu";
 import BrowseRooms from "./BrowseRooms";
 import Credits from "./Credits";
@@ -27,6 +28,7 @@ const config = {
   },
 
   scene: [
+    LogoSplashScreen,
     StartMenu,
     ClientScene,
     RespawnPopup,
