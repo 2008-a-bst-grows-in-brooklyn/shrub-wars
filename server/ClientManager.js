@@ -1,4 +1,3 @@
-const { removePlayerFromRoom } = require("./RoomManager");
 const RoomManager = require("./RoomManager");
 
 class ClientManager {
@@ -40,8 +39,8 @@ class ClientManager {
 
         //declare leave_room listener
         socket.once("LEAVE_ROOM", () => {
-          const roomId = this.clientList[socket.id].Id;
-          removePlayerFromRoom(socket, roomId);
+          const roomId = this.clientList[socket.id].room;
+          socket.leave(roomId);
           this.clientList[socket.id].room = undefined;
         });
 
@@ -53,7 +52,6 @@ class ClientManager {
     });
 
     socket.on("FETCH_ROOMS", () => {
-      console.log("rooms fetched", RoomManager.publicRooms);
       socket.emit("ROOMS_FETCHED", RoomManager.publicRooms);
     });
   }

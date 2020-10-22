@@ -157,7 +157,6 @@ module.exports = class ServerScene extends Phaser.Scene {
   }
 
   update() {
-    //console.log(this.game.io, "game");
     this.flag.updatePosition();
 
     //this should emit only to the socket-room

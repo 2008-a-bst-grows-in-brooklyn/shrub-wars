@@ -103,7 +103,6 @@ module.exports = class Player extends Phaser.GameObjects.Rectangle {
   emptyMagazine() {
     if (!this.reloading) {
       this.reloadingTimer = this.scene.time.delayedCall(3500, () => {
-        console.log("calling on fullMagazine");
         this.fullMagazine();
       });
     }

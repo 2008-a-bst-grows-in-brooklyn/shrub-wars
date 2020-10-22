@@ -56,7 +56,7 @@ export default class ClientScene extends Phaser.Scene {
       .text(198, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
       .setScrollFactor(0, 0)
       .setStyle({ color: "#000000", fontFamily: "Luminari, fantasy" })
-      .setDepth(1)
+      .setDepth(1);
 
     this.bullets = this.add.group();
     this.add.image(0, 0, "village").setOrigin(0);
@@ -81,7 +81,6 @@ export default class ClientScene extends Phaser.Scene {
 
     //First, declare the initialize game listener
     socket.once("INITIALIZE_GAME", (data) => {
-      console.log(data);
       for (const id in data.playerList) {
         let newPlayer = data.playerList[id];
 
@@ -91,7 +90,7 @@ export default class ClientScene extends Phaser.Scene {
         } else {
           team = "team2";
         }
-        console.log(team);
+
         let player = this.add.sprite(newPlayer.x, newPlayer.y, team);
 
         player.id = id;
@@ -132,7 +131,6 @@ export default class ClientScene extends Phaser.Scene {
         for (const id in data.playerList) {
           let serverPlayer = data.playerList[id];
           let clientPlayer = this.playerList[id];
-
           //update rendered location and rotation
           clientPlayer.setPosition(serverPlayer.x, serverPlayer.y);
 
@@ -214,7 +212,6 @@ export default class ClientScene extends Phaser.Scene {
               this.bulletList[id].rotation = serverBullet.rotation;
             }
           } else {
-            console.log(serverBullet.teamName);
             let bullet = this.add.image(
               serverBullet.x,
               serverBullet.y,
@@ -244,7 +241,6 @@ export default class ClientScene extends Phaser.Scene {
         let player = this.add.sprite(newPlayer.x, newPlayer.y, team);
         player.id = newPlayer.id;
         this.playerList[newPlayer.id] = player;
-        console.log(player);
       };
 
       const leaveCallback = (id) => {
@@ -280,8 +276,6 @@ export default class ClientScene extends Phaser.Scene {
         .setInteractive()
         .on("pointerdown", () => {
           //HANDLE LEAVING ROOM
-          console.log("leaving room!");
-
           socket.off("update", updateCallback);
           socket.off("PLAYER_JOINED", joinCallback);
           socket.off("PLAYER_LEFT", leaveCallback);

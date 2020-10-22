@@ -53,10 +53,6 @@ class RoomManager {
     }
   }
 
-  removePlayerFromRoom(socket, roomId) {
-    socket.leave(roomId);
-  }
-
   get publicRooms() {
     const publicList = [];
 
