@@ -36,8 +36,16 @@ export default class ClientScene extends Phaser.Scene {
         color: "#000000",
         fontFamily: "Luminari, fantasy",
       });
-    this.roomText = this.add
+    /*this.roomText = this.add
       .text(345, 5, `Room Code: ${roomData.roomId}`)
+      .setScrollFactor(0, 0)
+      .setDepth(1)
+      .setStyle({
+        color: "#000000",
+        fontFamily: "Luminari, fantasy",
+      });*/
+    this.roomText = this.add
+      .text(178, 492, `Room Code: ${roomData.roomId}`)
       .setScrollFactor(0, 0)
       .setDepth(1)
       .setStyle({
@@ -264,7 +272,7 @@ export default class ClientScene extends Phaser.Scene {
         .setAlpha(0.7)
         .setOrigin(0, 0);
       this.add
-        .circle(0, 0, 16, 0xff6a00)
+        .circle(0, 0, 16, 0xffb233)
         .setDepth(1)
         .setAlpha(0.7)
         .setScrollFactor(0, 0)

@@ -39,7 +39,7 @@ export default class Credit extends Phaser.Scene {
       .setDepth(2)
       .setOrigin(0, 0);
     this.add
-      .circle(0, 0, 16, 0xff6a00)
+      .circle(0, 0, 16, 0xffb233)
       .setDepth(1)
       .setScrollFactor(0, 0)
       .setOrigin(0, 0)
