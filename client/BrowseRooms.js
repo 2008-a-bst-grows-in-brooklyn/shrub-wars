@@ -40,7 +40,7 @@ export default class BrowseRooms extends Phaser.Scene {
       });
     const text = this.add
       .text(256, yPosition, `Join Room ${roomId}`, {
-        fontFamily: "Luminari, fantasy",
+        fontFamily: "Luminari, Constantia, fantasy",
         fontSize: 18,
         color: "#000000",
       })
