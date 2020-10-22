@@ -34,7 +34,8 @@ export default class BrowseRooms extends Phaser.Scene {
       .on("pointerdown", () => {
         socket.emit("FIND_ROOM", roomId); // Look for room and checking if room exists
         socket.once("ROOM_FOUND", () => {
-          this.scene.start("ClientScene", { roomId }); // Starts game scene if room is found
+          this.menuMusic.stop()
+          this.scene.start("ClientScene", { roomId, music: this.menuMusic }); // Starts game scene if room is found
         });
       });
     const text = this.add
@@ -64,7 +65,7 @@ export default class BrowseRooms extends Phaser.Scene {
     this.load.image("BlueUp", "BlueUp.png");
     this.load.image("BlueDown", "BlueDown.png");
   }
-  create() {
+  create(menuSound) {
     this.add.image(0, 0, "village");
     this.add.image(120, 50, "GhostOneRight");
     this.add.image(200, 50, "InvertedRed");
@@ -77,6 +78,7 @@ export default class BrowseRooms extends Phaser.Scene {
     this.add.image(190, 465, "GhostOne");
     this.add.image(450, 20, "GhostTwoLeft");
     this.add.rectangle(256, 256, 358, 488, 0x444444, 0.8);
+    this.menuMusic = menuSound.music;
 
     this.add
       .text(0, 5, "↩", {
