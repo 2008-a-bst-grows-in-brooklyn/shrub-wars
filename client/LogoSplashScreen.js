@@ -34,7 +34,7 @@ export default class LogoSplashScreen extends Phaser.Scene {
     this.add.image(190, 465, "GhostOne")
     this.add.image(450, 20, "GhostTwoLeft")
       this.menuMusic = this.sound.add("MenuMusic",{
-        volume: 0.2,
+        volume: 0.02,
         loop: true
       })
 

@@ -26,8 +26,8 @@ export default class ClientScene extends Phaser.Scene {
   }
 
   create(roomData) {
-    this.bgMusic = this.sound.add("BGMusic", {volume: 0.2, loop: true})
-    this.fireball = this.sound.add("Fireball",{volume: 0.2})
+    this.bgMusic = this.sound.add("BGMusic", {volume: 0.02, loop: true})
+    this.fireball = this.sound.add("Fireball",{volume: 0.02})
     this.bgMusic.play()
     createAnimations(this);
     //initialize texts
