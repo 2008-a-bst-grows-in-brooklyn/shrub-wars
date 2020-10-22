@@ -49,6 +49,11 @@ class ClientManager {
           const roomId = this.clientList[socket.id].room;
           socket.leave(roomId);
           this.clientList[socket.id].room = undefined;
+
+          let playerCount = RoomManager.getPlayerCount(roomId);
+          if (playerCount <= 0) {
+            RoomManager.destroyRoom(roomId);
+          }
         });
 
         //otherwise, inform the client that something went wrong

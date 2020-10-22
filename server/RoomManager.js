@@ -53,6 +53,15 @@ class RoomManager {
     }
   }
 
+  destroyRoom(roomId) {
+    this.roomList[roomId].destroy();
+    delete this.roomList[roomId];
+  }
+
+  getPlayerCount(roomId) {
+    return this.getGameScene(roomId).PlayerManager.playerCount;
+  }
+
   get publicRooms() {
     const publicList = [];
 

@@ -34,9 +34,6 @@ module.exports = class PlayerManager {
     return this.playerList[socket.id];
   }
 
-  /* left: 180 x 860 y
-  right: 1880 x 860 y  */
-
   addNewPlayer(socket) {
     const newPlayer = new Player(
       this.scene,
@@ -75,5 +72,9 @@ module.exports = class PlayerManager {
     this.playerList[socket.id].destroy();
     delete this.playerList[socket.id];
     socket.to(this.roomId).emit("PLAYER_LEFT", socket.id);
+  }
+
+  get playerCount() {
+    return Object.keys(this.playerList).length;
   }
 };
