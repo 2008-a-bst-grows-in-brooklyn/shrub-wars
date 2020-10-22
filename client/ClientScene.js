@@ -36,8 +36,16 @@ export default class ClientScene extends Phaser.Scene {
         color: "#000000",
         fontFamily: "Luminari, fantasy",
       });
-    this.roomText = this.add
+    /*this.roomText = this.add
       .text(345, 5, `Room Code: ${roomData.roomId}`)
+      .setScrollFactor(0, 0)
+      .setDepth(1)
+      .setStyle({
+        color: "#000000",
+        fontFamily: "Luminari, fantasy",
+      });*/
+    this.roomText = this.add
+      .text(178, 492, `Room Code: ${roomData.roomId}`)
       .setScrollFactor(0, 0)
       .setDepth(1)
       .setStyle({
@@ -45,10 +53,10 @@ export default class ClientScene extends Phaser.Scene {
         fontFamily: "Luminari, fantasy",
       });
     this.scoreboard = this.add
-      .text(180, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
+      .text(198, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
       .setScrollFactor(0, 0)
       .setStyle({ color: "#000000", fontFamily: "Luminari, fantasy" })
-      .setDepth(1);
+      .setDepth(1)
 
     this.bullets = this.add.group();
     this.add.image(0, 0, "village").setOrigin(0);
@@ -255,16 +263,18 @@ export default class ClientScene extends Phaser.Scene {
       socket.on("PLAYER_LEFT", leaveCallback);
 
       this.add
-        .text(8, 0, "↩", {
+        .text(0, 5, "↩", {
           fontSize: 32,
           color: "#000000",
         })
         .setScrollFactor(0, 0)
         .setDepth(2)
+        .setAlpha(0.7)
         .setOrigin(0, 0);
       this.add
-        .circle(2, 0, 16, 0xff6a00)
+        .circle(0, 0, 16, 0xffb233)
         .setDepth(1)
+        .setAlpha(0.7)
         .setScrollFactor(0, 0)
         .setOrigin(0, 0)
         .setInteractive()
