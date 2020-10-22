@@ -38,7 +38,7 @@ export default class StartMenu extends Phaser.Scene {
     // title
     this.add
       .text(256, 95, "     Boo Bash     ", {
-        fontFamily: "Luminari, fantasy",
+        fontFamily: "Luminari, Constantia, fantasy",
         fontSize: 32,
         color: "#FF9A00",
         backgroundColor: "#000000",
@@ -48,7 +48,7 @@ export default class StartMenu extends Phaser.Scene {
     //Create Game button
     this.add
       .text(256, 315, "< Create Game >", {
-        fontFamily: "Luminari, fantasy",
+        fontFamily: "Luminari, Constantia, fantasy",
         fontSize: 18,
         color: "#000000",
         backgroundColor: "#FFB233",
@@ -65,7 +65,7 @@ export default class StartMenu extends Phaser.Scene {
     // Browse Game button
     this.add
       .text(256, 350, "< Browse Games >", {
-        fontFamily: "Luminari, fantasy",
+        fontFamily: "Luminari, Constantia, fantasy",
         fontSize: 18,
         color: "#000000",
         backgroundColor: "#FFB233",
@@ -79,7 +79,7 @@ export default class StartMenu extends Phaser.Scene {
     //Join game Button
     this.add
       .text(256, 385, "< Join Game >", {
-        fontFamily: "Luminari, fantasy",
+        fontFamily: "Luminari, Constantia, fantasy",
         fontSize: 18,
         color: "#000000",
         backgroundColor: "#FFB233",
@@ -108,7 +108,7 @@ export default class StartMenu extends Phaser.Scene {
     // Credit Button
     this.add
       .text(256, 415, "< Credits >", {
-        fontFamily: "Luminari, fantasy",
+        fontFamily: "Luminari, Constantia, fantasy",
         fontSize: 18,
         color: "#000000",
         backgroundColor: "#FFB233",
