@@ -20,7 +20,7 @@ export default class StartMenu extends Phaser.Scene {
     this.load.image("BlueUp", "BlueUp.png");
     this.load.image("BlueDown", "BlueDown.png");
   }
-  create() {
+  create(sound) {
     this.add.image(0, 0, "village");
     this.add.image(167, 95, "pumpkin").setDepth(1);
     this.add.image(345, 95, "pumpkin").setDepth(1);
@@ -58,23 +58,24 @@ export default class StartMenu extends Phaser.Scene {
       .on("pointerdown", () => {
         socket.emit("CREATE_GAME"); // Starts a room instance
         socket.once("GET_ROOMID", (id) => {
-          this.scene.start("ClientScene", { roomId: id });
+          sound.music.stop()
+          this.scene.start("ClientScene", { roomId: id, music: sound.music});
         });
       });
 
     // Browse Game button
     this.add
       .text(256, 350, "< Browse Games >", {
-        fontFamily: "Luminari, fantasy",
-        fontSize: 18,
-        color: "#000000",
-        backgroundColor: "#FFB233",
-      })
-      .setOrigin(0.5)
-      .setInteractive()
-      .on("pointerdown", () => {
-        this.scene.start("BrowseRooms");
-      });
+      fontFamily: "Luminari, fantasy",
+      fontSize: 18,
+      color: "#000000",
+      backgroundColor: "#FFB233",
+    })
+    .setOrigin(0.5)
+    .setInteractive()
+    .on("pointerdown", () => {
+      this.scene.start("BrowseRooms", {music: sound.music});
+    });
 
     //Join game Button
     this.add
@@ -96,7 +97,8 @@ export default class StartMenu extends Phaser.Scene {
             if (roomId !== "") {
               socket.emit("FIND_ROOM", roomId); // Look for room and checking if room exists
               socket.once("ROOM_FOUND", () => {
-                this.scene.start("ClientScene", { roomId }); // Starts game scene if room is found
+                sound.music.stop()
+                this.scene.start("ClientScene", { roomId, music: sound.music }); // Starts game scene if room is found
               });
             } else {
               console.log("ERROR: No room specified"); // Text input was left empty
