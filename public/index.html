@@ -4,126 +4,142 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Boo Bash</title>
-    <link rel="shortcut icon" href="./favicon.png">
+    <link rel="shortcut icon" href="./favicon.png" />
     <script src="bundle.js"></script>
   </head>
   <body>
-    <div id= "left">
-        <div class= "controls">
-          <div class= "containerOne">
-            <p1 style=
-            "font-size: 4vw;
-            font-family: Luminari, fantasy"
-            >
+    <div id="left">
+      <div class="controls">
+        <div class="containerOne">
+          <p1
+            style="font-size: 4vw; font-family: Luminari, Constantia, fantasy"
+          >
             <ins>Controls</ins>
-            </p1>
-            <p2 style=
-            "font-size: 1.62vw;
-            font-family: Luminari, fantasy"
-            >
-            <b><strong>Moving Around: </strong></b> <small><br>WASD or IJKL</small><br>
-            <b><strong>Grab the Pumpkin: </strong></b><small>Spacebar</small><br>
-            <b><strong>Aim Fire Ball: </strong></b><small><br>Direction of Mouse Pointer</small><br>
-            <b><strong>Shoot Fire Ball: </strong></b><small><br>Left-Click</small><br>
-            <b><strong>Recharging: </strong></b><small><br>Automatic after 3.5 seconds</small><br>
-            <b><strong>Respawn: </strong></b><small><br>Automatic after 5 seconds</small><br>
+          </p1>
+          <p2
+            style="
+              font-size: 1.62vw;
+              font-family: Luminari, Constantia, fantasy;
+            "
+          >
+            <b><strong>Moving Around: </strong></b>
+            <small><br />WASD or IJKL</small><br />
+            <b><strong>Grab the Pumpkin: </strong></b><small>Spacebar</small
+            ><br />
+            <b><strong>Aim Fire Ball: </strong></b
+            ><small><br />Direction of Mouse Pointer</small><br />
+            <b><strong>Shoot Fire Ball: </strong></b
+            ><small><br />Left-Click</small><br />
+            <b><strong>Recharging: </strong></b
+            ><small><br />Automatic after 3.5 seconds</small><br />
+            <b><strong>Respawn: </strong></b
+            ><small><br />Automatic after 5 seconds</small><br />
           </p2>
-          </div>
         </div>
+      </div>
     </div>
     <div id="right">
-      <div class= "objective">
-        <div class= "containerTwo">
-          <p1 style=
-          "font-size: 4vw;
-          font-family: Luminari, fantasy"
+      <div class="objective">
+        <div class="containerTwo">
+          <p1
+            style="font-size: 4vw; font-family: Luminari, Constantia, fantasy"
           >
-          <ins>Objective</ins>
+            <ins>Objective</ins>
           </p1>
-          <p2 style=
-          "font-size: 1.62vw;
-          font-family: Luminari, fantasy"
+          <p2
+            style="
+              font-size: 1.62vw;
+              font-family: Luminari, Constantia, fantasy;
+            "
           >
-          <small>You and your friends are having a spooky party...but noone brought pumpkins!
-            Other ghosts are having the same problem, but pumpkins are limited!
-            Be the first team to bring 10 pumpkins back to your graveyard, but be wary! 
-            All ghosts can shoot deadly fireballs, and lugging pumpkins around will slow you down and keep your fire ball hands full!</small>
-        </p2>
+            <small
+              >You and your friends are having a spooky party...but noone
+              brought pumpkins! Other ghosts are having the same problem, but
+              pumpkins are limited! Be the first team to bring 10 pumpkins back
+              to your graveyard, but be wary! All ghosts can shoot deadly
+              fireballs, and lugging pumpkins around will slow you down and keep
+              your fire ball hands full!</small
+            >
+          </p2>
         </div>
       </div>
     </div>
     <div id="game"></div>
-  <style>
-    body {
-      margin: 0;
-      background-image: url(WoodenTable.jpeg);
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-    .controls {
-      height: 100%;
-      width: 100%;
-      position: relative;
-    }
-    .containerOne {
-    position: absolute;
-    top: 48%;
-    right: 10%;
-    bottom: 50%;
-    left: 12%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    }
-    .objective {
-      height: 100%;
-      width: 100%;
-      position: relative;
-    }
-    .containerTwo {
-    position: absolute;
-    top: 50%;
-    right: 10%;
-    bottom: 50%;
-    left: 10%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    }
-    #left { 
-      float:left; 
-      width:25%; 
-      height:100vh;
-      margin: 0;
-      background-image: url(PumpkinOne.png), url(GhostOne.png), url(InvertedRed.png), url(ScrollOne.png);
-      background-position: left top, left bottom, right 10px bottom 35px, center;
-      background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
-      background-size: 45%, 35%, 15%, contain;
-    } 
-    #game {  
-      float:left;
-      width:50%; 
-      height:512px;
-      position: absolute;
-	    top:0;
-	    bottom: 0;
-	    left: 0;
-	    right: 0;	
-	    margin: auto;
-    } 
-    #right { 
-      float:right; 
-      width:25%; 
-      height:100vh; 
-      margin: 0;
-      background-image: url(PumpkinTwo.png), url(GhostTwo.png), url(blue.png), url(ScrollTwo.png);
-      background-position: right bottom, right top, left 10px top 35px, center;
-      background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
-      background-size: 40%, 35%, 15%, contain;
-    } 
-  </style>
+    <style>
+      body {
+        margin: 0;
+        background-image: url(WoodenTable.jpeg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        image-rendering: pixelated;
+      }
+      .controls {
+        height: 100%;
+        width: 100%;
+        position: relative;
+      }
+      .containerOne {
+        position: absolute;
+        top: 48%;
+        right: 10%;
+        bottom: 50%;
+        left: 12%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .objective {
+        height: 100%;
+        width: 100%;
+        position: relative;
+      }
+      .containerTwo {
+        position: absolute;
+        top: 50%;
+        right: 10%;
+        bottom: 50%;
+        left: 10%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      #left {
+        float: left;
+        width: 25%;
+        height: 100vh;
+        margin: 0;
+        background-image: url(PumpkinOne.png), url(GhostOne.png),
+          url(InvertedRed.png), url(ScrollOne.png);
+        background-position: left top, left bottom, right 10px bottom 35px,
+          center;
+        background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+        background-size: 45%, 35%, 15%, contain;
+      }
+      #game {
+        float: left;
+        width: 50%;
+        height: 512px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+      #right {
+        float: right;
+        width: 25%;
+        height: 100vh;
+        margin: 0;
+        background-image: url(PumpkinTwo.png), url(GhostTwo.png), url(blue.png),
+          url(ScrollTwo.png);
+        background-position: right bottom, right top, left 10px top 35px, center;
+        background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+        background-size: 40%, 35%, 15%, contain;
+      }
+    </style>
   </body>
 </html>
