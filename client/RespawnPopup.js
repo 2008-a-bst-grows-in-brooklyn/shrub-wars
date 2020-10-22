@@ -12,9 +12,9 @@ export default class RespawnPopup extends Phaser.Scene {
       .text(256, 256 - 40, `You Have Died`, { fontSize: "28px"})
       .setOrigin(0.5)
       .setStyle({
-        fontFamily: 'Luminari, fantasy' 
+        fontFamily: 'Luminari, Constantia, fantasy' 
       })
-    this.add.text(256, 256, `:(`, {fontFamily: 'Luminari, fantasy'}).setOrigin(0.5);
-    this.add.text(256, 256 + 40, `Respawning...`, {fontFamily: 'Luminari, fantasy'}).setOrigin(0.5);
+    this.add.text(256, 256, `:(`, {fontFamily: 'Luminari, Constantia, fantasy'}).setOrigin(0.5);
+    this.add.text(256, 256 + 40, `Respawning...`, {fontFamily: 'Luminari, Constantia, fantasy'}).setOrigin(0.5);
   }
 }

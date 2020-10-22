@@ -40,7 +40,7 @@ export default class ClientScene extends Phaser.Scene {
       .setOrigin(0.5, 0.5)
       .setStyle({
         color: "#ffffff",
-        fontFamily: "Luminari, fantasy",
+        fontFamily: "Luminari, Constantia, fantasy",
       });
     this.roomText = this.add
       .text(415, 0, `= Teammate`)
@@ -48,7 +48,7 @@ export default class ClientScene extends Phaser.Scene {
       .setDepth(2)
       .setStyle({
         color: "#ffffff",
-        fontFamily: "Luminari, fantasy",
+        fontFamily: "Luminari, Constantia, fantasy",
       });
     this.add
       .rectangle(395, 3, 15, 15, 0x00ff00)
@@ -62,7 +62,7 @@ export default class ClientScene extends Phaser.Scene {
       .setDepth(2)
       .setStyle({
         color: "#ffffff",
-        fontFamily: "Luminari, fantasy",
+        fontFamily: "Luminari, Constantia, fantasy",
       });
     /* this.add
       .rectangle(390, 0, 150, 42, 0x888888)
@@ -81,12 +81,12 @@ export default class ClientScene extends Phaser.Scene {
       .setDepth(1)
       .setStyle({
         color: "#ffffff",
-        fontFamily: "Luminari, fantasy",
+        fontFamily: "Luminari, Constantia, fantasy",
       });
     this.scoreboard = this.add
       .text(198, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
       .setScrollFactor(0, 0)
-      .setStyle({ color: "#ffffff", fontFamily: "Luminari, fantasy" })
+      .setStyle({ color: "#ffffff", fontFamily: "Luminari, Constantia, fantasy" })
       .setDepth(1);
 
     this.bullets = this.add.group();

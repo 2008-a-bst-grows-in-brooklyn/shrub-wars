@@ -50,8 +50,8 @@ export default class Credit extends Phaser.Scene {
       });
 
     this.add
-      .text(256, 95, " Created By: ", {
-        fontFamily: "Luminari, fantasy",
+      .text(256, 30, " Created By: ", {
+        fontFamily: "Luminari, Constantia, fantasy",
         fontSize: 32,
         color: "#FF9A00",
         backgroundColor: "#000000",
@@ -59,53 +59,98 @@ export default class Credit extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(256, 145, " Adrian Javorski ", {
-        fontFamily: "Luminari, fantasy",
-        fontSize: 18,
+      .text(256, 70, " Adrian Javorski ", {
+        fontFamily: "Luminari, Constantia, fantasy",
+        fontSize: 24,
         color: "#000000",
         backgroundColor: "#FFB233",
       })
       .setOrigin(0.5);
 
     this.add
-      .text(256, 185, " Corey Mertz ", {
-        fontFamily: "Luminari, fantasy",
-        fontSize: 18,
+      .text(256, 105, " Corey Mertz ", {
+      fontFamily: "Luminari, Constantia, fantasy",
+      fontSize: 24,
+      color: "#000000",
+      backgroundColor: "#FFB233",
+    })
+    .setOrigin(0.5)
+
+    this.add
+      .text(256, 140, " David Moon ", {
+        fontFamily: "Luminari, Constantia, fantasy",
+        fontSize: 24,
         color: "#000000",
         backgroundColor: "#FFB233",
       })
       .setOrigin(0.5);
 
     this.add
-      .text(256, 225, " David Moon ", {
-        fontFamily: "Luminari, fantasy",
-        fontSize: 18,
+      .text(256, 175, " Kirby Chen ", {
+        fontFamily: "Luminari, Constantia, fantasy",
+        fontSize: 24,
         color: "#000000",
         backgroundColor: "#FFB233",
       })
       .setOrigin(0.5);
 
     this.add
-      .text(256, 265, " Kirby Chen ", {
-        fontFamily: "Luminari, fantasy",
+      .text(256, 215, " Map Tilesets and Sprites Created By: PIPOYA ", {
+        fontFamily: "Luminari, Constantia, fantasy",
+        fontSize: 20,
+        color: "#FF9A00",
+        backgroundColor: "#000000"
+      })
+      .setOrigin(0.5)
+
+    this.add
+      .text(256, 245, " https://itch.io/profile/pipoya ", {
+        fontFamily: "Luminari, Constantia, fantasy",
         fontSize: 18,
         color: "#000000",
         backgroundColor: "#FFB233",
       })
-      .setOrigin(0.5);
+      .setOrigin(0.5)
 
     this.add
-      .text(256, 305, " Map Tilesets and Sprites Created By: PIPOYA ", {
-        fontFamily: "Luminari, fantasy",
-        fontSize: 18,
+      .text(256, 275, " Menu Music Created By: RoyaltyFreeZone ", {
+        fontFamily: "Luminari, Constantia, fantasy",
+        fontSize: 20,
         color: "#FF9A00",
         backgroundColor: "#000000",
       })
       .setOrigin(0.5);
 
     this.add
-      .text(256, 345, " https://itch.io/profile/pipoya ", {
-        fontFamily: "Luminari, fantasy",
+      .text(256, 308, " Provided By No Copyright Music: ", {
+        fontFamily: "Luminari, Constantia, fantasy",
+        fontSize: 20,
+        color: "#000000",
+        backgroundColor: "#FFB233",
+      })
+      .setOrigin(0.5)
+
+    this.add
+      .text(256, 332, " https://www.youtube.com/c/royaltyfreezone ", {
+        fontFamily: "Luminari, Constantia, fantasy",
+        fontSize: 18,
+        color: "#000000",
+        backgroundColor: "#FFB233",
+      })
+      .setOrigin(0.5)
+
+    this.add
+      .text(256, 354, " Music Used: Spook 3 By PeriTune ", {
+        fontFamily: "Luminari, Constantia, fantasy",
+        fontSize: 20,
+        color: "#000000",
+        backgroundColor: "#FFB233",
+      })
+      .setOrigin(0.5)
+
+    this.add
+      .text(256, 378, " https://soundcloud.com/sei_peridot/spook3 ", {
+        fontFamily: "Luminari, Constantia, fantasy",
         fontSize: 18,
         color: "#000000",
         backgroundColor: "#FFB233",
@@ -113,17 +158,35 @@ export default class Credit extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(256, 385, " Music Created By: Example ", {
-        fontFamily: "Luminari, fantasy",
+      .text(256, 401, " Licensed Under: Creative Commons Attribution 3.0 ", {
+        fontFamily: "Luminari, Constantia, fantasy",
+        fontSize: 20,
+        color: "#000000",
+        backgroundColor: "#FFB233",
+      })
+      .setOrigin(0.5)
+
+    this.add
+      .text(256, 425, " https://creativecommons.org/licenses/by/3.0 ", {
+        fontFamily: "Luminari, Constantia, fantasy",
         fontSize: 18,
+        color: "#000000",
+        backgroundColor: "#FFB233",
+      })
+      .setOrigin(0.5)
+
+    this.add
+      .text(256, 455, " In-Game Ambiance Created By: Eric Skiff ", {
+        fontFamily: "Luminari, Constantia, fantasy",
+        fontSize: 20,
         color: "#FF9A00",
         backgroundColor: "#000000",
       })
       .setOrigin(0.5);
 
     this.add
-      .text(256, 425, " https://www.example.com ", {
-        fontFamily: "Luminari, fantasy",
+      .text(256, 485, " Underclocked - Available at http://EricSkiff.com/music ", {
+        fontFamily: "Luminari, Constantia, fantasy",
         fontSize: 18,
         color: "#000000",
         backgroundColor: "#FFB233",
