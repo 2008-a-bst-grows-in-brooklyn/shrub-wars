@@ -19,16 +19,17 @@ export default class ClientScene extends Phaser.Scene {
     this.load.image("shrub", "bush.png");
     this.load.image("blue", "blue.png");
     this.load.image("red", "red.png");
+    this.load.image("back_arrow", "back_arrow.png");
     this.load.spritesheet("team1", "team1.png", { frameWidth: 32 });
     this.load.spritesheet("team2", "team2.png", { frameWidth: 32 });
-    this.load.audio("BGMusic", 'audio/Underclocked.mp3')
-    this.load.audio("Fireball", 'audio/fireball.mp3')
+    this.load.audio("BGMusic", "audio/Underclocked.mp3");
+    this.load.audio("Fireball", "audio/fireball.mp3");
   }
 
   create(roomData) {
-    this.bgMusic = this.sound.add("BGMusic", {volume: 0.02, loop: true})
-    this.fireball = this.sound.add("Fireball",{volume: 0.02})
-    this.bgMusic.play()
+    this.bgMusic = this.sound.add("BGMusic", { volume: 0.02, loop: true });
+    this.fireball = this.sound.add("Fireball", { volume: 0.02 });
+    this.bgMusic.play();
     createAnimations(this);
     //initialize texts
 
@@ -38,7 +39,7 @@ export default class ClientScene extends Phaser.Scene {
       .setDepth(1)
       .setOrigin(0.5, 0.5)
       .setStyle({
-        color: "#000000",
+        color: "#ffffff",
         fontFamily: "Luminari, Constantia, fantasy",
       });
     this.roomText = this.add
@@ -46,7 +47,7 @@ export default class ClientScene extends Phaser.Scene {
       .setScrollFactor(0, 0)
       .setDepth(2)
       .setStyle({
-        color: "#000000",
+        color: "#ffffff",
         fontFamily: "Luminari, Constantia, fantasy",
       });
     this.add
@@ -54,38 +55,38 @@ export default class ClientScene extends Phaser.Scene {
       .setDepth(2)
       .setAlpha(0.8)
       .setScrollFactor(0, 0)
-      .setOrigin(0, 0)
+      .setOrigin(0, 0);
     this.roomText = this.add
       .text(430, 20, `= Pumpkin`)
       .setScrollFactor(0, 0)
       .setDepth(2)
       .setStyle({
-        color: "#000000",
+        color: "#ffffff",
         fontFamily: "Luminari, Constantia, fantasy",
       });
-      this.add
-        .rectangle(390, 0, 150, 42, 0x888888)
-        .setDepth(1)
-        .setAlpha(0.8)
-        .setScrollFactor(0, 0)
-        .setOrigin(0, 0)
-      this.add
-        .rectangle(410, 23, 15, 15, 0xffb233)
-        .setDepth(2)
-        .setScrollFactor(0, 0)
-        .setOrigin(0, 0)
+    /* this.add
+      .rectangle(390, 0, 150, 42, 0x888888)
+      .setDepth(1)
+      .setAlpha(0.8)
+      .setScrollFactor(0, 0)
+      .setOrigin(0, 0); */
+    this.add
+      .rectangle(410, 23, 15, 15, 0xffb233)
+      .setDepth(2)
+      .setScrollFactor(0, 0)
+      .setOrigin(0, 0);
     this.roomText = this.add
       .text(178, 492, `Room Code: ${roomData.roomId}`)
       .setScrollFactor(0, 0)
       .setDepth(1)
       .setStyle({
-        color: "#000000",
+        color: "#ffffff",
         fontFamily: "Luminari, Constantia, fantasy",
       });
     this.scoreboard = this.add
       .text(198, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
       .setScrollFactor(0, 0)
-      .setStyle({ color: "#000000", fontFamily: "Luminari, Constantia, fantasy" })
+      .setStyle({ color: "#ffffff", fontFamily: "Luminari, Constantia, fantasy" })
       .setDepth(1);
 
     this.bullets = this.add.group();
@@ -249,7 +250,7 @@ export default class ClientScene extends Phaser.Scene {
             );
             bullet.id = id;
             this.bulletList[id] = bullet;
-            this.fireball.play()
+            this.fireball.play();
           }
         }
         this.flag.setPosition(data.flag.x, data.flag.y);
@@ -290,24 +291,15 @@ export default class ClientScene extends Phaser.Scene {
       socket.on("PLAYER_LEFT", leaveCallback);
 
       this.add
-        .text(0, 5, "↩", {
-          fontSize: 32,
-          color: "#000000",
-        })
-        .setScrollFactor(0, 0)
-        .setDepth(1)
-        .setAlpha(0.7)
-        .setOrigin(0, 0);
-      this.add
-        .circle(0, 0, 16, 0xffb233)
+        .image(0, 0, "back_arrow")
         .setDepth(0)
         .setAlpha(0.7)
         .setScrollFactor(0, 0)
         .setOrigin(0, 0)
         .setInteractive()
         .on("pointerdown", () => {
-          this.bgMusic.stop()
-          roomData.music.play()
+          this.bgMusic.stop();
+          roomData.music.play();
           //HANDLE LEAVING ROOM
           socket.off("update", updateCallback);
           socket.off("PLAYER_JOINED", joinCallback);
