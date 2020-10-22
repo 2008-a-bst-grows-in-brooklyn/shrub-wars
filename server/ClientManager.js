@@ -32,6 +32,13 @@ class ClientManager {
     //When client signals that they're ready to receive room data,
     //signal to the game instance that a new player is joining
     socket.on("JOIN_ROOM", (roomId) => {
+      if (this.clientList[socket.id].room) {
+        socket.emit(
+          "JOIN_ERROR",
+          `Client is already in a room. Try refreshing.`
+        );
+        return;
+      }
       const didConnect = RoomManager.addPlayerToRoom(socket, roomId);
 
       if (didConnect) {

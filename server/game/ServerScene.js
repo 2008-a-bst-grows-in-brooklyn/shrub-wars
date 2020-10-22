@@ -95,6 +95,10 @@ module.exports = class ServerScene extends Phaser.Scene {
   //custom method to handle players joining
   clientJoin(socket) {
     console.log("Client", socket.id, "joined room", this.game.roomId);
+    if (this.PlayerManager.getPlayer(socket)) {
+      console.log("player is already connected");
+      return;
+    }
 
     /* Create new player object */
     this.PlayerManager.addNewPlayer(socket);
