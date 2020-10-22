@@ -36,14 +36,39 @@ export default class ClientScene extends Phaser.Scene {
         color: "#000000",
         fontFamily: "Luminari, fantasy",
       });
-    /*this.roomText = this.add
-      .text(345, 5, `Room Code: ${roomData.roomId}`)
+    this.roomText = this.add
+      .text(415, 0, `= Teammate`)
       .setScrollFactor(0, 0)
-      .setDepth(1)
+      .setDepth(2)
       .setStyle({
         color: "#000000",
         fontFamily: "Luminari, fantasy",
-      });*/
+      });
+    this.add
+      .rectangle(395, 3, 15, 15, 0x00ff00)
+      .setDepth(2)
+      .setAlpha(0.8)
+      .setScrollFactor(0, 0)
+      .setOrigin(0, 0)
+    this.roomText = this.add
+      .text(430, 20, `= Pumpkin`)
+      .setScrollFactor(0, 0)
+      .setDepth(2)
+      .setStyle({
+        color: "#000000",
+        fontFamily: "Luminari, fantasy",
+      });
+      this.add
+        .rectangle(390, 0, 150, 42, 0x888888)
+        .setDepth(1)
+        .setAlpha(0.8)
+        .setScrollFactor(0, 0)
+        .setOrigin(0, 0)
+      this.add
+        .rectangle(410, 23, 15, 15, 0xffb233)
+        .setDepth(2)
+        .setScrollFactor(0, 0)
+        .setOrigin(0, 0)
     this.roomText = this.add
       .text(178, 492, `Room Code: ${roomData.roomId}`)
       .setScrollFactor(0, 0)
@@ -268,12 +293,12 @@ export default class ClientScene extends Phaser.Scene {
           color: "#000000",
         })
         .setScrollFactor(0, 0)
-        .setDepth(2)
+        .setDepth(1)
         .setAlpha(0.7)
         .setOrigin(0, 0);
       this.add
         .circle(0, 0, 16, 0xffb233)
-        .setDepth(1)
+        .setDepth(0)
         .setAlpha(0.7)
         .setScrollFactor(0, 0)
         .setOrigin(0, 0)

@@ -61,7 +61,7 @@ export default class Credit extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(256, 165, " Adrian Javorski ", {
+      .text(256, 145, " Adrian Javorski ", {
         fontFamily: "Luminari, fantasy",
         fontSize: 18,
         color: "#000000",
@@ -70,7 +70,7 @@ export default class Credit extends Phaser.Scene {
       .setOrigin(0.5)
       
     this.add
-      .text(256, 205, " Corey Mertz ", {
+      .text(256, 185, " Corey Mertz ", {
       fontFamily: "Luminari, fantasy",
       fontSize: 18,
       color: "#000000",
@@ -79,7 +79,7 @@ export default class Credit extends Phaser.Scene {
     .setOrigin(0.5)
 
     this.add
-      .text(256, 245, " David Moon ", {
+      .text(256, 225, " David Moon ", {
         fontFamily: "Luminari, fantasy",
         fontSize: 18,
         color: "#000000",
@@ -88,7 +88,7 @@ export default class Credit extends Phaser.Scene {
       .setOrigin(0.5)
 
     this.add
-      .text(256, 285, " Kirby Chen ", {
+      .text(256, 265, " Kirby Chen ", {
         fontFamily: "Luminari, fantasy",
         fontSize: 18,
         color: "#000000",
@@ -97,7 +97,7 @@ export default class Credit extends Phaser.Scene {
       .setOrigin(0.5)
 
     this.add
-      .text(256, 360, " Map Tilesets and Sprites Created By: PIPOYA ", {
+      .text(256, 305, " Map Tilesets and Sprites Created By: PIPOYA ", {
         fontFamily: "Luminari, fantasy",
         fontSize: 18,
         color: "#FF9A00",
@@ -106,7 +106,25 @@ export default class Credit extends Phaser.Scene {
       .setOrigin(0.5)
 
     this.add
-      .text(256, 400, " https://itch.io/profile/pipoya ", {
+      .text(256, 345, " https://itch.io/profile/pipoya ", {
+        fontFamily: "Luminari, fantasy",
+        fontSize: 18,
+        color: "#000000",
+        backgroundColor: "#FFB233",
+      })
+      .setOrigin(0.5)
+
+    this.add
+      .text(256, 385, " Music Created By: Example ", {
+        fontFamily: "Luminari, fantasy",
+        fontSize: 18,
+        color: "#FF9A00",
+        backgroundColor: "#000000"
+      })
+      .setOrigin(0.5)
+
+    this.add
+      .text(256, 425, " https://www.example.com ", {
         fontFamily: "Luminari, fantasy",
         fontSize: 18,
         color: "#000000",

@@ -59,7 +59,7 @@ export default class HudDirectionManager {
       this.flag.y
     );
     this.flag.point = this.scene.add
-      .rectangle(0, 0, 16, 16, 0xffffff)
+      .rectangle(0, 0, 16, 16, 0xffb233)
       .setDepth(1);
   }
   getIntersections() {
