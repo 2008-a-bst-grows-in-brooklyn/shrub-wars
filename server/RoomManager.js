@@ -62,6 +62,10 @@ class RoomManager {
     return this.getGameScene(roomId).PlayerManager.playerCount;
   }
 
+  getPlayers(roomId) {
+    return Object.keys(this.getGameScene(roomId).PlayerManager.playerList);
+  }
+
   get publicRooms() {
     const publicList = [];
 
