@@ -3,6 +3,7 @@ const phaserControls = Phaser.Input.Keyboard.KeyCodes;
 import socket from "./socket";
 import createAnimations from "./createAnimations";
 import HudDirectionManager from "./hudDirectionManager";
+import MuteButton from "./MuteButton";
 
 export default class ClientScene extends Phaser.Scene {
   constructor() {
@@ -24,9 +25,12 @@ export default class ClientScene extends Phaser.Scene {
     this.load.spritesheet("team2", "team2.png", { frameWidth: 32 });
     this.load.audio("BGMusic", "audio/Underclocked.mp3");
     this.load.audio("Fireball", "audio/fireball.mp3");
+    this.load.image("sound_on", "sound_on.png");
+    this.load.image("sound_off", "sound_off.png");
   }
 
   create(roomData) {
+    MuteButton(this, 16 + 32, 16, "sound_on", "sound_off");
     this.bgMusic = this.sound.add("BGMusic", { volume: 0.02, loop: true });
     this.fireball = this.sound.add("Fireball", { volume: 0.02 });
     this.bgMusic.play();
@@ -86,7 +90,10 @@ export default class ClientScene extends Phaser.Scene {
     this.scoreboard = this.add
       .text(198, 5, `RED: ${this.score.red} | BLUE: ${this.score.blue}`)
       .setScrollFactor(0, 0)
-      .setStyle({ color: "#ffffff", fontFamily: "Luminari, Constantia, fantasy" })
+      .setStyle({
+        color: "#ffffff",
+        fontFamily: "Luminari, Constantia, fantasy",
+      })
       .setDepth(1);
 
     this.bullets = this.add.group();
