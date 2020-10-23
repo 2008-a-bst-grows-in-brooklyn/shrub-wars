@@ -112,12 +112,6 @@ module.exports = class ServerScene extends Phaser.Scene {
     socket.once("LEAVE_ROOM", () => {
       this.PlayerManager.removePlayer(socket);
 
-      //hackish work-around to turn off game listeners
-      /* const listeners = ["PLAYER_ROTATED", "PLAYER_MOVED", "PLAYER_ACTION"];
-      listeners.forEach((listener) => {
-        socket.off(listener);
-      }); */
-
       socket.off("disconnect", dcCallback);
       socket.off("PLAYER_ROTATED", rotateCallback);
       socket.off("PLAYER_MOVED", moveCallback);

@@ -10,6 +10,14 @@ class ClientManager {
 
     //Handle a socket disconnection
     socket.on("disconnect", () => {
+      const roomId = this.clientList[socket.id].room;
+      let playerArr = [];
+      roomId ? (playerArr = RoomManager.getPlayers(roomId)) : null;
+
+      if (playerArr.length <= 1 && playerArr[0] === socket.id) {
+        RoomManager.destroyRoom(roomId);
+      }
+
       delete this.clientList[socket.id];
     });
 
