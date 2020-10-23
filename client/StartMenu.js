@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import socket from "./socket";
+import MuteButton from "./MuteButton";
 
 export default class StartMenu extends Phaser.Scene {
   constructor() {
@@ -20,6 +21,8 @@ export default class StartMenu extends Phaser.Scene {
     this.load.image("BlueUp", "BlueUp.png");
     this.load.image("BlueDown", "BlueDown.png");
     this.load.image("logo", "logo.png");
+    this.load.image("sound_on", "sound_on.png");
+    this.load.image("sound_off", "sound_off.png");
   }
   create(sound) {
     this.add.image(0, 0, "village");
@@ -33,6 +36,9 @@ export default class StartMenu extends Phaser.Scene {
     this.add.image(148, 275, "BlueUp");
     this.add.image(190, 465, "GhostOne");
     this.add.image(450, 20, "GhostTwoLeft");
+
+    //mute button
+    MuteButton(this, 16 + 32, 16, "sound_on", "sound_off");
 
     // title
     this.add.image(256, 112, "logo").setOrigin(0.5);
@@ -58,16 +64,16 @@ export default class StartMenu extends Phaser.Scene {
     // Browse Game button
     this.add
       .text(256, 350, "< Browse Games >", {
-      fontFamily: "Luminari,Constantia, fantasy",
-      fontSize: 18,
-      color: "#000000",
-      backgroundColor: "#FFB233",
-    })
-    .setOrigin(0.5)
-    .setInteractive()
-    .on("pointerdown", () => {
-      this.scene.start("BrowseRooms", {music: sound.music});
-    });
+        fontFamily: "Luminari,Constantia, fantasy",
+        fontSize: 18,
+        color: "#000000",
+        backgroundColor: "#FFB233",
+      })
+      .setOrigin(0.5)
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.scene.start("BrowseRooms", { music: sound.music });
+      });
 
     //Join game Button
     this.add

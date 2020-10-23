@@ -44,7 +44,6 @@ export default class Credit extends Phaser.Scene {
       .setInteractive()
       .on("pointerdown", () => {
         //HANDLE LEAVING ROOM
-        console.log("leaving room!");
         this.scene.stop("Credits");
         this.scene.start("StartMenu");
       });
@@ -69,12 +68,12 @@ export default class Credit extends Phaser.Scene {
 
     this.add
       .text(256, 105, " Corey Mertz ", {
-      fontFamily: "Luminari, Constantia, fantasy",
-      fontSize: 24,
-      color: "#000000",
-      backgroundColor: "#FFB233",
-    })
-    .setOrigin(0.5)
+        fontFamily: "Luminari, Constantia, fantasy",
+        fontSize: 24,
+        color: "#000000",
+        backgroundColor: "#FFB233",
+      })
+      .setOrigin(0.5);
 
     this.add
       .text(256, 140, " David Moon ", {
@@ -99,9 +98,9 @@ export default class Credit extends Phaser.Scene {
         fontFamily: "Luminari, Constantia, fantasy",
         fontSize: 20,
         color: "#FF9A00",
-        backgroundColor: "#000000"
+        backgroundColor: "#000000",
       })
-      .setOrigin(0.5)
+      .setOrigin(0.5);
 
     this.add
       .text(256, 245, " https://itch.io/profile/pipoya ", {
@@ -110,7 +109,7 @@ export default class Credit extends Phaser.Scene {
         color: "#000000",
         backgroundColor: "#FFB233",
       })
-      .setOrigin(0.5)
+      .setOrigin(0.5);
 
     this.add
       .text(256, 275, " Menu Music Created By: RoyaltyFreeZone ", {
@@ -128,7 +127,7 @@ export default class Credit extends Phaser.Scene {
         color: "#000000",
         backgroundColor: "#FFB233",
       })
-      .setOrigin(0.5)
+      .setOrigin(0.5);
 
     this.add
       .text(256, 332, " https://www.youtube.com/c/royaltyfreezone ", {
@@ -137,7 +136,7 @@ export default class Credit extends Phaser.Scene {
         color: "#000000",
         backgroundColor: "#FFB233",
       })
-      .setOrigin(0.5)
+      .setOrigin(0.5);
 
     this.add
       .text(256, 354, " Music Used: Spook 3 By PeriTune ", {
@@ -146,7 +145,7 @@ export default class Credit extends Phaser.Scene {
         color: "#000000",
         backgroundColor: "#FFB233",
       })
-      .setOrigin(0.5)
+      .setOrigin(0.5);
 
     this.add
       .text(256, 378, " https://soundcloud.com/sei_peridot/spook3 ", {
@@ -164,7 +163,7 @@ export default class Credit extends Phaser.Scene {
         color: "#000000",
         backgroundColor: "#FFB233",
       })
-      .setOrigin(0.5)
+      .setOrigin(0.5);
 
     this.add
       .text(256, 425, " https://creativecommons.org/licenses/by/3.0 ", {
@@ -173,7 +172,7 @@ export default class Credit extends Phaser.Scene {
         color: "#000000",
         backgroundColor: "#FFB233",
       })
-      .setOrigin(0.5)
+      .setOrigin(0.5);
 
     this.add
       .text(256, 455, " In-Game Ambiance Created By: Eric Skiff ", {
@@ -185,12 +184,17 @@ export default class Credit extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(256, 485, " Underclocked - Available at http://EricSkiff.com/music ", {
-        fontFamily: "Luminari, Constantia, fantasy",
-        fontSize: 18,
-        color: "#000000",
-        backgroundColor: "#FFB233",
-      })
+      .text(
+        256,
+        485,
+        " Underclocked - Available at http://EricSkiff.com/music ",
+        {
+          fontFamily: "Luminari, Constantia, fantasy",
+          fontSize: 18,
+          color: "#000000",
+          backgroundColor: "#FFB233",
+        }
+      )
       .setOrigin(0.5);
   }
 }
