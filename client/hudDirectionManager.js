@@ -6,7 +6,6 @@ export default class HudDirectionManager {
       x: this.scene.cameras.main.scrollX + 256,
       y: this.scene.cameras.main.scrollY + 256,
     }; // Client position
-    console.log(this.me.x);
     this.friendPosList = friends; // list of friendly player positions
     this.friends = []; // friendly player gameObjects
     this.flag = flag; // flag position
@@ -51,7 +50,6 @@ export default class HudDirectionManager {
         this.scene.add.rectangle(0, 0, 16, 16, 0x00ff00).setDepth(1)
       );
     }
-    console.log(this.cameraViewBox);
     this.flag.line = new Phaser.Geom.Line(
       this.me.x,
       this.me.y,

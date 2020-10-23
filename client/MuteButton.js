@@ -1,6 +1,5 @@
 export default (scene, x, y, sound_key, mute_key) => {
   let key;
-  console.log("muting!");
   const toggleMute = () => {
     scene.sound.mute = !scene.sound.mute;
     key === sound_key ? (key = mute_key) : (key = sound_key);

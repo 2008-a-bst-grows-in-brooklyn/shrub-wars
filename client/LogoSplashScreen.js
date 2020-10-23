@@ -49,7 +49,6 @@ export default class LogoSplashScreen extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive()
       .on("pointerdown", () => {
-        console.log("pointer downed");
         this.menuMusic.play();
         this.scene.start("StartMenu", { music: this.menuMusic });
       });
