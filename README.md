@@ -34,11 +34,7 @@ You will need Node.js 12 LTS and npm.
 | [Express](https://expressjs.com/)                                           | Node.js web application framework                             |
 | [Phaser on Node by geckos.io](https://github.com/geckosio/phaser-on-nodejs) | Mocks browser components to allow Phaser to run on the server |
 
-## About
-
-Boo Bash is made by Adrian Javorski, Corey Mertz, David Moon, Kirby Chen as a Fullstack Academy Capstone Project,
-
-## Credits
+## Assets Used
 
 - Map Tilesets and Sprites Created By: PIPOYA
 - Menu Music Created By: RoyaltyFreeZone
@@ -47,9 +43,20 @@ Boo Bash is made by Adrian Javorski, Corey Mertz, David Moon, Kirby Chen as a Fu
   - Licensed Under: Creative Commons Attribution 3.0: https://creativecommons.org/licenses/by/3.0
 - In-Game Ambiance Created By: Eric Skiff
   - Underclocked - Available at http://EricSkiff.com/music
+  
+## About
 
-## Design Documents
+Boo Bash is made by Adrian Javorski, Corey Mertz, David Moon, Kirby Chen as a Capstone Project as part of the Fullstack Academy 2008 (Aug. 2020) cohort.
 
-Design Notes (Game Rules, PoC description, MVP description): https://docs.google.com/document/d/1LNXsmcDU0Pkg5zWT6IUomDGXZhFfMf6aEj5dX-pZgyU/edit?usp=sharing
-
-Wireframe: https://excalidraw.com/#room=4d42fd6e88ea60060312,BZWwbHPqKmJv0z6l3chNXA
+* Adrian Javorski
+  * [Github](https://github.com/ajavorskidev)
+  * [Linkedin](https://www.linkedin.com/in/adrian-javorski/)
+* Corey Mertz
+  * [Github](https://github.com/FrostyCupCakes)
+  * [Linkedin](https://www.linkedin.com/in/corey-mertz-8a81661b4/)
+* David Moon
+  * [Github](https://github.com/moondrek)
+  * [Linkedin](https://www.linkedin.com/in/moon-david/)
+* Kirby Chen
+  * [Github][https://github.com/Cloudykirby]
+  * [Linkedin](https://www.linkedin.com/in/kirbyc6/)
