@@ -58,5 +58,5 @@ Boo Bash is made by Adrian Javorski, Corey Mertz, David Moon, Kirby Chen as a Ca
   * [Github](https://github.com/moondrek)
   * [Linkedin](https://www.linkedin.com/in/moon-david/)
 * Kirby Chen
-  * [Github][https://github.com/Cloudykirby]
+  * [Github](https://github.com/Cloudykirby)
   * [Linkedin](https://www.linkedin.com/in/kirbyc6/)
